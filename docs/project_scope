@@ -1,0 +1,9 @@
+# CityFix Project Scope
+
+##1. Problem and Project Objective
+
+Urban areas frequently experience infrastructure problems, such as potholes, damaged sidewalks, broken streetlights, and illegal waste disposal. Reporting these problems to municipal authorities can be complicated, and citizens may not know whether their reports have been received or resolved.
+
+The objective of CityFix is to develop a web application that simplifies communication between citizens and municipal services. The application will allow citizens to report infrastructure problems, administrators to review and assign reports, and city workers to manage and document repairs.
+
+The system aims to improve transparency, simplify the reporting process, and make municipal maintenance more efficient.
