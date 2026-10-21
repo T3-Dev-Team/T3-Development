@@ -18,7 +18,16 @@ The examples use the Crisis Guard project topic. Some have useful imperfections 
 | ID | Description | Priority | Source | Acceptance criteria |
 | --- | --- | --- | --- | --- |
 | F-001 | [Observable capability] | [High/Medium/Low] | [Approved task / stakeholder request / feedback] | [Observable result] |
-|  |  |  |  |  |
+| F-001 | The system allows citizens to sign in through an external identity provider using OAuth 2.0/OpenID Connect. | High | Course requirement | The user signs in with a Google account; on first login a Citizen account linked to that email is created, and no password is stored by the system. |
+| F-002 | The system allows the Administrator to create Administrator and City Worker accounts. | High | Project proposal | The Administrator enters an email, role and department; when that user signs in with the same email, they get access to the functions of their role. |
+| F-003 | The system allows citizens to report an issue with a category, description, photos and a location on the map. | High | Project proposal | The citizen can specify the location by using their current location, typing an address with suggestions, or placing a pin on a map; the report is saved with the status "Reported". |
+| F-004 | The system converts between street addresses and map coordinates for each report. | High | Project proposal | When the citizen types an address, the selected location is shown on the map for confirmation; when the citizen uses their current location or places a pin, the corresponding address is shown and stored with the report. |
+| F-005 | The system detects possible duplicate reports. | Medium | Project proposal | When an unresolved report of the same category exists within 50 m, the citizen is shown that report and can support it instead of creating a new one, which increases its priority. |
+| F-006 | The system displays all public reports on an interactive map with filters | High | Project proposal | Users can filter reports by category, status and date; nearby markers are grouped when there are many in a small area. |
+| F-007 | The system allows citizens to follow the status of their reports. | High | Project proposal | The citizen can see the current status for each of their reports. |
+| F-008 | The system notifies citizens when the status of their report changes. | Medium | Project proposal | Every status change creates an in-app notification for the citizen who reported the issue. |
+| F-009 | The system allows the Administrator to validate or reject reports. | High | Project proposal | The Administrator marks a report as verified, rejected (with a reason) or duplicate of an existing report, and the status is updated. |
+
 
 <details>
 <summary><strong>Requirement sources and acceptance criteria</strong></summary>
