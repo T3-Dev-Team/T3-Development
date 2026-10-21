@@ -7,3 +7,29 @@ Urban areas frequently experience infrastructure problems, such as potholes, dam
 The objective of CityFix is to develop a web application that simplifies communication between citizens and municipal services. The application will allow citizens to report infrastructure problems, administrators to review and assign reports, and city workers to manage and document repairs.
 
 The system aims to improve transparency, simplify the reporting process, and make municipal maintenance more efficient.
+
+##2. Intended Users and Stakeholders
+
+The primary users of CityFix are:
+
+-**Citizens:** Report infrastructure problems, upload pictures, specify locations and track the completion of the problem.
+-**City Workers:** Assign issues overview, route planning, update the progress, make a proof and documentation of a repair and return an issue.
+-**Administrator:** Report validating, assignment of priorities and deadlines, monitoring and profile checking.
+
+The stakeholders are municipal services, local communities and external service providers that support mapping, scheduling, weather forecasts, and image processing.
+
+##3. Project Boundaries
+
+The project includes the development of a responsive web application with the following features:
+
+- User authentication and role-based access.
+- Infrastructure issue reporting with photographs, descriptions, categories, and locations.
+- An interactive map with filtering options.
+- Report validation and task assignment by administrators.
+- Task management and repair-status updates for city workers.
+- Citizen notifications and report tracking.
+- Administrative statistics and geographical visualizations.
+
+Additional features may include duplicate report detection, calendar integration, weather forecasts, automated image blurring, deadline alerts, and citizen feedback.
+
+The project does not include performing physical repairs, controlling municipal equipment, or replacing existing municipal management systems. External integrations will depend on available services and development resources.
