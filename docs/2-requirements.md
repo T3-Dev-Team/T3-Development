@@ -54,8 +54,21 @@ For a complex interaction, a short *Given / When / Then* scenario may clarify a 
 
 | ID | Description | Priority | Source |
 | --- | --- | --- | --- |
-|  |  |  |  |
-
+| NF-01 | A citizen can submit a complete report (category, photo and map location) in under 60 seconds. Checked by timing at least 5 test users; the median time must be under 60 s. | High | Project proposal |
+| NF-02 | The public map with up to 500 reports loads in under 3 seconds on a standard broadband connection, and applying a filter updates the map in under 1 second. Checked with a seeded test database. | High | Project proposal |
+| NF-03 | The system responds to 95% of common requests (sign-in, report list, report status) in under 2 seconds with 50 simultaneous users. Checked with a load-testing tool such as k6 or JMeter. | Medium | Team decision |
+| NF-04 | Faces and vehicle license plates in uploaded photos are blurred before the photo is visible to the public, and no unblurred version is reachable through a public link. Checked on a test set of at least 20 photos; at least 90% of faces and plates must be blurred. | High | Project proposal |
+| NF-05 | All communication between the application and the server uses HTTPS, no user passwords are stored, and API keys are not kept in the source code repository. Checked by inspecting the deployed site, the database and the repository. | High | Course requirement |
+| NF-06 | Each user can access only the functions of their role (Citizen, City Worker, Administrator). Checked by attempting every restricted action with each role; unauthorized attempts must be denied. | High | Project proposal |
+| NF-07 | The public map and its data show only the category, status, date, address, description and photos of a report, and never the reporter's name or email. Checked by viewing the map and its API responses while signed out. | High | Project proposal |
+| NF-08 | Submitted reports, status changes and comments are still present after a server restart. Checked by restarting the application and comparing the data before and after. | High | Team decision |
+| NF-09 | A citizen can still submit a report with a pin placed on the map when the address lookup is unavailable, and the system shows an error message without losing the entered data. Checked by blocking the Google Maps API in a test. | Medium | Project proposal |
+| NF-10 | A citizen can still choose a report location manually on the map after denying geolocation access. Checked by denying the browser permission, choosing a map point and submitting a report. | Medium | Project proposal |
+| NF-11 | An in-app notification appears within 10 seconds of a report's status change, and the Google Calendar event with 24-hour and 2-hour reminders is created within 30 seconds of an assignment. Checked by measuring the time in a test run. | Medium | Project proposal |
+| NF-12 | The application is usable on mobile phone screens from 360 px width and in the latest versions of Chrome, Safari and Firefox, without horizontal scrolling or overlapping elements. Checked manually on at least 3 devices or browser emulators. | High | Project proposal |
+| NF-13 | At least 80% of first-time test users (at least 5 people) can submit a report and find its status without instructions. Checked with a short usability test. | Medium | Project proposal |
+| NF-14 | Text contrast meets WCAG 2.1 AA and the Lighthouse accessibility score is at least 90 on the main pages. Checked with the Lighthouse tool. | Low | Team decision |
+| NF-15 | Automated tests cover at least 60% of the backend code, and every change is merged through a reviewed pull request. Checked with the coverage report and the repository history. | Medium | Team decision |
 <details>
 <summary><strong>Choosing verifiable non-functional requirements</strong></summary>
 
@@ -112,7 +125,19 @@ Relevant properties may concern usability, accessibility, security, performance,
 
 | ID | Constraint or assumption | Source | Consequence or way to verify |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| C-01 | **Constraint:** Users sign in only through an external identity provider using OAuth 2.0/OpenID Connect, and the system stores no passwords. | Course requirement | There is no registration or password recovery in the application. Verify that no password field or password column exists. |
+| C-02 | **Constraint:** The application has exactly three roles: Citizen, City Worker and Administrator. Citizen accounts are created on first sign-in; City Worker and Administrator accounts are created only by an Administrator. | Project proposal | Role-based access (NF-06) is built on these three roles. Verify that an unknown email gets a Citizen account only. |
+| C-03 | **Constraint:** Maps, geocoding, navigation and the heatmap use the Google Maps API. | Project proposal | Address conversion, map display and duplicate detection depend on this service (see NF-09 for the fallback). Verify that no other map provider is used. |
+| C-04 | **Constraint:** Assigned issues are written to the worker's Google Calendar using the Google Calendar API. | Project proposal | A worker without a Google account cannot receive calendar events. Verify with a test assignment (NF-11). |
+| C-05 | **Constraint:** Photos are scanned for faces and license plates using the Google Cloud Vision API before public display, in line with GDPR. | Project proposal | No photo may be shown publicly before scanning finishes (NF-04). Verify with the photo test set. |
+| C-06 | **Constraint:** Weather forecasts come from an external weather API (OpenWeatherMap or Open-Meteo). | Project proposal | The issue details page depends on this service. Verify that a forecast is shown for an assigned issue. |
+| C-07 | **Constraint:** The application must follow GDPR for personal data such as photos and email addresses. | Project proposal | Public pages must not expose personal data (NF-07). Verify by viewing the public map signed out. |
+| C-08 | **Constraint:** The application is developed by the team T3-Development (6 members) and must be finished and submitted by the course deadline. | Course requirement | The scope is limited to the approved features and what 6 people can build in the available time, so Low priority items are dropped first if time runs short. Verify against the team's task plan. |
+| A-01 | **Assumption:** Citizens have a smartphone or computer with a camera, an internet connection and a Google account. | Team decision | Offline reporting is not supported. Verify by asking test users in the usability test (NF-13). |
+| A-02 | **Assumption:** The email address the Administrator enters for a worker or administrator is the same one the person uses to sign in. | Project proposal | If the emails differ, the user gets only a Citizen account. Verify by testing sign-in with a matching and a different email. |
+| A-03 | **Assumption:** The free usage limits of the Google and weather APIs are enough for the demo and testing. | Team decision | If a limit is exceeded, the affected feature may stop working. Verify by checking API usage during testing. |
+| A-04 | **Assumption:** The application covers one city, and reports outside the city area are rejected by the Administrator as invalid. | Project proposal | Verify by marking a test report outside the city as rejected (F-009). |
+| A-05 | **Assumption:** Face and license plate detection is good enough for the 90% target in NF-04. | Team decision | If detection is weaker, the team must change the target or review photos manually. Verify with the test set from NF-04. |
 
 <details>
 <summary><strong>Constraints versus assumptions</strong></summary>
