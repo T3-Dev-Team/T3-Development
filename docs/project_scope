@@ -2,13 +2,19 @@
 
 ##1. Problem and Project Objective
 
+<details>
+
 Urban areas frequently experience infrastructure problems, such as potholes, damaged sidewalks, broken streetlights, and illegal waste disposal. Reporting these problems to municipal authorities can be complicated, and citizens may not know whether their reports have been received or resolved.
 
 The objective of CityFix is to develop a web application that simplifies communication between citizens and municipal services. The application will allow citizens to report infrastructure problems, administrators to review and assign reports, and city workers to manage and document repairs.
 
 The system aims to improve transparency, simplify the reporting process, and make municipal maintenance more efficient.
 
+</details>
+
 ##2. Intended Users and Stakeholders
+
+<details>
 
 The primary users of CityFix are:
 
@@ -18,7 +24,11 @@ The primary users of CityFix are:
 
 The stakeholders are municipal services, local communities and external service providers that support mapping, scheduling, weather forecasts, and image processing.
 
+</details>
+
 ##3. Project Boundaries
+
+<details>
 
 The project includes the development of a responsive web application with the following features:
 
@@ -29,6 +39,8 @@ The project includes the development of a responsive web application with the fo
 - Task management and repair-status updates for city workers.
 - Citizen notifications and report tracking.
 - Administrative statistics and geographical visualizations.
+
+</details>
 
 Additional features may include duplicate report detection, calendar integration, weather forecasts, automated image blurring, deadline alerts, and citizen feedback.
 
