@@ -69,12 +69,10 @@ Keep this overview at the level of scope: identify the main capability and its b
 
 ## 1.4 Existing Approaches and Project Rationale
 
+In Lisbon, a resident who spots a problem in the street can report it through Na Minha Rua Lx, the city council's app and website, which has been running since June 2017 [1]. It does the basics well, since an academic study found that reporting and tracking work fine, but it lacks some advanced features such as data visualization [2], and press coverage of another study points to duplicate requests and reports marked as done when nothing was actually fixed [3]. These are the gaps CityFix wants to address with duplicate detection, photo proof of repair, and a heatmap for administrators. It is meant to complement existing municipal services, not replace them.
  
-Lisbon's city council runs Na Minha Rua Lx, an app and website where residents report urban problems [1]. An academic comparison with FixMyStreet and SeeClickFix found that it supports reporting and tracking well but lacks some advanced features, such as data visualization [2]. A study reported by Time Out Lisboa also describes duplicate requests and closures marked as done without a fix [3]. CityFix is motivated by these remaining needs: it brings duplicate detection, photo proof of repair, and an administrator heatmap into one reporting workflow, without replacing any existing municipal service.
+### Sources
  
-## Sources
- 
-1. C. M. Lisboa. *Na Minha Rua Lx* (Google Play listing). <ADD LINK>, accessed 21 October 2026.
+1. Notícias ao Minuto. *Higiene urbana em Lisboa motiva maioria das ocorrências na 'Na Minha Rua'*. <https://www.noticiasaominuto.com/pais/2598480/higiene-urbana-em-lisboa-motiva-maioria-das-ocorrencias-na-na-minha-rua>
 2. Soares, J., & Coutinho, C. (2024). *Urban issue reporting applications towards government 2.0*. ISMSIT 2024, IEEE. <https://doi.org/10.1109/ISMSIT63511.2024.10757230>
 3. Time Out Lisboa (2024). *Higiene urbana é, de longe, a principal preocupação de quem vive em Lisboa*. <https://www.timeout.pt/lisboa/pt/noticias/higiene-urbana-e-de-longe-a-principal-preocupacao-de-quem-vive-em-lisboa-071624>
- 
