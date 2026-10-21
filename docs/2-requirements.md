@@ -56,19 +56,19 @@ For a complex interaction, a short *Given / When / Then* scenario may clarify a 
 | --- | --- | --- | --- |
 | NF-01 | A citizen can submit a complete report (category, photo and map location) in under 60 seconds. Checked by timing at least 5 test users; the median time must be under 60 s. | High | Project proposal |
 | NF-02 | The public map with up to 500 reports loads in under 3 seconds on a standard broadband connection, and applying a filter updates the map in under 1 second. Checked with a seeded test database. | High | Project proposal |
-| NF-03 | The system responds to 95% of common requests (sign-in, report list, report status) in under 2 seconds with 50 simultaneous users. Checked with a load-testing tool such as k6 or JMeter. | Medium | Team decision |
+| NF-03 | The system responds to 95% of common requests (sign-in, report list, report status) in under 2 seconds with 50 simultaneous users. Checked with a load-testing tool such as k6 or JMeter. | Low | Team decision |
 | NF-04 | Faces and vehicle license plates in uploaded photos are blurred before the photo is visible to the public, and no unblurred version is reachable through a public link. Checked on a test set of at least 20 photos; at least 90% of faces and plates must be blurred. | High | Project proposal |
 | NF-05 | All communication between the application and the server uses HTTPS, no user passwords are stored, and API keys are not kept in the source code repository. Checked by inspecting the deployed site, the database and the repository. | High | Course requirement |
 | NF-06 | Each user can access only the functions of their role (Citizen, City Worker, Administrator). Checked by attempting every restricted action with each role; unauthorized attempts must be denied. | High | Project proposal |
 | NF-07 | The public map and its data show only the category, status, date, address, description and photos of a report, and never the reporter's name or email. Checked by viewing the map and its API responses while signed out. | High | Project proposal |
 | NF-08 | Submitted reports, status changes and comments are still present after a server restart. Checked by restarting the application and comparing the data before and after. | High | Team decision |
-| NF-09 | A citizen can still submit a report with a pin placed on the map when the address lookup is unavailable, and the system shows an error message without losing the entered data. Checked by blocking the Google Maps API in a test. | Medium | Project proposal |
-| NF-10 | A citizen can still choose a report location manually on the map after denying geolocation access. Checked by denying the browser permission, choosing a map point and submitting a report. | Medium | Project proposal |
+| NF-09 | A citizen can still submit a report with a pin placed on the map when the address lookup is unavailable, and the system shows an error message without losing the entered data. Checked by blocking the Google Maps API in a test. | Low | Project proposal |
+| NF-10 | A citizen can still choose a report location manually on the map after denying geolocation access. Checked by denying the browser permission, choosing a map point and submitting a report. | Low | Project proposal |
 | NF-11 | An in-app notification appears within 10 seconds of a report's status change, and the Google Calendar event with 24-hour and 2-hour reminders is created within 30 seconds of an assignment. Checked by measuring the time in a test run. | Medium | Project proposal |
 | NF-12 | The application is usable on mobile phone screens from 360 px width and in the latest versions of Chrome, Safari and Firefox, without horizontal scrolling or overlapping elements. Checked manually on at least 3 devices or browser emulators. | High | Project proposal |
-| NF-13 | At least 80% of first-time test users (at least 5 people) can submit a report and find its status without instructions. Checked with a short usability test. | Medium | Project proposal |
+| NF-13 | At least 80% of first-time test users (at least 5 people) can submit a report and find its status without instructions. Checked with a short usability test. | Low | Project proposal |
 | NF-14 | Text contrast meets WCAG 2.1 AA and the Lighthouse accessibility score is at least 90 on the main pages. Checked with the Lighthouse tool. | Low | Team decision |
-| NF-15 | Automated tests cover at least 60% of the backend code, and every change is merged through a reviewed pull request. Checked with the coverage report and the repository history. | Medium | Team decision |
+| NF-15 | Automated tests cover at least 60% of the backend code, and every change is merged through a reviewed pull request. Checked with the coverage report and the repository history. | Low | Team decision |
 <details>
 <summary><strong>Choosing verifiable non-functional requirements</strong></summary>
 
