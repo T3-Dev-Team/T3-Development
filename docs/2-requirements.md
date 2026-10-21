@@ -108,7 +108,7 @@ Relevant properties may concern usability, accessibility, security, performance,
 
 | Role or actor ID | Relation to the system | Relevant requirements |
 | --- | --- | --- |
-|  |  |  |
+| A-01 Citizen | Primary actor. Reports issues, follows their status, rates resolutions and can delete their account. | F-001, F-003, F-007, F-018 |
 
 <details>
 <summary><strong>Connecting actors to requirements</strong></summary>
