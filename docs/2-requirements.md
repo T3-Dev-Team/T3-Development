@@ -37,6 +37,7 @@ The examples use the Crisis Guard project topic. Some have useful imperfections 
 | F-018 | The system allows citizens to rate the resolution of their report. | Low | Project proposal | After an issue is resolved, the citizen can rate it. |
 | F-019 | The system shows the Administrator statistics and a heatmap of reports. | Medium | Project proposal | The Administrator can see a heatmap of reports and the number of open and resolved issues, average resolution time and most common categories. |
 | F-020 | The system allows the Administrator to manage departments, categories and City Worker profiles. | Medium | Project proposal | The Administrator can create, edit and deactivate departments, categories and worker profiles. |
+| F-021 | The system allows citizens to delete their account. | Medium | General Data Protection Regulation | After the citizen confirms the deletion, their account and personal data (name, email, notifications, ratings) are permanently deleted, and their reports remain visible without any link to the deleted user. |
 
 
 
