@@ -17,7 +17,6 @@ The examples use the Crisis Guard project topic. Some have useful imperfections 
 
 | ID | Description | Priority | Source | Acceptance criteria |
 | --- | --- | --- | --- | --- |
-| F-001 | [Observable capability] | [High/Medium/Low] | [Approved task / stakeholder request / feedback] | [Observable result] |
 | F-001 | The system allows citizens to sign in through an external identity provider using OAuth 2.0/OpenID Connect. | High | Course requirement | The user signs in with a Google account; on first login a Citizen account linked to that email is created, and no password is stored by the system. |
 | F-002 | The system allows the Administrator to create Administrator and City Worker accounts. | High | Project proposal | The Administrator enters an email, role and department; when that user signs in with the same email, they get access to the functions of their role. |
 | F-003 | The system allows citizens to report an issue with a category, description, photos and a location on the map. | High | Project proposal | The citizen can specify the location by using their current location, typing an address with suggestions, or placing a pin on a map; the report is saved with the status "Reported". |
@@ -27,6 +26,18 @@ The examples use the Crisis Guard project topic. Some have useful imperfections 
 | F-007 | The system allows citizens to follow the status of their reports. | High | Project proposal | The citizen can see the current status for each of their reports. |
 | F-008 | The system notifies citizens when the status of their report changes. | Medium | Project proposal | Every status change creates an in-app notification for the citizen who reported the issue. |
 | F-009 | The system allows the Administrator to validate or reject reports. | High | Project proposal | The Administrator marks a report as verified, rejected (with a reason) or duplicate of an existing report, and the status is updated. |
+| F-010 | The system allows the Administrator to set the priority and deadline of a verified report and assign it to a City Worker. | High | Project proposal | Only City Workers from the department responsible for the category can be selcted; after assignment the status changes to "Assigned". |
+| F-011 | The system shows City Workers the issues assigned to them. | High | Project proposal | The worker sees their assigned issues as a list and on a map, sorted by priority and deadline. | 
+| F-012 | The system allows City Workers to update the status of an issue and add comments. | High | Project proposal | The worker can change the status to "In Repair" or "Resolved" and add a comment, which is shown in the issue history. |
+| F-013 | The system requires a photo of the completed repair before an issue is marked as resolved. | Medium | Project proposal | An issue cannot be marked as resolved without an "after" photo; the photo is shown to the citizen who reported it.
+| F-014 | The system allows City Workers to return an issue to the Administrator. | Medium | Project proposal | The worker returns the issue with an explanation; it is removed from their list and the Administrator can reassign it. |
+| F-015 | The system adds assigned issues to the City Worker's Google Calendar. | Medium | Project proposal | After assignment, an event with the address, category and deadline appears in the worker's calendar. |
+| F-016 | The system shows the weather forecast for the location of an assigned issue. | Low | Project proposal | The issue details page shows the forecast for the next days. |
+| F-017 | The system allows the Administrator to define default resolution times and escalates overdue issues. | Low | Project proposal | When an issue approaches its deadline without status updates, its priority is raised and the Administrator receives an in-app alert. | 
+| F-018 | The system allows citizens to rate the resolution of their report. | Low | Project proposal | After an issue is resolved, the citizen can rate it. |
+| F-019 | The system shows the Administrator statistics and a heatmap of reports. | Medium | Project proposal | The Administrator can see a heatmap of reports and the number of open and resolved issues, average resolution time and most common categories. |
+| F-020 | The system allows the Administrator to manage departments, categories and City Worker profiles. | Medium | Project proposal | The Administrator can create, edit and deactivate departments, categories and worker profiles. |
+
 
 
 <details>
