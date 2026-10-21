@@ -69,15 +69,12 @@ Keep this overview at the level of scope: identify the main capability and its b
 
 ## 1.4 Existing Approaches and Project Rationale
 
-**Objective:** Explain how users currently address the problem and which remaining need motivates the approved project.
-
-[In two to four sentences, describe one current process or relevant solution, what it already provides, and the specific need motivating this project. Cite factual claims about external products or practices.]
-
-<details>
-<summary><strong>Existing approaches and project rationale</strong></summary>
-
-**Example — Crisis Guard project rationale:** “A citizen following a severe-weather event may need to consult a weather-warning source and a separate source of local reports. Crisis Guard's proposed map view brings disaster reports relevant to a selected location together. It does not replace official warnings or emergency services.” This explains the need and the project's intended boundary without claiming that all existing channels are ineffective. The first sentence is an **example user scenario**, not a measured finding about real users. If a team names a particular warning service or competing product, it should link a source. A competitor survey and screenshots are not required.
-
-If an existing solution truly influenced the project, compare only the relevant feature, such as map clarity or a needed integration. Avoid a fixed number of products or a table of criteria unrelated to the approved task.
-
-</details>
+ 
+Lisbon's city council runs Na Minha Rua Lx, an app and website where residents report urban problems [1]. An academic comparison with FixMyStreet and SeeClickFix found that it supports reporting and tracking well but lacks some advanced features, such as data visualization [2]. A study reported by Time Out Lisboa also describes duplicate requests and closures marked as done without a fix [3]. CityFix is motivated by these remaining needs: it brings duplicate detection, photo proof of repair, and an administrator heatmap into one reporting workflow, without replacing any existing municipal service.
+ 
+## Sources
+ 
+1. C. M. Lisboa. *Na Minha Rua Lx* (Google Play listing). <ADD LINK>, accessed 21 October 2026.
+2. Soares, J., & Coutinho, C. (2024). *Urban issue reporting applications towards government 2.0*. ISMSIT 2024, IEEE. <https://doi.org/10.1109/ISMSIT63511.2024.10757230>
+3. Time Out Lisboa (2024). *Higiene urbana é, de longe, a principal preocupação de quem vive em Lisboa*. <https://www.timeout.pt/lisboa/pt/noticias/higiene-urbana-e-de-longe-a-principal-preocupacao-de-quem-vive-em-lisboa-071624>
+ 
