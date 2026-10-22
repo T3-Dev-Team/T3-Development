@@ -33,3 +33,6 @@ The project includes the development of a responsive web application with the fo
 Additional features may include duplicate report detection, calendar integration, weather forecasts, automated image blurring, deadline alerts, and citizen feedback.
 
 The project does not include performing physical repairs, controlling municipal equipment, or replacing existing municipal management systems. External integrations will depend on available services and development resources.
+
+## 1.4 Existing Approaches and Project Rationale
+
