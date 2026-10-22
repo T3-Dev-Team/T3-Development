@@ -69,15 +69,9 @@ Keep this overview at the level of scope: identify the main capability and its b
 
 ## 1.4 Existing Approaches and Project Rationale
 
-**Objective:** Explain how users currently address the problem and which remaining need motivates the approved project.
-
-[In two to four sentences, describe one current process or relevant solution, what it already provides, and the specific need motivating this project. Cite factual claims about external products or practices.]
-
-<details>
-<summary><strong>Existing approaches and project rationale</strong></summary>
-
-**Example — Crisis Guard project rationale:** “A citizen following a severe-weather event may need to consult a weather-warning source and a separate source of local reports. Crisis Guard's proposed map view brings disaster reports relevant to a selected location together. It does not replace official warnings or emergency services.” This explains the need and the project's intended boundary without claiming that all existing channels are ineffective. The first sentence is an **example user scenario**, not a measured finding about real users. If a team names a particular warning service or competing product, it should link a source. A competitor survey and screenshots are not required.
-
-If an existing solution truly influenced the project, compare only the relevant feature, such as map clarity or a needed integration. Avoid a fixed number of products or a table of criteria unrelated to the approved task.
-
-</details>
+In Lisbon, a resident who spots a problem in the street can report it through Na Minha Rua Lx, the city council's app and website, which has been running since June 2017 [1]. It does the basics well, since an academic study found that reporting and tracking work fine, but it lacks some advanced features such as data visualization [2], and press coverage of another study points to duplicate requests and reports marked as done when nothing was actually fixed [3]. These are the gaps CityFix wants to address with duplicate detection, photo proof of repair, and a heatmap for administrators. It is meant to complement existing municipal services, not replace them.
+### Sources
+ 
+1. Notícias ao Minuto. *Higiene urbana em Lisboa motiva maioria das ocorrências na 'Na Minha Rua'*. <https://www.noticiasaominuto.com/pais/2598480/higiene-urbana-em-lisboa-motiva-maioria-das-ocorrencias-na-na-minha-rua>
+2. Soares, J., & Coutinho, C. (2024). *Urban issue reporting applications towards government 2.0*. ISMSIT 2024, IEEE. <https://doi.org/10.1109/ISMSIT63511.2024.10757230>
+3. Time Out Lisboa (2024). *Higiene urbana é, de longe, a principal preocupação de quem vive em Lisboa*. <https://www.timeout.pt/lisboa/pt/noticias/higiene-urbana-e-de-longe-a-principal-preocupacao-de-quem-vive-em-lisboa-071624>
