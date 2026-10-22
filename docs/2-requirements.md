@@ -110,7 +110,7 @@ Relevant properties may concern usability, accessibility, security, performance,
 | --- | --- | --- |
 | A-01 Citizen | Primary actor. Reports issues, follows their status, rates resolutions and can delete their account. | F-001, F-003, F-007, F-018, F-021; NF-01, NF-07, NF-09, NF-10, NF-12, NF-13 |
 | A-02 City Worker | Primary actor. Receives assigned issues, updates their status and documents completed repairs. | F-002, F-011, F-012, F-014, F-015; NF-06, NF-11, NF-12 | 
-| A-03 | Administrator | Primary actor. Validates reports, assigns them to workers, manages accounts and departments and monitors statistics. | F-002, F-009, F-010, F-017, F-019, F-020; NF-06 |
+| A-03 Administrator | Primary actor. Validates reports, assigns them to workers, manages accounts and departments and monitors statistics. | F-002, F-009, F-010, F-017, F-019, F-020; NF-06 |
 
 
 <details>
