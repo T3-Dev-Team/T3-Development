@@ -1,6 +1,6 @@
-# CityFix Project Scope
+# 1. CityFix Project Scope
 
-## 1. Problem and Project Objective
+## 1.1 Problem and Project Objective
 
 Urban areas frequently experience infrastructure problems, such as potholes, damaged sidewalks, broken streetlights, and illegal waste disposal. Reporting these problems to municipal authorities can be complicated, and citizens may not know whether their reports have been received or resolved.
 
@@ -8,7 +8,7 @@ The objective of CityFix is to develop a web application that simplifies communi
 
 The system aims to improve transparency, simplify the reporting process, and make municipal maintenance more efficient.
 
-## 2. Intended Users and Stakeholders
+## 1.2 Intended Users and Stakeholders
 
 The primary users of CityFix are:
 
@@ -18,7 +18,7 @@ The primary users of CityFix are:
 
 The stakeholders are municipal services, local communities and external service providers that support mapping, scheduling, weather forecasts, and image processing.
 
-## 3. Project Boundaries
+## 1.3 Project Boundaries
 
 The project includes the development of a responsive web application with the following features:
 
