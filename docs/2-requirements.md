@@ -162,7 +162,7 @@ A constraint is a restriction the team must respect; an assumption is a conditio
 
 | Date | Requirement ID | Change and reason | Agreed with / evidence |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| 16.10.2026 | NF-12 | All functionality is implemented as a responsive web application. The teaching assistant recommended a web application to keep the architecture consistent. | Teaching assistant (proposal feedback, 16.10.2026) |
 
 <details>
 <summary><strong>Recording a significant change</strong></summary>
