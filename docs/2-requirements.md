@@ -17,8 +17,29 @@ The examples use the Crisis Guard project topic. Some have useful imperfections 
 
 | ID | Description | Priority | Source | Acceptance criteria |
 | --- | --- | --- | --- | --- |
-| F-001 | [Observable capability] | [High/Medium/Low] | [Approved task / stakeholder request / feedback] | [Observable result] |
-|  |  |  |  |  |
+| F-001 | The system allows citizens to sign in through an external identity provider using OAuth 2.0/OpenID Connect. | High | Course requirement | The user signs in with a Google account; on first login a Citizen account linked to that email is created, and no password is stored by the system. |
+| F-002 | The system allows the Administrator to create Administrator and City Worker accounts. | High | Project proposal | The Administrator enters an email, role and department; when that user signs in with the same email, they get access to the functions of their role. |
+| F-003 | The system allows citizens to report an issue with a category, description, photos and a location on the map. | High | Project proposal | The citizen can specify the location by using their current location, typing an address with suggestions, or placing a pin on a map; the report is saved with the status "Reported". |
+| F-004 | The system converts between street addresses and map coordinates for each report. | High | Project proposal | When the citizen types an address, the selected location is shown on the map for confirmation; when the citizen uses their current location or places a pin, the corresponding address is shown and stored with the report. |
+| F-005 | The system detects possible duplicate reports. | Medium | Project proposal | When an unresolved report of the same category exists within 50 m, the citizen is shown that report and can support it instead of creating a new one, which increases its priority. |
+| F-006 | The system displays all public reports on an interactive map with filters | High | Project proposal | Users can filter reports by category, status and date; nearby markers are grouped when there are many in a small area. |
+| F-007 | The system allows citizens to follow the status of their reports. | High | Project proposal | The citizen can see the current status for each of their reports. |
+| F-008 | The system notifies citizens when the status of their report changes. | Medium | Project proposal | Every status change creates an in-app notification for the citizen who reported the issue. |
+| F-009 | The system allows the Administrator to validate or reject reports. | High | Project proposal | The Administrator marks a report as verified, rejected (with a reason) or duplicate of an existing report, and the status is updated. |
+| F-010 | The system allows the Administrator to set the priority and deadline of a verified report and assign it to a City Worker. | High | Project proposal | Only City Workers from the department responsible for the category can be selcted; after assignment the status changes to "Assigned". |
+| F-011 | The system shows City Workers the issues assigned to them. | High | Project proposal | The worker sees their assigned issues as a list and on a map, sorted by priority and deadline. | 
+| F-012 | The system allows City Workers to update the status of an issue and add comments. | High | Project proposal | The worker can change the status to "In Repair" or "Resolved" and add a comment, which is shown in the issue history. |
+| F-013 | The system requires a photo of the completed repair before an issue is marked as resolved. | Medium | Project proposal | An issue cannot be marked as resolved without an "after" photo; the photo is shown to the citizen who reported it.
+| F-014 | The system allows City Workers to return an issue to the Administrator. | Medium | Project proposal | The worker returns the issue with an explanation; it is removed from their list and the Administrator can reassign it. |
+| F-015 | The system adds assigned issues to the City Worker's Google Calendar. | Medium | Project proposal | After assignment, an event with the address, category and deadline appears in the worker's calendar. |
+| F-016 | The system shows the weather forecast for the location of an assigned issue. | Low | Project proposal | The issue details page shows the forecast for the next days. |
+| F-017 | The system allows the Administrator to define default resolution times and escalates overdue issues. | Low | Project proposal | When an issue approaches its deadline without status updates, its priority is raised and the Administrator receives an in-app alert. | 
+| F-018 | The system allows citizens to rate the resolution of their report. | Low | Project proposal | After an issue is resolved, the citizen can rate it. |
+| F-019 | The system shows the Administrator statistics and a heatmap of reports. | Medium | Project proposal | The Administrator can see a heatmap of reports and the number of open and resolved issues, average resolution time and most common categories. |
+| F-020 | The system allows the Administrator to manage departments, categories and City Worker profiles. | Medium | Project proposal | The Administrator can create, edit and deactivate departments, categories and worker profiles. |
+| F-021 | The system allows citizens to delete their account. | Medium | General Data Protection Regulation | After the citizen confirms the deletion, their account and personal data (name, email, notifications, ratings) are permanently deleted, and their reports remain visible without any link to the deleted user. |
+
+
 
 <details>
 <summary><strong>Requirement sources and acceptance criteria</strong></summary>
@@ -100,7 +121,10 @@ Relevant properties may concern usability, accessibility, security, performance,
 
 | Role or actor ID | Relation to the system | Relevant requirements |
 | --- | --- | --- |
-|  |  |  |
+| A-01 Citizen | Primary actor. Reports issues, follows their status, rates resolutions and can delete their account. | F-001, F-003, F-007, F-018, F-021; NF-01, NF-07, NF-09, NF-10, NF-12, NF-13 |
+| A-02 City Worker | Primary actor. Receives assigned issues, updates their status and documents completed repairs. | F-002, F-011, F-012, F-014, F-015; NF-06, NF-11, NF-12 | 
+| A-03 Administrator | Primary actor. Validates reports, assigns them to workers, manages accounts and departments and monitors statistics. | F-002, F-009, F-010, F-017, F-019, F-020; NF-06 |
+
 
 <details>
 <summary><strong>Connecting actors to requirements</strong></summary>
@@ -163,7 +187,7 @@ A constraint is a restriction the team must respect; an assumption is a conditio
 
 | Date | Requirement ID | Change and reason | Agreed with / evidence |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| 16.10.2026 | NF-12 | All functionality is implemented as a responsive web application. The teaching assistant recommended a web application to keep the architecture consistent. | Teaching assistant (proposal feedback, 16.10.2026) |
 
 <details>
 <summary><strong>Recording a significant change</strong></summary>
