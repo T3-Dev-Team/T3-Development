@@ -70,6 +70,7 @@ Keep this overview at the level of scope: identify the main capability and its b
 ## 1.4 Existing Approaches and Project Rationale
 
 In Lisbon, a resident who spots a problem in the street can report it through Na Minha Rua Lx, the city council's app and website, which has been running since June 2017 [1]. It does the basics well, since an academic study found that reporting and tracking work fine, but it lacks some advanced features such as data visualization [2], and press coverage of another study points to duplicate requests and reports marked as done when nothing was actually fixed [3]. These are the gaps CityFix wants to address with duplicate detection, photo proof of repair, and a heatmap for administrators. It is meant to complement existing municipal services, not replace them.
+
 ### Sources
  
 1. Notícias ao Minuto. *Higiene urbana em Lisboa motiva maioria das ocorrências na 'Na Minha Rua'*. <https://www.noticiasaominuto.com/pais/2598480/higiene-urbana-em-lisboa-motiva-maioria-das-ocorrencias-na-na-minha-rua>
