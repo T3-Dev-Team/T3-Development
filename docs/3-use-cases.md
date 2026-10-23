@@ -42,22 +42,12 @@ An external system may appear as a secondary use-case actor when it participates
 
 **Use one vertical table per use case.** Write only as much detail as the interaction needs; omit an inapplicable alternative instead of filling it for form's sake.
 
-**    UC-[01]: Sign-In
-
-| Field | Description |
-| --- | --- |
-| Primary actor | Citizen, City Worker, Administrator |
-| Requirement ID(s) | F-001, F-002 |
-| Preconditions, if any | For a city Worker or Administrator the acount must be create first by an Administrator with the user's email (UC-014)|
-| Main flow | The user chooses to sign in; the application redirects to the identity provider. The user authenticates with their Google account. The application receives the user's email address and looks for an account with that email. If no account exists, the application creates a Citizen account linked to that email. If an account created by an Administrator exists, the application uses its role and department. The application opens the interface for the user's role. |
-| Alternative or failure flows, if any | **Sign-in cancelled or rejected:** the application returns to the sign-in page, explains that sign-in did not complete and keeps the restricted actions unavailable.<br>**Identity provider unavailable:** the application reports that sign-in is temporarily unavailable and creates no session. |
-| Result | The user is signed in and sees the functions of their role. No password is stored by the system. |
-
 <details>
 <summary><strong>Registration and disaster reporting: two examples of the same format</strong></summary>
 </details>
 
-**UC-001: Sign-In
+### UC-[001]: Sign-In
+
 | Field | Description |
 | --- | --- |
 | Primary actor | Citizen, City Worker, Administrator |
@@ -68,7 +58,8 @@ An external system may appear as a secondary use-case actor when it participates
 | Result | The user is signed in and sees the functions of their role. No password is stored by the system. |
 
 
-**UC-002: Report Issue
+### UC-[002]: Report Issue
+
 | Field | Description |
 | --- | --- |
 | Primary actor | Citizen |
@@ -78,7 +69,8 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **3a — Geolocation permission denied:** the citizen types an address or places a pin on the map; the flow continues at step 4 (NF-10).<br>**3b — Address lookup unavailable:** the application shows an error message, keeps the entered data and lets the citizen place a pin on the map (NF-09).<br>**5a — Required data missing (category or location):** the application indicates what is missing, preserves the entered data and does not save the report.<br>**5b — Possible duplicate found:** the flow continues in UC-003.<br>**6a — Saving fails:** the application states that the report was not submitted and does not show a confirmation. |
 | Result | The report is saved with the status "Reported". |
 
-**UC-003: Detect duplicate issue
+
+### UC-[003]: Detect Duplicate Issue
 
 | Field | Description |
 | --- | --- |
@@ -89,7 +81,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **1a — No similar report found:** UC-002 continues at step 6.<br>**3a — The citizen decides it is a different problem:** the application saves the new report as in UC-002, step 6. |
 | Result | A duplicate is avoided, or the new report proceeds. |
 
-**UC-004: Attach photo
+### UC-[004]: Attach Photo
 
 | Field | Description |
 | --- | --- |
@@ -100,7 +92,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **2a — Upload fails or the file is not accepted:** the application explains the problem; the citizen may retry or submit the report without the photo. |
 | Result | The photo is attached to the report. |
 
-**UC-005: View issue map
+### UC-[005]: View issue map
 
 | Field | Description |
 | --- | --- |
@@ -111,7 +103,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **1a — Map cannot be loaded:** the application shows an error message and lets the citizen retry.<br>**2a — No report matches the filters:** the application shows an empty result and suggests changing the filters. |
 | Result | The citizen sees the reports that match the chosen filters. |
 
-**UC-006: Track issue status
+### UC-[006]: Track Issue Status
 
 | Field | Description |
 | --- | --- |
@@ -122,7 +114,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **1a — The citizen has no reports:** the application shows an empty list with a link to the report form. |
 | Result | The citizen knows the current status of each report and is notified of changes. |
 
-**UC-007: Confirm resolution and rate
+### UC-[007]: Confirm Resolution and Rate
 
 | Field | Description |
 | --- | --- |
@@ -133,7 +125,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **2a — The citizen does not rate:** the report stays resolved without a rating.<br>**3a — Saving fails:** the application reports the failure and lets the citizen retry. |
 | Result | The citizen has seen the proof of repair and their rating is stored. |
 
-**UC-008: View assigned issues
+### UC-[008]: View Assigned Issues
 
 | Field | Description |
 | --- | --- |
@@ -144,7 +136,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **1a — No issues assigned:** the application shows an empty list.<br>**2a — Forecast unavailable:** the application shows the details without the forecast and says it could not be loaded. |
 | Result | The worker knows which issues and their order. |
 
-**UC-009: Update issue status
+### UC-[009]: Update Issue Status
 
 | Field | Description |
 | --- | --- |
@@ -155,7 +147,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **3a — Repair photo missing:** the application does not accept "Resolved" and asks for the photo.<br>**4a — Saving fails:** the application reports the failure and keeps the previous status. |
 | Result | The issue has the new status. |
 
-**UC-010: Upload repair photo
+### UC-[010]: Upload Repair Photo
 
 | Field | Description |
 | --- | --- |
@@ -166,7 +158,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **2a — Upload fails:** the application explains the problem and keeps the issue unresolved until the photo is uploaded. |
 | Result | The repair photo is stored and shown to the citizen who reported the issue. |
 
-**UC-011: Return issue to administrator
+### UC-[011]: Return/Reject Issue
 
 | Field | Description |
 | --- | --- |
@@ -177,7 +169,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **2a — Explanation missing:** the application asks for it and does not return the issue. |
 | Result | The Administrator can reassign the issue. |
 
-**UC-012: Validate report
+### UC-[012]: Validate Report
 
 | Field | Description |
 | --- | --- |
@@ -188,7 +180,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **2a — Invalid report (false or outside the city area):** the administrator rejects it and enters a reason; the application updates the status and notifies the citizen.<br>**2b — Duplicate:** the administrator marks it as a duplicate of an existing report and selects that report; the application updates the status. |
 | Result | The report is verified, rejected with a reason, or marked as a duplicate. |
 
-**UC-013: Assign issue
+### UC-[013]: Assign Issue
 
 | Field | Description |
 | --- | --- |
@@ -199,7 +191,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **1a — Forecast unavailable:** the application shows the issue without the forecast; the assignment can continue.<br>**3a — No worker in the department:** the application tells the administrator that no worker can be selected and the issue stays unassigned.<br>**5a — Calendar event fails:** the assignment is kept; the application tells the administrator that the event was not created and lets them retry. |
 | Result | The issue has a priority, a deadline and an assigned worker, and the event is in the worker's calendar. |
 
-**C-014: Manage accounts and departments
+### UC-[014]: Manage Acounts and Departments
 
 | Field | Description |
 | --- | --- |
@@ -210,7 +202,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **1a — Email already registered:** the application explains why the account cannot be created.<br>**1b — Missing or invalid data:** the application indicates the problem and saves nothing. |
 | Result | The accounts, departments, categories and worker profiles reflect the administrator's changes. |
 
-**UC-015: View statistics and heatmap
+### UC-[015]: View Statistics and Heatmap
 
 | Field | Description |
 | --- | --- |
@@ -221,7 +213,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Alternative or failure flows, if any | **2a — Map cannot be loaded:** the application shows the statistics without the heatmap and says why.<br>**2b — Not enough data:** the application shows an empty state. |
 | Result | The administrator sees where and how often problems occur. |
 
-UC-016: Delete account
+### UC-[016]: Delete Acount
 
 | Field | Description |
 | --- | --- |
@@ -232,7 +224,7 @@ UC-016: Delete account
 | Alternative or failure flows, if any | **2a — The citizen cancels:** nothing is deleted.<br>**3a — Deletion fails:** the application reports the failure and keeps the account. |
 | Result | The account and personal data no longer exist; the reports remain, without a link to the user. |
 
-**UC-017: Configure resolution times
+### UC-[017]: Define Time Settings
 
 | Field | Description |
 | --- | --- |
