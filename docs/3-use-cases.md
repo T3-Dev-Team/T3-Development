@@ -55,6 +55,7 @@ An external system may appear as a secondary use-case actor when it participates
 
 <details>
 <summary><strong>Registration and disaster reporting: two examples of the same format</strong></summary>
+</details>
 
 **UC-001: Sign-In
 | Field | Description |
