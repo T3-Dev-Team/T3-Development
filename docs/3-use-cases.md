@@ -42,7 +42,7 @@ An external system may appear as a secondary use-case actor when it participates
 
 **Use one vertical table per use case.** Write only as much detail as the interaction needs; omit an inapplicable alternative instead of filling it for form's sake.
 
-### UC-[01]: Sign-In
+**    UC-[01]: Sign-In
 
 | Field | Description |
 | --- | --- |
