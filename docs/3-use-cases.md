@@ -236,6 +236,7 @@ An external system may appear as a secondary use-case actor when it participates
 | Result | The default times are saved and overdue issues are escalated. |
 
 ---
+</details>
 
 ## 3.3 Use Case Consistency Check
 
@@ -248,8 +249,19 @@ An external system may appear as a secondary use-case actor when it participates
 | Application | Can the team demonstrate the described main result and important alternative, or is the description marked as a current design? |
 
 ---
+</details>
 
-Maintain the requirement-to-use-case-to-test mapping **once, in the [requirement traceability table](./2.-Requirements)**. Do not maintain a second project mapping or an implementation-status column here. If an important requirement has no interaction with a human actor, explain where it is addressed instead of inventing an actor.
+
+## 3.3 Use Case Consistency Check
+
+**Objective:** Check that use cases, actors, and requirements agree with one another and with the application the team demonstrates.
+
+| Check | Result |
+| --- | --- |
+| Requirement | All 17 use cases mach functional requirements from 2.1, and every requirement appears in at least one use case. |
+| Actor | Each primary actor matches a role in 2.3: Citizen (A-01), City Worker (A-02) and Administrator (A-03). Each role performs only the use cases permitted to it (NF-06). |
+| Application | All use cases have a main flow and result, as well as an alternative or failure flow. This is the initial report, so they describe the current design. |
+**Requirements without a direct actor interaction.** F-004 (address and coordinate conversion) is carried out by the system inside UC-002. F-008 (notifications for status change) happens inside UC-006, UC-009 and UC-012. The non-functional requirements apply across all use cases.
 
 <details>
 <summary><strong>Checking requirement coverage</strong></summary>
