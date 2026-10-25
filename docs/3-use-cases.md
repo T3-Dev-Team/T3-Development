@@ -242,6 +242,6 @@ An external system may appear as a secondary use-case actor when it participates
 | Actor | Each primary actor matches a role in 2.3: Citizen (A-01), City Worker (A-02) and Administrator (A-03). Each role performs only the use cases permitted to it (NF-06). |
 | Application | All use cases have a main flow and result, as well as an alternative or failure flow. This is the initial report, so they describe the current design. |
 
-**Requirements without a direct actor interaction.** F-004 (address and coordinate conversion) is carried out by the system inside UC-002. F-008 (notifications for status change) happens inside UC-006, UC-009 and UC-012. The non-functional requirements apply across all use cases.
+**Requirements without a direct actor interaction.** F-004 (address and coordinate conversion) is done by the system inside UC-002. F-008 (notifications for status change) happens in UC-006, UC-009 and UC-012. The non-functional requirements apply across all use cases.
 
 
