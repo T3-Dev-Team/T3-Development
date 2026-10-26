@@ -6,7 +6,7 @@
 
 **Objective:** Show the system boundary, its relevant actors, and their main goals in **one readable UML use case diagram**. Add a focused second diagram only if the complete view cannot remain clear; a third requires a distinct project-specific reason.
 
-**Rendered use case diagram:** ![Use case diagram](./assets/diagrams/3-1-crisis-guard-system-UC.svg)  
+**Rendered use case diagram:** ![Use case diagram](./assets/diagrams/use_case_diagram.svg)  
 **Versioned PlantUML source:** [`Source puml`](./puml/3-1-crisis-guard-system-UC.puml)
 
 **Consistency check:** Show the identified roles that **interact with the application**, not stakeholders who have no interaction. Each main user goal must have an associated actor; an included use case can be reached through another use case without its own direct actor association. Use `<<include>>` and `<<extend>>` only when the relationship expresses actual behavior.
