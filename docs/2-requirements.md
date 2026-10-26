@@ -186,41 +186,41 @@ A constraint is a restriction the team must respect; an assumption is a conditio
 
 | Requirement ID | Use case or design location | Test or verification location | Status |
 | --- | --- | --- | --- |
-| F-001 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-002 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-003 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-004 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-005 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-006 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-007 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-008 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-009 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-010 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-011 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-012 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-013 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-014 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-015 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-016 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-017 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-018 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-019 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-020 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| F-021 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-01 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-02 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-03 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-04 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-05 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-06 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-07 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-08 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-09 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-10 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-11 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-12 | All use cases (once written) | Planned – testing phase | Pending – not tested yet |
-| NF-13 | Pending – use case not written yet | Planned – testing phase | Pending – not tested yet |
-| NF-14 | All use cases (once written) | Planned – testing phase | Pending – not tested yet |
+| F-001 | UC-001 | Planned – testing phase | Pending – not tested yet |
+| F-002 | UC-001, UC-014 | Planned – testing phase | Pending – not tested yet |
+| F-003 | UC-002, UC-004 | Planned – testing phase | Pending – not tested yet |
+| F-004 | UC-002 | Planned – testing phase | Pending – not tested yet |
+| F-005 | UC-003 | Planned – testing phase | Pending – not tested yet |
+| F-006 | UC-005 | Planned – testing phase | Pending – not tested yet |
+| F-007 | UC-006 | Planned – testing phase | Pending – not tested yet |
+| F-008 | UC-006, UC-009, UC-012 | Planned – testing phase | Pending – not tested yet |
+| F-009 | UC-012 | Planned – testing phase | Pending – not tested yet |
+| F-010 | UC-013 | Planned – testing phase | Pending – not tested yet |
+| F-011 | UC-008 | Planned – testing phase | Pending – not tested yet |
+| F-012 | UC-009 | Planned – testing phase | Pending – not tested yet |
+| F-013 | UC-006, UC-007, UC-009, UC-010 | Planned – testing phase | Pending – not tested yet |
+| F-014 | UC-011 | Planned – testing phase | Pending – not tested yet |
+| F-015 | UC-013 | Planned – testing phase | Pending – not tested yet |
+| F-016 | UC-008, UC-013 | Planned – testing phase | Pending – not tested yet |
+| F-017 | UC-017 | Planned – testing phase | Pending – not tested yet |
+| F-018 | UC-007 | Planned – testing phase | Pending – not tested yet |
+| F-019 | UC-015 | Planned – testing phase | Pending – not tested yet |
+| F-020 | UC-014 | Planned – testing phase | Pending – not tested yet |
+| F-021 | UC-016 | Planned – testing phase | Pending – not tested yet |
+| NF-01 | UC-002, UC-004 | Planned – testing phase | Pending – not tested yet |
+| NF-02 | UC-005 | Planned – testing phase | Pending – not tested yet |
+| NF-03 | UC-001, UC-005, UC-006 | Planned – testing phase | Pending – not tested yet |
+| NF-04 | UC-004, UC-005 | Planned – testing phase | Pending – not tested yet |
+| NF-05 | UC-001 | Planned – testing phase | Pending – not tested yet |
+| NF-06 | UC-001, UC-014 | Planned – testing phase | Pending – not tested yet |
+| NF-07 | UC-005 | Planned – testing phase | Pending – not tested yet |
+| NF-08 | UC-002, UC-006, UC-009 | Planned – testing phase | Pending – not tested yet |
+| NF-09 | UC-002 | Planned – testing phase | Pending – not tested yet |
+| NF-10 | UC-002 | Planned – testing phase | Pending – not tested yet |
+| NF-11 | UC-006, UC-009, UC-012, UC-013 | Planned – testing phase | Pending – not tested yet |
+| NF-12 | All use cases | Planned – testing phase | Pending – not tested yet |
+| NF-13 | UC-002, UC-006 | Planned – testing phase | Pending – not tested yet |
+| NF-14 | All use cases | Planned – testing phase | Pending – not tested yet |
 | NF-15 | Project-wide (repository) | Planned – testing phase | Pending – not tested yet |
 
 <details>
