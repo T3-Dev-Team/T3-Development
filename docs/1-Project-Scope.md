@@ -13,7 +13,9 @@ The system aims to improve transparency, simplify the reporting process, and mak
 The primary users of CityFix are:
 
 -**Citizens:** Report infrastructure problems, upload pictures, specify locations and track the completion of the problem.
+
 -**City Workers:** Assign issues overview, route planning, update the progress, make a proof and documentation of a repair and return an issue.
+
 -**Administrator:** Report validating, assignment of priorities and deadlines, monitoring and profile checking.
 
 The stakeholders are municipal services, local communities and external service providers that support mapping, scheduling, weather forecasts, and image processing.
