@@ -1,0 +1,65 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+skinparam rectangle {
+  BackgroundColor #B8DCE8
+  BorderColor #B8DCE8
+}
+skinparam usecase {
+  BackgroundColor White
+  BorderColor Black
+}
+
+' Actores internos
+actor "citizen" as Citizen
+actor "city worker" as CityWorker
+actor "Administrator" as Admin
+
+' Actores externos
+actor "Google lens" as GLens <<external>>
+actor "Google maps" as GMaps <<external>>
+actor "Google calendar" as GCalendar <<external>>
+actor "Google Weather" as GWeather <<external>>
+
+rectangle "Container" {
+  usecase "Issue report" as UC_IssueReport
+  usecase "Status Tracking" as UC_StatusTracking
+  usecase "Issue map" as UC_IssueMap
+  usecase "Photo evidence" as UC_Photo
+
+  usecase "Route\nassignation" as UC_Route
+  usecase "Issue\nassignation" as UC_IssueAssign
+  usecase "Status report" as UC_StatusReport
+
+  usecase "Report\nValidation" as UC_Validation
+  usecase "Monitoring" as UC_Monitoring
+  usecase "Statistics" as UC_Statistics
+}
+
+' Citizen
+Citizen -- UC_IssueReport
+Citizen -- UC_StatusTracking
+Citizen -- UC_IssueMap
+
+' City worker
+CityWorker -- UC_Route
+CityWorker -- UC_IssueAssign
+CityWorker -- UC_StatusReport
+
+' Administrator
+Admin -- UC_Validation
+Admin -- UC_Monitoring
+Admin -- UC_Statistics
+
+' Extend / Include
+UC_Photo .> UC_IssueReport : <<extend>>
+UC_Photo .> UC_StatusTracking : <<extend>>
+UC_StatusTracking .> UC_StatusReport : <<include>>
+
+' Actores externos
+UC_Photo -- GLens
+UC_IssueMap -- GMaps
+UC_Route -- GMaps
+UC_IssueAssign -- GCalendar
+UC_IssueAssign -- GWeather
+@enduml
