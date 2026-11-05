@@ -217,7 +217,7 @@ Write an ADR only for a choice whose rationale will matter after the implementat
 | Notification management | The notification mechanism informs relevant users about events related to reported issues. A `NOTIFICATION` row (associated issue, recipient and notification type) in the same transaction as the event. The reporting citizen is notified in the application after each status change, and the Administrator after an overdue issue is escalated. Applies to status updates, validation, assignment and returns. | At the final review, show where notifications are created and tests verifying that each is linked to the correct issue and recipient and appears within 10 seconds of a status change. |
 | External service integration and error handling | CityFix relies on external services for mapping, geocoding, calendar integration and weather forecasts. Google Maps API supports map display and location services, Google Calendar API handles worker scheduling, and an external weather API provides forecasts. The application handles unavailable services by displaying appropriate error messages and allowing unaffected operations to continue. | Show the API integrations and tests simulating unavailable external services. |
 
-</details>
+<details>
 | Photo privacy and processing | Uploaded photographs are processed using the Google Cloud Vision API to detect faces and vehicle licence plates before they are displayed publicly, to protect personal data and support GDPR compliance. This mechanism applies to photographs uploaded by citizens and City Workers. | Show the image-processing integration and tests verifying that faces and licence plates are blurred before photographs become public. |
 
 ##future improvments
