@@ -44,8 +44,8 @@ Explain the main architectural choices without repeating the technologies list. 
 **Objective:** Propose the principal parts of the application, assign their responsibilities, and show their dependencies without diagramming every file or class. Revise this view as the system takes shape.
 
 **CityFix component diagram:** 
-![CityFix component diagram]()  
-**PlantUML source:** [component-diagram.puml]()
+![CityFix component diagram](./assets/diagrams/component-diagram.svg)  
+**PlantUML source:** [component-diagram.puml](./puml/component-diagram.puml)
 
 | Component | Responsibility | Reason for this boundary |
 | --- | --- | --- |
