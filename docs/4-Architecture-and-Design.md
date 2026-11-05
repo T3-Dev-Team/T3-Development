@@ -44,12 +44,13 @@ Explain the main architectural choices without repeating the technologies list. 
 **Objective:** Propose the principal parts of the application, assign their responsibilities, and show their dependencies without diagramming every file or class. Revise this view as the system takes shape.
 
 **CityFix component diagram:** 
-![CityFix component diagram](./assets/diagrams/component-diagram.svg)  
-**PlantUML source:** [component-diagram.puml](./puml/component-diagram.puml)
+![CityFix component diagram]()  
+**PlantUML source:** [component-diagram.puml]()
 
 | Component | Responsibility | Reason for this boundary |
 | --- | --- | --- |
-|  |  |  |
+| Web client | Renders Django templates in the browser, shows the Google map and issue lists, and uses HTMX to update parts of the page. | User interaction is separated from issue rules and persistence. |
+| Web views | Receives HTTP requests and HTMX requests, checks the user's role, and returns full pages or HTML fragments. | HTTP-facing responsibilities are separated from business logic. |
 
 Start by drawing the boundary around the proposed system. Inside it, identify parts with distinct responsibilities; put a planned application database inside this boundary and third-party services outside it. Label important connections with what crosses them. A logical component may be a module within one backend application: a separate box does not imply a separately deployed service. As you implement, update the diagram when responsibilities or connections change. In the final version, readers should be able to relate its parts to the code. The deployment diagram answers where those parts actually run.
 
