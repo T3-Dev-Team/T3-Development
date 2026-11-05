@@ -1,0 +1,48 @@
+@startuml
+left to right direction
+
+skinparam ComponentBackgroundColor #eaf0Fb
+skinparam ComponentBorderColor #6b8bc9
+skinparam ComponentBackgroundColor<<external>> #efdaee
+skinparam ComponentBorderColor<<external>> #999999
+skinparam DatabaseBackgroundColor #fff4C2
+skinparam ranksep 90
+skinparam nodesep 50
+
+rectangle "CityFix System" {
+  component "Web client\n(Django templates + HTMX)" as web
+  rectangle "Django application" {
+    component "Web views" as views
+    component "User service" as users
+    component "Issue service" as issues
+    component "Assignment service" as assignments
+    component "Notification service" as notifications
+    component "Calendar sync" as cal
+  }
+  database "PostgreSQL" as db
+}
+component "Google Maps JavaScript API" as maps <<external>>
+component "Google OAuth / OIDC" as oauth <<external>>
+component "Google Calendar API" as gcal <<external>>
+component "Cloudinary" as cloudinary <<external>>
+
+web --> views : HTTP requests / HTML pages and HTMX fragments
+web --> maps : map display, location picking
+web --> cloudinary : load issue photos
+views --> users : sign-in, roles, account deletion
+users --> oauth : verify Google identity
+users --> issues : unlink reports on account deletion
+views --> issues : report, comment, change status
+views --> assignments : assign, return assignment
+views --> notifications : list and mark as read
+assignments --> issues : update issue status
+assignments --> cal : schedule deadline
+assignments --> notifications : notify worker
+issues --> notifications : notify reporter of status change
+issues --> cloudinary : upload issue photos
+cal --> gcal : create events, invite worker
+users --> db
+issues --> db
+assignments --> db
+notifications --> db
+@enduml
