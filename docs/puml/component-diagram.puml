@@ -34,7 +34,7 @@ users --> oauth : verify Google identity
 users --> issues : unlink reports on account deletion
 views --> issues : report, comment, change status
 views --> assignments : assign, return assignment
-views --> notifications : list and mark as read
+views --> notifications : list notifications
 assignments --> issues : update issue status
 assignments --> cal : schedule deadline
 assignments --> notifications : notify worker
