@@ -211,23 +211,11 @@ Write an ADR only for a choice whose rationale will matter after the implementat
 
 | Concern | Mechanism and where it applies | Evidence in the final implementation |
 | --- | --- | --- |
-|  |  |  |
-
-<details>
-<summary><strong>Describing a shared rule through its implementation</strong></summary>
-
-**Example — Crisis Guard:**
-
-| Concern | Mechanism and where it applies | Code or configuration reference |
-| --- | --- | --- |
-| System rule: authorization of report moderation | The backend checks the moderator's permissions before approving or rejecting a report; a login button in the client is insufficient protection. | At the final review, show the backend permission check and a test of unauthorized access. |
-| Shared implementation rule: location validation | The report-submission boundary rejects missing or invalid coordinates before saving a report. | At the final review, show the validation rule and a test with invalid coordinates. |
-
-**Analysis of the example:** The first row describes protection across the system boundary; the second describes a rule shared by report-submission paths. Choose concerns that actually affect your project.
-
-Patterns such as Dependency Injection or Repository belong here only when the code uses them and they explain a shared design rule. “The system uses authentication” alone does not tell a reader where the check occurs or what it protects. Security, logging, and error handling need not each receive a subsection by default.
-
-</details>
+| Authentication and authorization | Users sign in only through Google (OAuth 2.0/OpenID Connect) and are identified by `USER.google_sub` and `USER.email`; no password is stored. The system restricts the application's functionalities according to the user and their role: the backend checks `USER.role` (Citizen, City Worker, Administrator) and `USER.is_active`, and checks ownership of the data (a citizen sees their own reports, a worker only issues assigned to them). This applies to the user management, issue management and assignment functionalities. | At the final review, show the sign-in callback, the permission check used by the backend endpoints, and a test that attempts every restricted action with each role and is denied when unauthorized. |
+| Issue status management and history | Issue statuses change only through one backend operation that checks the actor's role, requires an "after" photo before "Resolved", and records the change. Whenever an issue status changes, the previous status, new status, user responsible, date and optional note are stored in `STATUS_HISTORY`. This provides traceability. | Show a status update and the corresponding creation of STATUS_HISTORY records. |
+| Data validation and integrity | The backend validates input before storing it: a report needs a category and a valid location (latitude & longitude or address), uploaded files must be accepted image files, and an assignment needs a priority, a deadline and a worker from the department responsible for the category. Invalid data is rejected and nothing is saved.  | Show backend validation rules, database constraints and tests using invalid or incomplete data. |
+| Notification management | The notification mechanism informs relevant users about events related to reported issues. A `NOTIFICATION` row (associated issue, recipient and notification type) is created in the same transaction as the event. The reporting citizen is notified in the application after each status change, and the Administrator after an overdue issue is escalated. Applies to status updates, validation, assignment and returns. | At the final review, show where notifications are created and tests verifying that each is linked to the correct issue and recipient and appears within 10 seconds of a status change. |
+| External service integration and error handling | CityFix relies on external services for mapping, geocoding, calendar integration and weather forecasts. Google Maps API supports map display and location services, Google Calendar API handles worker scheduling, and an external weather API provides forecasts. The application handles unavailable services by displaying appropriate error messages and allowing unaffected operations to continue. | Show the API integrations and tests simulating unavailable external services. |
 
 ## 4.7 Architectural Risks and Technical Debt
 
