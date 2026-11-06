@@ -162,23 +162,50 @@ Start by drawing the boundary around the proposed system. Inside it, identify pa
 
 **Objective:** Preserve the reasons for consequential architectural choices so a future developer can understand what was decided, what alternative was considered, and which trade-off the team accepted.
 
-**Decision index:** [List important architectural decisions in one place. A short row is sufficient for a straightforward decision.]
+**Decision index:**
 
 | ID | Date | Decision | Alternative considered | Rationale and trade-off | Status |
 | --- | --- | --- | --- | --- | --- |
-|  |  |  |  |  |  |
+| ADR-01 | 05.11.2026 | One Django backend, split into apps, deployed as a single service | Several separately deployed services | With six people and one semester, one backend is something we can actually build, deploy and explain. The downside is that if the backend goes down, everything goes down with it. | Accepted |
+| ADR-02 | 16.10.2026 | Django templates with HTMX, and the Google Maps JavaScript API for the map | A React or Angular frontend talking to a REST API | We keep one codebase and do all permission checks on the server. The map still needs some plain JavaScript, since HTMX alone is not enough there. | Accepted |
+| ADR-03 | 17.10.2026 | PostgreSQL as our only database | MongoDB, SQLite | Our data is very connected (users, issues, assignments, status history), and a status change has to be saved together with its history and notification. A relational database fits that well. The cost is writing migrations whenever the schema changes. | Accepted |
+| ADR-04 | 16.10.2026 | Sign-in only with Google. Worker and admin accounts are created in advance by an Administrator using the person's email | Our own username/password login, or several sign-in providers | We store no passwords and skip registration and password reset entirely (C-01, NF-05). Anyone without a Google account can't use the app, and a worker who signs in with a different email ends up as a regular Citizen. | Accepted |
+| ADR-05 | 05.11.2026 | Photos go to Cloudinary, and the database only keeps the link | Render's local disk, or storing images in PostgreSQL | Files on Render's disk can disappear on redeploy, and images would bloat the database. We now rely on one more external service, and if saving a report fails after the upload, an unused photo stays in Cloudinary. | Accepted |
+| ADR-06 | 05.11.2026 | Notifications only inside the app, saved together with the status change | E-mail or push notifications | No extra service, API key or background job to set up, and a notification can't get lost separately from the change it describes. Users only see notifications when they open the app. | Accepted |
+| ADR-07 | 05.11.2026 | Hosting on Render: one web service and one managed PostgreSQL database | Our own virtual server, Railway or Heroku | Render gives us HTTPS, deploys from GitHub and a managed database, so nobody on the team has to run a server. There is only one instance, and on the free plan the app goes to sleep when idle, so the first request after a break is slow. | Accepted |
+| ADR-08 | 20.10.2026 | Deleting an account removes the citizen's personal data, but their reports stay, without a link to them | Deleting the reports too, or only deactivating the account | This meets the GDPR right to erasure without losing issues the city may still be working on. It means a report can now exist without an author. | Accepted |
 
 **Detailed ADR, when the decision needs more explanation:**
 
-### ADR-[ID]: [Decision title]
+### ADR-01: One Django backend instead of separate services
 
 | Field | Record of the decision |
 | --- | --- |
-| Context and goal | [Which architectural problem made this decision necessary?] |
-| Decision criteria | [What actually mattered to the team?] |
-| Alternatives considered | [Realistic options the team weighed, briefly.] |
-| Decision and rationale | [Chosen option, why it won, and what is given up.] |
-| Status | [Proposed, accepted, or superseded; link to the replacement when applicable.] |
+| Context and goal | CityFix has to handle sign-in and roles, reporting issues with photos and a map, validation, assigning work to City Workers, status updates and notifications. We need to build all of this, deploy it publicly and be able to explain it, within one semester. |
+| Decision criteria | Can we realistically build and deploy it in time? Is it clear where each part of the logic lives? Do changes that touch several areas, such as a status update that also writes history and a notification, stay consistent? Can we host it for free or close to it? |
+| Alternatives considered | **One backend split into apps:** accounts, issues, assignments and notifications are separate Django apps, but they run as one program with one database. **Separate services:** each part could run and scale on its own, but every service needs its own deployment, the services have to talk to each other over HTTP, and we would have to deal with one being down while the others are up. |
+| Decision and rationale | We went with one Django project split into apps, running as one service on Render. Because the apps call each other directly and share one database transaction, it is easy to make sure every status change also creates a history entry and a notification (see 4.6). What we give up is isolation: a bug in one app or a broken deploy takes the whole application down. The apps are the components shown in 4.2, not separate services. |
+| Status | Accepted. |
+
+### ADR-02: Server-rendered pages with HTMX instead of a single-page app
+
+| Field | Record of the decision |
+| --- | --- |
+| Context and goal | Each of the three roles has its own screens: citizens report and follow issues, City Workers update the issues assigned to them, and Administrators validate and assign reports. Every role must only see what it is allowed to (NF-06), and everything has to work on a phone (NF-12). |
+| Decision criteria | We want access rules and validation written in one place, we want to work mostly in Python and Django, some parts of the page (filters, status changes, notifications) should update without a full reload, and the map needs a JavaScript library either way. |
+| Alternatives considered | **React or Angular with a REST API:** a smoother interface, but it means a second codebase, a separate build and deploy, an API endpoint for every screen, and permission checks on both sides. **Django templates with HTMX:** the server sends ready HTML, and HTMX swaps out parts of the page when needed, so we only write JavaScript where we really need it. |
+| Decision and rationale | We chose Django templates with HTMX, plus the Google Maps JavaScript API on the map pages. Django checks the user's role before it builds a page, so the browser never gets data the user isn't allowed to see (NF-06, NF-07). The catch is the map: markers and filters need hand-written JavaScript that gets the report data from Django as JSON. We also don't end up with a general API that a mobile app could use later. |
+| Status | Accepted. |
+
+### ADR-08: Deleting an account keeps the reports but removes the link to the user
+
+| Field | Record of the decision |
+| --- | --- |
+| Context and goal | Under GDPR, a citizen can ask us to delete their personal data (F-021, C-07). Their reports, though, are about real problems in the street, and a City Worker may already be fixing them. |
+| Decision criteria | Nothing that identifies the citizen may remain, the city's work on open issues shouldn't be interrupted, and the rule should be simple to build and test. |
+| Alternatives considered | **Delete the reports too:** the simplest option for privacy, but open repairs would just vanish from workers' lists. **Only deactivate the account:** easy to undo, but the name, email and Google ID would still be stored, so nothing is really deleted. **Delete the user, keep the reports without an author:** the reports stay, and nobody can tell who sent them. |
+| Decision and rationale | We delete the user and their notifications, and clear the author field on their reports and photos (`ISSUE.reporter_id` and `ISSUE_PHOTO.uploaded_by_id`, using `on_delete=SET_NULL` in Django). The public map never showed who reported an issue (NF-07), so nothing changes there. This does mean both fields have to allow empty values, so in the ER diagram a report has zero or one reporter instead of exactly one. Nobody gets notified about those reports anymore, and the deletion can't be undone. If the same person signs in again later, they simply get a new, empty Citizen account. |
+| Status | Accepted. |
 
 Write an ADR only for a choice whose rationale will matter after the implementation changes. A significant change of decision can be recorded as a new ADR that supersedes the old one; routine tool choices do not need detailed records. Changes to agreed scope belong with requirements and their change history; feedback on a task stays with its issue.
 
