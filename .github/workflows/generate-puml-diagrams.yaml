@@ -41,7 +41,7 @@ permissions:
 ## @section concurrency Concurrency
 ## Ensures sequential execution per branch ref to avoid git push collisions.
 concurrency:
-  group: plantuml-${{ github.ref }}
+  group: plantuml-${{ github.head_ref || github.ref }}
   cancel-in-progress: false
 
 # ==============================================================================
@@ -55,7 +55,10 @@ jobs:
     timeout-minutes: 10
 
     # Publish only from main, even when started manually via workflow_dispatch.
-    if: github.ref == 'refs/heads/main'
+    if: >-
+      github.ref == 'refs/heads/main' && 
+      (github.event_name != 'pull_request' || 
+      github.event.pull_request.head.repo.full_name == github.repository)
 
     env:
       PLANTUML_VERSION: "1.2025.4"
@@ -67,6 +70,8 @@ jobs:
       # Step 1: Check out the repository source tree
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       # Step 2: Pin the Java runtime so builds do not change with runner image updates
       - name: Set up Java
