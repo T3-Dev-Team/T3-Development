@@ -129,9 +129,10 @@ Start by drawing the boundary around the proposed system. Inside it, identify pa
 
 **Objective:** Show the order of messages for one representative scenario and the responses to a meaningful alternative.
 
-**Scenario:** [Name the interaction; add the UC ID if one exists.]  
-**Sequence diagram:** [Embed a readable UML sequence diagram.]  
-**PlantUML source:** [Link to the matching versioned `.puml` file.]
+**Scenario:** Submitting a report with location selection, validation and duplicate check (UC-002, UC-003). The interaction also shows what happens when the address lookup is unavailable (NF-09), required data is missing, the citizen supports an existing report instead of creating a new one, or saving fails.  
+**Sequence diagram:**  
+![CityFix report submission sequence diagram](./assets/sequence-report-submission.png)  
+**PlantUML source:** [sequence-report-submission.puml](./puml/sequence-report-submission.puml)
 
 <details>
 <summary><strong>Location selection, validation, and report submission</strong></summary>
@@ -149,9 +150,10 @@ Start by drawing the boundary around the proposed system. Inside it, identify pa
 
 **Objective:** Show the meaningful states of one domain object or an explicitly managed system mode, and the events or conditions that change it.
 
-**State owner and reason for choosing it:** [Name the object or system mode, how its state is recognized, and why the transitions matter.]  
-**State diagram:** [Embed a readable UML state diagram.]  
-**PlantUML source:** [Link to the matching versioned `.puml` file.]
+**State owner and reason for choosing it:** The Issue (report). Its current state is stored in the `status` field of the ISSUE table, and every change is recorded in STATUS_HISTORY (old status, new status, who changed it, note). The transitions matter because they decide who can act next: the Administrator verifies, rejects or assigns a report, and the City Worker repairs or returns it. Some transitions have conditions, such as a reason for a rejection, an explanation when a worker returns an issue, and an "after" photo before an issue can be resolved. Every status change also creates an in-app notification for the citizen who reported the issue (F-008).  
+**State diagram:**  
+![CityFix issue lifecycle state diagram](./assets/state-issue-lifecycle.png)  
+**PlantUML source:** [state-issue-lifecycle.puml](./puml/state-issue-lifecycle.puml)
 
 <details>
 <summary><strong>Operating modes and service availability</strong></summary>
