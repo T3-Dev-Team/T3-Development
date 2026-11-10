@@ -257,17 +257,35 @@ Write an ADR only for a choice whose rationale will matter after the implementat
 
 **Objective:** State real technical or domain risks and consciously accepted design compromises, their consequences, and what the team will do about them.
 
-**Technical risks and debt**
+**Architectural Risks**
 
 | Risk or compromise | Consequence | Current treatment |
 | --- | --- | --- |
-|  |  |  |
+| One Django backend handles all application functionality and is deployed as a single service | If the backend or hosting service becomes unavailable, citizens, workers, and administrators temporarily lose access to the application. | Accepted within the course project. The application uses one backend service on Render. |
+| The application depends on Google Maps API for map functionality | If Google Maps is unavailable or the API quota is exceeded, users may be unable to view the map or use geographical functionality. | The application should handle map-loading errors. Report information remains stored in PostgreSQL independently of the map service. |
+| Uploaded photographs are stored in Cloudinary rather than directly in PostgreSQL | If Cloudinary becomes unavailable, users may be unable to upload or view photographs. If a report fails to save after its photograph is uploaded, an unused image may remain in Cloudinary. | PostgreSQL stores image links, while Cloudinary stores the actual files. Upload and database errors should be handled separately. |
+| Google authentication is the only supported sign-in method | Users without a Google account cannot access the application. If a worker signs in with an email different from the one registered by the administrator, the system may not recognize the account as a worker. | Accepted as an architectural compromise. Administrators create worker and administrator accounts in advance using their Google email addresses. |
+| The application uses one PostgreSQL database shared by all Django apps | Database failure affects all application functionality. Incorrect database changes or migrations may also affect multiple modules. | PostgreSQL is used as the central database. Database migrations and backups should be handled carefully. |
+| The application is hosted as one web service on Render | A deployment problem affects the entire application. On the free plan, the application may sleep after inactivity, resulting in slower initial requests. | Accepted within the course project. Render provides managed hosting, HTTPS, and database integration without requiring the team to manage its own server. |
+
+**Technical Debts**
+
+| Technical Debt | Consequence | Planned treatment |
+| --- | --- | --- |
+| The initial duplicate-detection mechanism may use simplified geographical distance comparisons | It may incorrectly identify separate problems as duplicates or fail to recognize reports about the same problem. | Improve duplicate detection using PostgreSQL spatial functionality, issue categories, report status, and configurable distance thresholds. |
+| Image processing may initially be limited to basic file validation and upload | Large photographs may consume unnecessary storage and bandwidth, and sensitive information in photographs may remain visible. | Introduce automatic image compression, resizing, and privacy processing, such as blurring faces and license plates. |
+| Automated test coverage may be limited during initial development | Bugs in authentication, permissions, report management, and status transitions may remain undetected. | Gradually introduce unit, integration, and end-to-end tests for important application workflows. |
+| The application uses server-rendered Django templates with HTMX rather than a general-purpose REST API | Reusing the backend for a future mobile application or independent frontend would require additional development. | If the project expands, introduce REST API endpoints for functionality that needs to be shared with other clients. |
+| External service integrations may initially have basic error handling | Temporary failures of Google Maps or Cloudinary may result in confusing error messages or incomplete operations. | Introduce consistent error handling, logging, retry mechanisms where appropriate, and clearer user feedback. |
 
 **Business or domain risks, if significant**
 
-| Risk | Consequence | Current treatment |
+| Domain Risk | Consequence | Current treatment |
 | --- | --- | --- |
-|  |  |  |
+| Citizens may submit false or misleading infrastructure reports | Administrators and City Workers may waste time investigating problems that do not exist. | Administrators review and validate submitted reports before assigning them to City Workers. |
+| Citizens may select an incorrect issue category | Reports may be assigned to an inappropriate department or worker, delaying repairs. | Administrators verify report information and can return incorrectly assigned issues with an explanation. |
+| Duplicate reports may be submitted by multiple citizens | Administrators may receive several reports about the same infrastructure problem, creating unnecessary work. | The application identifies potential nearby unresolved reports so administrators can review possible duplicates. |
+| Citizens may mistake an unverified report for an officially confirmed problem | Users may believe that the municipality has confirmed or approved an issue when it has not. | The application displays report statuses so users can distinguish submitted reports from verified and resolved issues. |
 
 <details>
 <summary><strong>Identifying a limitation without inventing production infrastructure</strong></summary>
