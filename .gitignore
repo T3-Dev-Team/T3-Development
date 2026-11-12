@@ -1,23 +1,5 @@
-# Dependencies
-node_modules/
-bin/
-obj/
+venv/
+db.sqlite3
 __pycache__/
 *.pyc
-
-# Environment Secrets
-.env
-.env.local
-
-# Build outputs
-dist/
-build/
-coverage/
-*.log
-
-# Windows / IDE Artifacts
-.vscode/
-.idea/
-Thumbs.db
-Desktop.ini
-.DS_Store
+.vs/
