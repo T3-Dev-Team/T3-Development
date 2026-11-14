@@ -47,8 +47,8 @@ class Issue(models.Model):
         on_delete=models.SET_NULL) # if the district is deleted, we set the district to null
     duplicate_of = models.ForeignKey("self",
         null=True, blank=True,
-        on_delete=models.SET_NULL,
-        related_name="duplicates") # if the duplicate issue is deleted, we set the duplicate_of    
+        on_delete=models.SET_NULL, # if the duplicate issue is deleted, we set the duplicate_of to null  
+        related_name="duplicates") 
 
     description = models.TextField()
     latitude = models.FloatField()
