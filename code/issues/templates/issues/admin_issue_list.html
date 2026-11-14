@@ -1,0 +1,8 @@
+<h1>Issues waiting for assignments</h1>
+<ul>
+  {% for issue in issues %}
+    <li>{{ issue.id }} - {{ issue.category }} — {{ issue.description }} - {{ issue.district|default:"Not specified" }} - {{ issue.created_at }}</li>
+  {% empty %}
+    <li>No issues yet.</li>
+  {% endfor %}
+</ul>
