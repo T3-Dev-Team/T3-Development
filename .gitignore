@@ -21,3 +21,4 @@ coverage/
 Thumbs.db
 Desktop.ini
 .DS_Store
+db.sqlite3
