@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Notifications</h1>
 {% if notifications %}
-<form method="post" action="{% url 'notifications_read_all' %}">
+<form method="post" action="{% url 'issues:notifications_read_all' %}">
   {% csrf_token %}
   <button type="submit" class="btn secondary">Mark all as read</button>
 </form>
@@ -18,7 +18,7 @@
     <p>{{ n.issue.category }} · {{ n.issue.address|default:"No address saved" }}</p>
     <p class="hint">{{ n.created_at|date:"d.m.Y. H:i" }}</p>
     {% if not n.is_read %}
-    <form method="post" action="{% url 'notification_read' n.id %}">
+    <form method="post" action="{% url 'issues:notification_read' n.id %}">
       {% csrf_token %}
       <button type="submit" class="linklike">Mark as read</button>
     </form>

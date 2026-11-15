@@ -27,7 +27,7 @@ def report_create(request):
                 form.add_error(None, "Photo upload failed. Please try again.")
             else:
                 messages.success(request, "Your report was submitted.")
-                return redirect("my_reports")
+                return redirect("issues:my_reports")
     else:
         form = ReportForm()
     return render(request, "issues/report_form.html", {
@@ -62,11 +62,11 @@ def notification_read(request, pk):
     n = get_object_or_404(Notification, pk=pk, recipient=request.user)
     n.is_read = True
     n.save(update_fields=["is_read"])
-    return redirect("notifications")
+    return redirect("issues:notifications")
 
 
 @login_required
 @require_POST
 def notifications_read_all(request):
     Notification.objects.filter(recipient=request.user, is_read=False).update(is_read=True)
-    return redirect("notifications")
+    return redirect("issues:notifications")

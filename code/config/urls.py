@@ -26,6 +26,4 @@ urlpatterns = [
     path("account/delete/", user_views.delete_account, name="delete_account"),
     path("", include("issues.urls")),
 
-
-    path("", include("issues.urls")),
 ]

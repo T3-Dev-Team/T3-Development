@@ -28,7 +28,7 @@ class ReportCreateTests(TestCase):
         self.client.force_login(self.user)
         self.category = Category.objects.create(
             name="Pothole", service=CityService.objects.create(name="Roads"))
-        self.url = reverse("report_create")
+        self.url = reverse("issues:report_create")
 
     def data(self, **overrides):
         d = {"category": self.category.id, "description": "Big hole",
@@ -42,7 +42,7 @@ class ReportCreateTests(TestCase):
     @patch("issues.services.cloudinary.uploader.upload", return_value=FAKE_UPLOAD)
     def test_valid_report_is_saved_with_photo_url(self, upload):
         resp = self.client.post(self.url, {**self.data(), "photos": self.photo()})
-        self.assertRedirects(resp, reverse("my_reports"))
+        self.assertRedirects(resp, reverse("issues:my_reports"))
         issue = Issue.objects.get()
         self.assertEqual(issue.status, Issue.Status.REPORTED)
         self.assertEqual(issue.reporter, self.user)
@@ -83,7 +83,7 @@ class MyReportsTests(TestCase):
             Issue.objects.create(reporter=u, category=cat, description=desc,
                                  latitude=1, longitude=1, address=desc + " street")
         self.client.force_login(me)
-        resp = self.client.get(reverse("my_reports"))
+        resp = self.client.get(reverse("issues:my_reports"))
         self.assertContains(resp, "mine street")
         self.assertNotContains(resp, "theirs street")
 
@@ -112,15 +112,15 @@ class NotificationTests(TestCase):
     def test_navbar_counter_shows_unread(self):
         notify(self.issue, self.user, "assigned")
         self.client.force_login(self.user)
-        resp = self.client.get(reverse("notifications"))
+        resp = self.client.get(reverse("issues:notifications"))
         self.assertEqual(resp.context["unread_count"], 1)
 
     def test_mark_read_works_for_owner_only(self):
         n = notify(self.issue, self.user, "assigned")
         self.client.force_login(self.other)
-        self.assertEqual(self.client.post(reverse("notification_read", args=[n.id])).status_code, 404)
+        self.assertEqual(self.client.post(reverse("issues:notification_read", args=[n.id])).status_code, 404)
         self.client.force_login(self.user)
-        self.client.post(reverse("notification_read", args=[n.id]))
+        self.client.post(reverse("issues:notification_read", args=[n.id]))
         n.refresh_from_db()
         self.assertTrue(n.is_read)
 
@@ -128,5 +128,5 @@ class NotificationTests(TestCase):
         notify(self.issue, self.user, "assigned")
         notify(self.issue, self.user, "returned")
         self.client.force_login(self.user)
-        self.client.post(reverse("notifications_read_all"))
+        self.client.post(reverse("issues:notifications_read_all"))
         self.assertFalse(Notification.objects.filter(recipient=self.user, is_read=False).exists())

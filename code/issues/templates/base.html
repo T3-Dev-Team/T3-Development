@@ -17,18 +17,18 @@
   <a class="brand" href="/">CityFix</a>
   <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav">Menu</button>
   <nav id="nav" class="nav">
-    {% url 'map' as u %}{% if u %}<a href="{{ u }}">Map</a>{% endif %}
+    {% url 'issues:map' as u %}{% if u %}<a href="{{ u }}">Map</a>{% endif %}
     {% if user.is_authenticated %}
       {% if user.role == "citizen" %}
-        {% url 'report_create' as u %}{% if u %}<a href="{{ u }}">Report an issue</a>{% endif %}
-        {% url 'my_reports' as u %}{% if u %}<a href="{{ u }}">My reports</a>{% endif %}
+        {% url 'issues:report_create' as u %}{% if u %}<a href="{{ u }}">Report an issue</a>{% endif %}
+        {% url 'issues:my_reports' as u %}{% if u %}<a href="{{ u }}">My reports</a>{% endif %}
       {% elif user.role == "worker" %}
-        {% url 'assigned_issues' as u %}{% if u %}<a href="{{ u }}">My tasks</a>{% endif %}
+        {% url 'issues:assigned_issues' as u %}{% if u %}<a href="{{ u }}">My tasks</a>{% endif %}
       {% elif user.role == "admin" %}
-        {% url 'admin_reports' as u %}{% if u %}<a href="{{ u }}">Reports</a>{% endif %}
-        {% url 'statistics' as u %}{% if u %}<a href="{{ u }}">Statistics</a>{% endif %}
+        {% url 'issues:admin_reports' as u %}{% if u %}<a href="{{ u }}">Reports</a>{% endif %}
+        {% url 'issues:statistics' as u %}{% if u %}<a href="{{ u }}">Statistics</a>{% endif %}
       {% endif %}
-      {% url 'notifications' as u %}{% if u %}<a href="{{ u }}">Notifications{% if unread_count %} <span class="count">{{ unread_count }}</span>{% endif %}</a>{% endif %}
+      {% url 'issues:notifications' as u %}{% if u %}<a href="{{ u }}">Notifications{% if unread_count %} <span class="count">{{ unread_count }}</span>{% endif %}</a>{% endif %}
       {% url 'account_logout' as u %}{% if not u %}{% url 'logout' as u %}{% endif %}{% if u %}<form method="post" action="{{ u }}">{% csrf_token %}<button type="submit" class="linklike">Sign out</button></form>{% endif %}
     {% else %}
       <form method="post" action="{% provider_login_url 'google' %}">{% csrf_token %}<button type="submit" class="btn small">Sign in with Google</button></form>
