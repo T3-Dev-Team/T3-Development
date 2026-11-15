@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Report an issue · CityFix{% endblock %}
+{% block content %}
+<h1>Report an issue</h1>
+{% if form.errors %}<div class="alert error" role="alert">Some information is missing or invalid. Your entries were kept, so check the form and submit again.{{ form.errors }}</div>{% endif %}
+<form method="post" enctype="multipart/form-data" id="report-form" class="card"
+      data-center-lat="{{ map_center_lat|default:'' }}" data-center-lng="{{ map_center_lng|default:'' }}">
+  {% csrf_token %}
+  <label for="category">Category</label>
+  <select id="category" name="category" required>
+    <option value="">Choose a category</option>
+    {% for c in categories %}<option value="{{ c.id }}"{% if request.POST.category == c.id|stringformat:"s" %} selected{% endif %}>{{ c.name }}</option>{% endfor %}
+  </select>
+
+  <label for="description">Description</label>
+  <textarea id="description" name="description" required placeholder="What is the problem and where exactly?">{{ request.POST.description }}</textarea>
+
+  <label for="photos">Photos</label>
+  <input type="file" id="photos" name="photos" accept="image/*" multiple>
+  <div id="photo-preview" class="previews"></div>
+
+  <fieldset>
+    <legend>Location</legend>
+    <button type="button" id="use-location" class="btn secondary">Use my current location</button>
+    <label for="address-box">Or type an address</label>
+    <div id="address-box"></div>
+    <p class="hint">Or tap the map to place a pin. You can drag the pin to adjust it.</p>
+    <div id="pick-map" class="map" role="application" aria-label="Map for choosing the location"></div>
+    <p id="location-status" class="hint" aria-live="polite">No location chosen yet.</p>
+    <input type="hidden" name="latitude" id="latitude" value="{{ request.POST.latitude }}">
+    <input type="hidden" name="longitude" id="longitude" value="{{ request.POST.longitude }}">
+    <input type="hidden" name="address" id="address" value="{{ request.POST.address }}">
+  </fieldset>
+
+  <button type="submit" class="btn">Submit report</button>
+</form>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'issues/js/report_form.js' %}"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places,marker&loading=async&callback=initReportMap"></script>
+{% endblock %}

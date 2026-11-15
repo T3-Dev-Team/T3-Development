@@ -1,0 +1,51 @@
+:root{--ink:#1f2630;--muted:#566070;--paper:#f4f6f7;--card:#fff;--line:#d3d9e0;--blue:#0b5cab;--blue-d:#094a8a;--road:#f2c230;--err:#a3231b;--err-bg:#fdecea;--ok-bg:#e6f4ea}
+*{box-sizing:border-box}
+html{font-size:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1{font-size:1.6rem;line-height:1.2;margin:1.2rem 0 .8rem}
+a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--road);outline-offset:2px}
+.skip{position:absolute;left:-999px}.skip:focus{left:8px;top:8px;background:#fff;padding:.5rem;z-index:10}
+/* header: asphalt bar with a dashed road-marking line */
+.topbar{background:var(--ink);color:#fff;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;padding:.6rem 1rem;border-bottom:4px dashed var(--road)}
+.brand{color:#fff;font-weight:700;font-size:1.25rem;text-decoration:none}
+.menu-btn{background:none;color:#fff;border:1px solid #fff;border-radius:6px;padding:.4rem .8rem;min-height:44px;font:inherit}
+.nav{display:none;width:100%;flex-direction:column;gap:.2rem;padding-top:.6rem}
+.nav.open{display:flex}
+.nav a,.linklike{color:#fff;text-decoration:none;padding:.65rem .2rem;min-height:44px;display:flex;align-items:center;gap:.4rem}
+.nav a:hover,.linklike:hover{text-decoration:underline}
+.nav .btn{color:#fff}
+.linklike{background:none;border:0;font:inherit;cursor:pointer}
+.count{background:var(--road);color:var(--ink);border-radius:999px;padding:0 .5rem;font-size:.85rem;font-weight:700}
+.container{max-width:960px;margin:0 auto;padding:0 1rem 3rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:1rem;margin-bottom:1rem}
+label{display:block;font-weight:600;margin:.9rem 0 .25rem}
+input,select,textarea{width:100%;font:inherit;padding:.65rem;min-height:44px;border:1px solid #8a94a3;border-radius:6px;background:#fff;color:var(--ink)}
+textarea{min-height:6rem}
+fieldset{border:1px solid var(--line);border-radius:8px;margin:1rem 0;padding:.5rem 1rem 1rem}
+legend{font-weight:700;padding:0 .4rem}
+.btn{display:inline-flex;align-items:center;justify-content:center;background:var(--blue);color:#fff;border:0;border-radius:6px;padding:.7rem 1.1rem;min-height:44px;font:inherit;font-weight:600;text-decoration:none;cursor:pointer}
+.btn:hover{background:var(--blue-d)}
+.btn.secondary{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn.small{min-height:40px;padding:.4rem .8rem}
+.hint{color:var(--muted);margin:.4rem 0}.hint.error{color:var(--err);font-weight:600}
+.alert{padding:.7rem 1rem;border-radius:6px;background:var(--ok-bg);list-style:none}
+.alert.error{background:var(--err-bg);color:var(--err)}
+.messages{padding:0;margin:1rem 0}
+.map{width:100%;height:320px;border:1px solid var(--line);border-radius:8px;margin:.6rem 0}
+.map.tall{height:60vh;min-height:360px}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:0 .8rem;align-items:end}
+.filters .btn{grid-column:1/-1;margin-top:.8rem}
+.previews{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}.previews img{width:84px;height:84px;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.reports{list-style:none;padding:0;margin:0}
+.report-head{display:flex;justify-content:space-between;gap:.6rem;align-items:center}
+.badge{display:inline-block;padding:.1rem .6rem;border-radius:999px;font-size:.875rem;font-weight:600;background:#e4e8ee;color:var(--ink)}
+.status-reported{background:#e4e8ee}.status-verified{background:#d6e8fb;color:#0a3d75}.status-assigned{background:#fdeeb7;color:#5c4500}
+.status-in_repair{background:#fbd9b8;color:#6b3300}.status-resolved{background:#cdeed6;color:#0f4d24}.status-rejected,.status-duplicate{background:#f0d4d1;color:#7a1b15}
+@media (min-width:720px){
+  .menu-btn{display:none}
+  .nav{display:flex;flex-direction:row;width:auto;align-items:center;gap:.6rem;padding:0}
+  .filters{grid-template-columns:repeat(4,1fr) auto}.filters .btn{grid-column:auto;margin-top:0}
+  .map{height:420px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
