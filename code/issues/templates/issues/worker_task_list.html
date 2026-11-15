@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}My Tasks · CityFix{% endblock %}
+{% block content %}
+   <h1>My Tasks</h1>
+    <ul>
+    {% for assignment in assignments %}
+        <li>{{ assignment.issue.id }} - {{ assignment.issue.category }} — {{ assignment.issue.description }} - {{ assignment.issue.get_status_display }} - {{ assignment.deadline }} 
+            <form method="post" action="{% url 'issues:update_task_status' assignment.pk %}">
+                {% csrf_token %}
+                <button type="submit">
+                    {% if assignment.issue.status == "assigned" %}Start repair{% else %}Mark resolved{% endif %}
+                </button>
+            </form>
+        </li>
+    {% empty %}
+        <li>No tasks assigned.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

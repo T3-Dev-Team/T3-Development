@@ -1,7 +1,7 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 COPY . .
 RUN npm run build --if-present
 
@@ -10,7 +10,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=10000
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm install --omit=dev
 COPY --from=builder /app/src ./src
 EXPOSE 10000
 CMD ["node", "src/app.js"]

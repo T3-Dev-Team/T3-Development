@@ -1,11 +1,17 @@
 from django import forms
+from django.contrib.auth import get_user_model
 
-from .models import Category, Issue
+from users.models import Role
+
+from .models import Assignment, Category, Issue
+
+User = get_user_model()
 
 MAX_PHOTOS = 5
 MAX_PHOTO_SIZE = 10 * 1024 * 1024  # 10 MB
 
 
+# citizen (D3)
 class ReportForm(forms.ModelForm):
     class Meta:
         model = Issue
@@ -41,3 +47,15 @@ class ReportForm(forms.ModelForm):
                 self.add_error(None, f"{p.name} is larger than 10 MB.")
         cleaned["photos"] = photos
         return cleaned
+
+
+# admin/worker (D2)
+class AssignmentForm(forms.ModelForm):
+    worker = forms.ModelChoiceField(queryset=User.objects.filter(role=Role.WORKER))
+
+    class Meta:
+        model = Assignment
+        fields = ["worker", "deadline"]
+        widgets = {
+            "deadline": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        }
