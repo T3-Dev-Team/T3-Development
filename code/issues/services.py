@@ -25,7 +25,7 @@ def upload_photo(file):
         result = cloudinary.uploader.upload(
             file, folder="cityfix/issues", resource_type="image"
         )
-    except CloudinaryError as exc:
+    except (CloudinaryError, ValueError) as exc:
         raise PhotoUploadError(str(exc)) from exc
     return result["secure_url"]
 
