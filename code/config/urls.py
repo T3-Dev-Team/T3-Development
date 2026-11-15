@@ -20,8 +20,6 @@ from django.urls import include
 from users import views as user_views
 
 
-from users import views as user_views
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
