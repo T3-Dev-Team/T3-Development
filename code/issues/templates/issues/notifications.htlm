@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Notifications · CityFix{% endblock %}
+{% block content %}
+<h1>Notifications</h1>
+{% if notifications %}
+<form method="post" action="{% url 'notifications_read_all' %}">
+  {% csrf_token %}
+  <button type="submit" class="btn secondary">Mark all as read</button>
+</form>
+{% endif %}
+<ul class="reports">
+  {% for n in notifications %}
+  <li class="card">
+    <div class="report-head">
+      <strong>{{ n.get_type_display }}{% if not n.is_read %} <span class="count">new</span>{% endif %}</strong>
+      <span class="badge status-{{ n.issue.status }}">{{ n.issue.get_status_display }}</span>
+    </div>
+    <p>{{ n.issue.category }} · {{ n.issue.address|default:"No address saved" }}</p>
+    <p class="hint">{{ n.created_at|date:"d.m.Y. H:i" }}</p>
+    {% if not n.is_read %}
+    <form method="post" action="{% url 'notification_read' n.id %}">
+      {% csrf_token %}
+      <button type="submit" class="linklike">Mark as read</button>
+    </form>
+    {% endif %}
+  </li>
+  {% empty %}
+  <li class="card"><p>You have no notifications.</p></li>
+  {% endfor %}
+</ul>
+{% endblock %}
