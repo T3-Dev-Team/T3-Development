@@ -27,5 +27,5 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     path("account/delete/", user_views.delete_account, name="delete_account"),
 
-    
+    path("", include("issues.urls")),
 ]
