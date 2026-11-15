@@ -26,7 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("account/delete/", user_views.delete_account, name="delete_account"),
-    path("issues/", include("issues.urls")),
+    path("", include("issues.urls")),
 
 
     

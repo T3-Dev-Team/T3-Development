@@ -21,7 +21,7 @@ def assign_issue(request, pk):
             assignment.assigned_by = request.user
             assignment.save()
             issue.change_status(Issue.Status.ASSIGNED, request.user, note="Issue assigned to worker")
-            return redirect("issues:admin_issue_list")
+            return redirect("issues:admin_reports")
     else:
         form = AssignmentForm()
 
