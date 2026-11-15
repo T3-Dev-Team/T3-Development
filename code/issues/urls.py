@@ -8,6 +8,8 @@ urlpatterns = [
     path("reports/manage/", views_admin.admin_issue_list, name="admin_reports"),
     path("reports/manage/<int:pk>/assign/", views_admin.assign_issue, name="assign_issue"),
     path("tasks/", views_worker.worker_task_list, name="assigned_issues"),
+    path("tasks/<int:pk>/status/", views_worker.update_task_status, name="update_task_status"),
+
 
     # citizen (D3)
 ]
