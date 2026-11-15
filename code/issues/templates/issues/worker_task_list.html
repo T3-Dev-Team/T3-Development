@@ -1,0 +1,8 @@
+<h1>My Tasks</h1>
+<ul>
+  {% for assignment in assignments %}
+    <li>{{ assignment.issue.id }} - {{ assignment.issue.category }} — {{ assignment.issue.description }} - {{ assignment.issue.get_status_display }} - {{ assignment.deadline }} </li>
+  {% empty %}
+    <li>No tasks assigned.</li>
+  {% endfor %}
+</ul>
