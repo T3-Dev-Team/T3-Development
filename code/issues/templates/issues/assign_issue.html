@@ -1,8 +1,12 @@
-<h1>Assign issue {{ issue.id }}</h1>
-<p>{{ issue.category }} — {{ issue.description }}</p>
+{% extends "base.html" %}
+{% block title %}Assign Issue · CityFix{% endblock %}
+{% block content %}
+  <h1>Assign issue {{ issue.id }}</h1>
+  <p>{{ issue.category }} — {{ issue.description }}</p>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Assign</button>
-</form>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Assign</button>
+  </form>
+{% endblock %}
