@@ -1,10 +1,8 @@
 # 4. Architecture and Design
 
-**Objective:** Design and explain the application's boundary, main choices, parts, data, and important behavior. Start with an architecture that guides implementation; revise it when design decisions change. At the final review, the descriptions and diagrams should explain the application that was actually built.
+**Objective:** Design and explain the application's boundary, main choices, parts, data, and important behavior. Start with an architecture that guides implementation. Revise it when design decisions change. At the final review, the descriptions and diagrams should explain the application that was actually built.
 
-The page contains the **UML component, class, sequence, and state diagrams** and the data model. The use case diagram describes user goals; the deployment diagram shows where the finished application actually runs. Keep a readable image and versioned PlantUML source for each UML diagram, as described on [Home](./Home.md).
-
-The expandable Crisis Guard examples illustrate a proposed design. Use your project's own decisions and models in the completed page.
+This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md). The deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). Every UML diagram has a versioned PlantUML source in [`docs/puml/`](./puml/) and a generated SVG in [`docs/assets/diagrams/`](./assets/diagrams/).
 
 | View | Main question |
 | --- | --- |
@@ -21,105 +19,84 @@ The expandable Crisis Guard examples illustrate a proposed design. Use your proj
 
 | Decision | Alternative considered | Project-specific rationale and trade-off |
 | --- | --- | --- |
-|  |  |  |
-
-Explain the main architectural choices without repeating the technologies list. If an important choice has an ADR, its ID in the table is enough.
-
-<details>
-<summary><strong>Explaining a choice </strong></summary>
-
-**Example — Crisis Guard:**
-
-| Decision | Alternative considered | Project-specific rationale and trade-off |
-| --- | --- | --- |
-| Browser client and one backend API | Several separately deployed backend services | The client displays the map while the backend validates and stores reports. One backend is manageable for this scope; its failure may interrupt report operations. See ADR-01 for the reasoning. |
-| Relational storage for reports | Document-oriented storage | Reports have identifiable links to users and locations. A relational schema makes these relationships explicit but requires migrations when the schema changes. |
-
-**Analysis of the example:** Both decisions state a reason tied to the reporting application and acknowledge a trade-off. The backend choice links to ADR-01 rather than repeating the full comparison. Modules within one deployable backend are not separate microservices. In your own table, include alternatives that the team genuinely considered.
-
-</details>
+| One Django backend, organised as separate apps (`users`, `issues`), with server-rendered Django templates | Separately deployed services, or a separate frontend and API | Citizens, City Workers and Administrators all work on the same issues, so one deployable keeps authentication, permissions and data in one place and is manageable for a team of six. A backend failure interrupts every role, and all apps share one codebase and release cycle. See ADR-01, ADR-02. |
+| Relational database through the Django ORM and migrations: SQLite for local development, PostgreSQL in production | Document-oriented storage | An issue is explicitly linked to its reporter, category, district, photos, status history and assignments. A relational schema enforces these links and supports the statistics use case (UC-015). Every schema change needs a migration the team must coordinate. The custom user model had to exist before the first migration. See ADR-03. |
+| Google sign-in (OIDC via django-allauth) as the only way to log in | Own email and password accounts | Citizens report without another password, and CityFix stores none (C-01). `google_sub` identifies the person even if the email changes. CityFix depends on Google's availability and every user needs a Google account. Workers and admins are created by an Administrator with their email and linked on first sign-in. See ADR-04. |
+| One `User` table with a `role` column. `Citizen`, `CityWorker` and `Admin` are proxy subclasses | One table per subclass (multi-table inheritance) | Django needs one user model for authentication, and every foreign key to a user (reporter, worker, changed by) stays simple. The class diagram (§4.3.2) shows the subclasses. The ER diagram (§4.3.1) maps them to one USER table. Role-specific columns such as `service_id` stay empty for other roles, and the rules per role are enforced in code (`users/permissions.py`: role mixins and the `role_required` decorator), not by the database. |
+| Account deletion removes the user row. Foreign keys to users are nullable with `SET_NULL` | Cascade delete, or keeping the row and blanking its fields | Personal data must disappear while reports stay part of the city's record (F-021). Deleting the row guarantees no personal data remains. Every user foreign key must be declared `null=True, on_delete=SET_NULL`, and old reports and assignments lose their author or worker. See ADR-08. |
+| Status changes and assignments stored as their own records (STATUS_HISTORY, ASSIGNMENT) beside the current `status` on the issue | Only a current status and assigned worker on the issue | Status tracking and statistics need to know who changed what and when, and a returned assignment keeps its reason before the issue goes to another worker. Every change needs extra writes, which must happen in the same transaction as the status update so the issue and its history never disagree. |
+| Photos, maps, calendar and weather come from external services called from isolated components | Building or hosting these features ourselves | Saves development time and storage. Each integration needs a defined fallback when the service is unavailable (NF-09, UC-008 2a, UC-013 5a). See ADR-05 and §4.6. |
 
 ## 4.2 Building Blocks and UML Component Diagram
 
 **Objective:** Propose the principal parts of the application, assign their responsibilities, and show their dependencies without diagramming every file or class. Revise this view as the system takes shape.
 
-**CityFix component diagram:** 
+**CityFix component diagram:**  
 ![CityFix component diagram](./assets/diagrams/component-diagram.svg)  
 **PlantUML source:** [component-diagram.puml](./puml/component-diagram.puml)
+
+The components are logical parts of one Django project, not separately deployed services (ADR-01).
 
 | Component | Responsibility | Reason for this boundary |
 | --- | --- | --- |
 | Web client | Displays the HTML pages generated by Django, shows the Google map and issue lists, and uses HTMX to update parts of the page. | User interaction is separated from issue rules and persistence. |
-| Web views | Receives HTTP requests and HTMX requests, checks the user's role, and returns full pages or HTML fragments. | HTTP-facing responsibilities are separated from business logic. |
+| Web views | Receives HTTP and HTMX requests, checks the user's role, and returns full pages or HTML fragments. | HTTP-facing responsibilities are separated from business logic. |
 | User service | Handles Google sign-in, user accounts and roles, and deletes personal data when an account is removed. | Identity, permissions and personal data have a single owner. |
 | Issue service | Creates, classifies and comments on issues, uploads photos to Cloudinary, marks duplicates and changes status. | Issue rules and status history are applied in one place, whoever triggers the change. |
-| Assignment service | Assigns issues to city workers with a deadline and handles returned assignments. | Work allocation rules are kept separate from the issue lifecycle. |
+| Assignment service | Assigns issues to City Workers with a deadline and handles returned assignments. | Work allocation rules are kept separate from the issue lifecycle. |
 | Notification service | Creates in-app notifications and lists them for each user. | Notifying users is separate from the actions that cause the notification. |
 | Calendar sync | Turns assignments into Google Calendar events and invites the worker. | Communication with the external calendar API is isolated in one place. |
+| Weather client | Fetches the forecast for an issue's location for workers and administrators (F-016). | A slow or unavailable weather service must not block viewing or assigning an issue. |
 
-Start by drawing the boundary around the proposed system. Inside it, identify parts with distinct responsibilities; put a planned application database inside this boundary and third-party services outside it. Label important connections with what crosses them. A logical component may be a module within one backend application: a separate box does not imply a separately deployed service. As you implement, update the diagram when responsibilities or connections change. In the final version, readers should be able to relate its parts to the code. The deployment diagram answers where those parts actually run.
+**Mapping to the code and implementation status (checkpoint 1):**
 
-<details>
-<summary><strong>System boundary, responsibilities, and external dependencies</strong></summary>
-
-**Example — Crisis Guard:** The proposed architecture supports report submission, a map view, and notifications about confirmed reports.
-
-![Crisis Guard system component diagram](./assets/diagrams/4-1-crisis-guard-system-CMP.svg)  
-[PlantUML source](./puml/4-1-crisis-guard-system-CMP.puml)
-
-| Part | Responsibility | Reason for this boundary |
+| Component | Code location | Status |
 | --- | --- | --- |
-| Web client | Shows reports and collects a new report. | User interaction is separated from report rules and persistence. |
-| Report API | Accepts report requests and returns responses. | HTTP-facing responsibilities are separated from report processing. |
-| Report service | Applies report rules and accesses stored reports. | Report validation and storage rules have a clear owner. |
-| Notification worker | Identifies eligible recipients and asks an external provider to send an alert. | Notification work is separate from answering a user's report request. |
-
-**Analysis of the example:** The outer boundary distinguishes the proposed system from the map provider and the notification provider. The inner boundary groups the Report API, Report service, and Notification worker within one backend application; their separate symbols express proposed responsibilities, not independently deployed services. PostgreSQL stores application data, while the map provider supplies map tiles. The arrows summarize dependencies, not the order of a transaction; the sequence diagram covers that order. Omit the Notification worker and Firebase Cloud Messaging if notifications are outside the approved scope. If separating the Report API from the Report service does not help explain the design, show one backend component. Include a sign-in provider only if the approved task calls for it. As implementation progresses, revise any proposed boundary that proves inaccurate; the final diagram must correspond to what the team built. One coherent component view is more useful than several near-identical versions with conflicting connections.
-</details>
+| Web client | `code/issues/templates/`, `code/issues/static/issues/js/` | Templates exist for the map, report form, "My reports" list (UC-006, including the empty state from 1a), admin list, assignment and worker task list. HTMX is not yet used. |
+| Web views | `code/issues/views_admin.py`, `code/issues/views_worker.py`, `code/users/views.py` | Admin issue list and assignment, worker task list and status update, and account deletion are implemented. Citizen views are not yet wired in `issues/urls.py`. |
+| User service | `code/users/adapters.py`, `code/users/permissions.py`, `code/users/services.py` | Google sign-in, role checks and account deletion are implemented. |
+| Issue service | `code/issues/models.py` (`Issue.change_status`) | Status change with history entry is implemented. Duplicate detection and photo upload are planned. |
+| Assignment service | `code/issues/views_admin.py`, `code/issues/forms.py` | Assignment is implemented. Filtering workers by department and returning an issue are planned. |
+| Notification service | `code/issues/models.py` (`Notification`) | The model exists. Notifications are not yet created. |
+| Calendar sync, Weather client | — | Planned. |
 
 ## 4.3 Data and Detailed Design
 
-**Objective:** Explain the important information the application stores and one representative area of class-level design. The data model and UML class diagram answer different questions; one does not replace the other.
+**Objective:** Explain the important information the application stores and one representative area of class-level design. The data model and UML class diagram answer different questions. One does not replace the other.
 
 ### 4.3.1 ER Diagram and Data Model
 
 **Objective:** Show the important stored entities, their identifiers and relationships, and enough attributes to explain the application's data. The ER diagram is separate from the representative UML class diagram below.
 
-**ER diagram:** [Embed the project's readable diagram.]  
-**Diagram source:** [Link to its versioned source.]  
-**Implementation:** [Indicate where the corresponding data model is defined in the project.]
+**ER diagram:**  
+![CityFix ER diagram](./assets/diagrams/er-diagram.svg)  
+**Diagram source:** [er-diagram.puml](./puml/er-diagram.puml)  
+**Implementation:** Django models in [`code/users/models.py`](../code/users/models.py) and [`code/issues/models.py`](../code/issues/models.py). The schema is created by the migrations in `code/users/migrations/` and `code/issues/migrations/`.
 
-<details>
-<summary><strong>One flood report and its related data</strong></summary>
+| Entity | Purpose |
+| --- | --- |
+| USER | One table for all three roles (`role` = citizen, worker or admin). `google_sub` and `email` identify the Google account. `password`, `last_login` and `is_superuser` come from Django's `AbstractBaseUser` and `PermissionsMixin`. Users who sign in with Google get an unusable password, so no password is used for sign-in (C-01). |
+| CITY_SERVICE | A city department (for example, road maintenance). Each category belongs to one department, and City Workers will belong to one department so that only suitable workers can be assigned (F-010). The documentation uses "department". The code uses `CityService`. |
+| CATEGORY | Type of problem (pothole, streetlight, ...) and the department that handles it. |
+| DISTRICT | Optional city area of an issue, used for filtering and statistics. |
+| ISSUE | A reported problem with location, description, current status and priority. `reporter_id` may be empty after the citizen deletes their account (ADR-08). `duplicate_of_id` links a duplicate to the original report. |
+| ISSUE_PHOTO | Link to a "before" photo from the citizen or an "after" photo from the worker (F-013). Only the URL is stored. The file is in Cloudinary (ADR-05). |
+| STATUS_HISTORY | Every status change: old and new status, who changed it, when, and an optional note. The note is also the worker's comment shown in the issue history (F-012). |
+| ASSIGNMENT | Assignment of an issue to a worker with a deadline. A returned assignment keeps `returned_at` and `return_reason` (F-014), so an issue can have several assignments over time. |
+| NOTIFICATION | In-app notification for a user about an issue (F-008). |
 
-**Example — Crisis Guard:** Ana submits flood report `R-104` using her citizen account. She selects a location on the map and records the severity as high. A citizen may submit several reports; each report belongs to one disaster category, such as *Flood*. The application stores the report and its coordinates. Map tiles come from an external provider and are not entities in the application's data model.
-
-![Crisis Guard data ER diagram](./assets/diagrams/4-2-crisis-guard-data-ERD.svg)  
-[PlantUML source](./puml/4-2-crisis-guard-data-ERD.puml)
-
-**Analysis of the example:** `R-104` has one author and one category; Ana and the *Flood* category can each be linked to more reports. The diagram shows relationships without copying a database's columns or writing a second table description for every entity. If your application also accepts **anonymous** reports, represent that possibility in the relationship to `Citizen`. If categories are fixed values rather than stored records, do not invent a category table. Compare the final ER diagram with the persistence model and explain only differences that matter to understanding the project.
-
-</details>
+Attributes marked *planned* in the diagram are part of the design but not yet in the models: `USER.service_id` (F-010), `CATEGORY.default_resolution_days` (F-017) and `ISSUE.rating` (F-018).
 
 ### 4.3.2 Representative UML Class Diagram
 
 **Objective:** Before implementing a representative part of the system, model the classes or interfaces needed to assign responsibilities, operations, and relationships. Revise the design when those choices change.
 
-**Class diagram:** [Embed a readable UML class diagram for a representative part of the design.]  
-**PlantUML source:** [Link to the matching versioned `.puml` file.]  
-**Code reference at the final review:** [Link to the corresponding implementation.]
+**Class diagram:**  
+![CityFix class diagram](./assets/diagrams/class-diagram.svg)  
+**PlantUML source:** [class-diagram.puml](./puml/class-diagram.puml)  
+**Code reference:** [`code/users/models.py`](../code/users/models.py), [`code/issues/models.py`](../code/issues/models.py)
 
-<details>
-<summary><strong>Designing report responsibilities and allowed changes</strong></summary>
-
-**Example — Crisis Guard:** A report owns the rules for changing its status. A workflow class coordinates submission and review, while a repository interface describes the persistence operations it needs. The diagram proposes these responsibilities before implementation.
-
-![Crisis Guard domain class diagram](./assets/diagrams/4-3-crisis-guard-domain-CD.svg)  
-[PlantUML source](./puml/4-3-crisis-guard-domain-CD.puml)
-
-**Analysis of the example:** `DisasterReport` owns its allowed state changes, so the workflow cannot silently approve a rejected report. `ReportWorkflow` coordinates an operation without owning the report's transition rules; `ReportRepository` defines the storage operations it needs. The `Location` composition and selected types show relationships useful to the design. The diagram intentionally omits database columns and unrelated classes: the ER model explains stored data, while this diagram assigns program responsibilities and operations. These classes are a design choice, not required layers for every team. Compare the finished implementation with the original design and revise the diagram where decisions changed; generating a diagram from code at the end cannot substitute for this initial modeling.
-
-</details>
+The diagram covers the issue lifecycle, the central part of CityFix. `User` is a single class with a `role`. `Citizen`, `CityWorker` and `Admin` are Django proxy classes that share the same table and only set the role and filter queries. `Issue` owns its history, photos, assignments and notifications (composition: they are deleted with the issue), while links to `User` are plain associations, so deleting a user keeps the issues (ADR-08). `Issue.change_status()` is the single operation for changing a status: it records a `StatusHistory` entry and then saves the new status.
 
 ## 4.4 Runtime Behavior
 
@@ -129,43 +106,21 @@ Start by drawing the boundary around the proposed system. Inside it, identify pa
 
 **Objective:** Show the order of messages for one representative scenario and the responses to a meaningful alternative.
 
-**Scenario:** Submitting a report with location selection, validation and duplicate check (UC-002, UC-003). The interaction also shows what happens when the address lookup is unavailable (NF-09), required data is missing, the citizen supports an existing report instead of creating a new one, or saving fails.  
+**Scenario:** Submitting a report with location selection, validation and duplicate check (UC-002, UC-003). The interaction also shows what happens when the address lookup is unavailable (NF-09), required data is missing, the citizen supports an existing report instead of creating a new one, or saving fails. Because CityFix uses server-rendered pages (ADR-02), the browser posts a Django form and receives a re-rendered page or a redirect, not a JSON API response.  
 **Sequence diagram:**  
-![CityFix report submission sequence diagram](./assets/sequence-report-submission.png)  
+![CityFix report submission sequence diagram](./assets/diagrams/sequence-report-submission.svg)  
 **PlantUML source:** [sequence-report-submission.puml](./puml/sequence-report-submission.puml)
-
-<details>
-<summary><strong>Location selection, validation, and report submission</strong></summary>
-
-**Example — Crisis Guard:** A citizen submits a disaster report after choosing a location manually or requesting the device's position. The interaction also shows what happens when location permission is denied, report data is invalid, or storage fails.
-
-![Crisis Guard report submission sequence diagram](./assets/diagrams/4-4-crisis-guard-report-submission-SD.svg)  
-[PlantUML source](./puml/4-4-crisis-guard-report-submission-SD.puml)
-
-**Analysis of the example:** The two location paths and the validation and storage alternatives have different consequences for the user; compare them with the matching use case and its alternative flows. The browser location API is a browser capability; the web client, API, service, and store correspond to the component view. Select branches that help explain your project's scenario, and revise the final diagram to match the implemented interaction.
-
-</details>
 
 ### 4.4.2 Representative UML State Diagram
 
 **Objective:** Show the meaningful states of one domain object or an explicitly managed system mode, and the events or conditions that change it.
 
-**State owner and reason for choosing it:** The Issue (report). Its current state is stored in the `status` field of the ISSUE table, and every change is recorded in STATUS_HISTORY (old status, new status, who changed it, note). The transitions matter because they decide who can act next: the Administrator verifies, rejects or assigns a report, and the City Worker repairs or returns it. Some transitions have conditions, such as a reason for a rejection, an explanation when a worker returns an issue, and an "after" photo before an issue can be resolved. Every status change also creates an in-app notification for the citizen who reported the issue (F-008).  
+**State owner and reason for choosing it:** The Issue (report). Its current state is stored in the `status` field of the ISSUE table (`Issue.Status` in `code/issues/models.py`), and every change is recorded in STATUS_HISTORY (old status, new status, who changed it, note). The transitions matter because they decide who can act next: the Administrator verifies, rejects or assigns a report, and the City Worker repairs or returns it. Some transitions have conditions, such as a reason for a rejection, an explanation when a worker returns an issue, and an "after" photo before an issue can be resolved. Every status change also creates an in-app notification for the citizen who reported the issue (F-008).  
 **State diagram:**  
-![CityFix issue lifecycle state diagram](./assets/state-issue-lifecycle.png)  
+![CityFix issue lifecycle state diagram](./assets/diagrams/state-issue-lifecycle.svg)  
 **PlantUML source:** [state-issue-lifecycle.puml](./puml/state-issue-lifecycle.puml)
 
-<details>
-<summary><strong>Operating modes and service availability</strong></summary>
-
-**Example — Crisis Guard:** The crisis coordination mode changes as an disaster is assessed and resolved. At the same time, the user-visible availability of the application may change independently when the map provider or backend becomes unavailable.
-
-![Crisis Guard report state machine diagram](./assets/diagrams/4-5-crisis-guard-report-SM.svg)  
-[PlantUML source](./puml/4-5-crisis-guard-report-SM.puml)
-
-**Analysis of the example:** The two regions describe independent aspects of the modeled system: its crisis coordination mode and observed service availability. They run in parallel; an active crisis may coincide with normal or limited service. The branches after backend recovery account for a map provider that may still be unavailable. State transitions have named triggers or guards rather than being a list of screens. Use this form only if your application actually maintains or reliably derives both kinds of state. A project whose meaningful lifecycle belongs to a report, reservation, or order should model that object instead; diagram complexity is not an assessment criterion. At the final review, check the state model against the behavior the running application supports.
-
-</details>
+**Implementation status (checkpoint 1):** the transitions Verified → Assigned (`views_admin.assign_issue`) and Assigned → In Repair → Resolved (`views_worker.update_task_status`) are implemented. The "after" photo condition, returning an issue, validation by the Administrator and notifications are planned.
 
 ## 4.5 Architecture Decision Records
 
@@ -218,29 +173,6 @@ Start by drawing the boundary around the proposed system. Inside it, identify pa
 
 Write an ADR only for a choice whose rationale will matter after the implementation changes. A significant change of decision can be recorded as a new ADR that supersedes the old one; routine tool choices do not need detailed records. Changes to agreed scope belong with requirements and their change history; feedback on a task stays with its issue.
 
-<details>
-<summary><strong>Choosing one backend instead of separately deployed services</strong></summary>
-
-**Example — Crisis Guard, ADR-01:**
-
-| ID | Date | Decision | Alternative considered | Rationale and trade-off | Status |
-| --- | --- | --- | --- | --- | --- |
-| ADR-01 | [Date of decision] | One backend API for report handling | Separate deployable report and resource services | Lower deployment and integration effort for the approved scope; a failure of the backend can affect both features. | Accepted |
-
-### ADR-01: One backend API for report handling
-
-| Field | Record of the decision |
-| --- | --- |
-| Context and goal | The team must deliver and publicly deploy reporting and a map-oriented view during one semester. |
-| Decision criteria | The team can build, integrate, deploy, and explain the solution; components still have identifiable responsibilities. |
-| Alternatives considered | **One backend:** modules share a deployable application. **Separate services:** each can run independently, but they require additional integration and deployment work. |
-| Decision and rationale | Choose one backend, with distinguishable report responsibilities inside it. This limits deployment work but accepts that a failure of this backend may affect report operations together. |
-| Status | Accepted. |
-
-**Analysis of the example:** The solution strategy states the current approach; ADR-01 preserves the alternatives and criteria that led to it. The component and deployment diagrams should reflect the chosen approach as it develops. A separate ADR is useful for a consequential decision, not for every tool choice.
-
-</details>
-
 ## 4.6 Crosscutting Concepts
 
 **Objective:** Identify an important mechanism or design rule that applies to several parts of the application, describe where it is planned to apply, and update the explanation as the implementation takes shape. Include only concepts that matter to this project.
@@ -286,21 +218,5 @@ Write an ADR only for a choice whose rationale will matter after the implementat
 | Citizens may select an incorrect issue category | Reports may be assigned to an inappropriate department or worker, delaying repairs. | Administrators verify report information and can return incorrectly assigned issues with an explanation. |
 | Duplicate reports may be submitted by multiple citizens | Administrators may receive several reports about the same infrastructure problem, creating unnecessary work. | The application identifies potential nearby unresolved reports so administrators can review possible duplicates. |
 | Citizens may mistake an unverified report for an officially confirmed problem | Users may believe that the municipality has confirmed or approved an issue when it has not. | The application displays report statuses so users can distinguish submitted reports from verified and resolved issues. |
-
-<details>
-<summary><strong>Identifying a limitation without inventing production infrastructure</strong></summary>
-
-**Example — Crisis Guard, technical risks:**
-
-| Risk or compromise | Consequence | Current treatment |
-| --- | --- | --- |
-| One application instance handles report submissions. | Hosting failure temporarily prevents new reports. | Accepted within the course project; the team does not claim automatic failover. |
-| External map tiles are unavailable. | The map view may fail even when stored reports remain available. | Explain the visible error or fallback that the implemented application actually provides. |
-
-**Example — Crisis Guard, domain risk:** Readers may mistake an unverified citizen report for an official warning. The team can distinguish the report's verification status in the interface and direct readers to official channels.
-
-**Analysis of the example:** The first technical risk accepts a realistic course-scope limitation; the domain risk concerns how a reader interprets a report. Record a limitation and a realistic response that belong to your own project. A missing mandatory feature is unfinished scope, not technical debt.
-
-</details>
 
 **Final consistency check:** Compare the component, data, class, sequence and state views with the implemented code, application behavior, and actual deployment. Update outdated design descriptions and explain any important difference that remains; links to relevant code or tests help when they resolve a concrete question.
