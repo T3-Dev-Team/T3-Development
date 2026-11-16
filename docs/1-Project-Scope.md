@@ -25,7 +25,7 @@ The stakeholders are the city administration and its departments, local communit
 The project includes the development of a responsive web application with the following features:
 
 - Sign-in with a Google account and role-based access for Citizens, City Workers and Administrators.
-- Infrastructure issue reporting with photographs, descriptions, categories and locations, including detection of possible duplicate reports.
+- Infrastructure issue reporting with photographs, descriptions, categories and locations, including detection of possible duplicate reports and automatic blurring of faces and license plates.
 - An interactive map of public reports with filtering options.
 - Report validation, prioritisation and assignment to City Workers by Administrators.
 - Task management and repair-status updates for City Workers, with a photo as proof of each completed repair.
