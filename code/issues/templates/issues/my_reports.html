@@ -9,8 +9,14 @@
       <strong>{{ r.category }}</strong>
       <span class="badge status-{{ r.status }}">{{ r.get_status_display }}</span>
     </div>
-    <p>{{ r.address|default:"No address saved" }}</p>
-    <p class="hint">Reported on {{ r.created_at|date:"d.m.Y." }}</p>
+     <p>{{ r.description|truncatechars:150 }}</p>
+    <!-- <p>{{ r.address|default:"No address saved" }}</p> -->
+     <p>{% if r.address %}{{ r.address }}{% else %}{{ r.latitude|floatformat:5 }}, {{ r.longitude|floatformat:5 }}{% endif %}</p>
+     {% with photo=r.photos.all.0 %}{% if photo %}
+     <img src="{{ photo.image_url }}" alt="Photo of the reported issue" loading="lazy"
+     style="max-width:100%; max-height:200px; border-radius:8px;">
+     {% endif %}{% endwith %}   
+     <p class="hint">Reported on {{ r.created_at|date:"d.m.Y." }}</p>
     {% url 'issues:report_detail' r.id as detail_url %}{% if detail_url %}<a href="{{ detail_url }}">View details and history</a>{% endif %}
   </li>
   {% empty %}
