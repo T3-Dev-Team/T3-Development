@@ -1,4 +1,4 @@
-@startuml state-issue-lifecycle
+@startuml state_issue_lifecycle
 title CityFix — Issue Lifecycle
 skinparam shadowing false
 
@@ -10,7 +10,7 @@ state "Assigned" as Assigned
 state "In Repair" as InRepair
 state "Resolved" as Resolved
 
-[*] --> Reported : citizen submits report [category and location given] (F-003)
+[*] --> Reported : citizen submits report\n[category, description and location given] (F-003)
 
 Reported --> Verified : administrator verifies (F-009)
 Reported --> Rejected : administrator rejects [reason entered] (F-009)
@@ -25,7 +25,7 @@ InRepair --> Resolved : worker marks resolved\n[after photo uploaded] (F-012, F-
 Assigned --> Verified : worker returns issue\n[explanation entered] (F-014)
 InRepair --> Verified : worker returns issue\n[explanation entered] (F-014)
 
-Assigned : priority raised and administrator alerted\nwhen deadline approaches without updates (F-017)
+Assigned : deadline in less than 24 h /\nraise priority, alert administrator (F-017)
 
 Rejected --> [*]
 Duplicate --> [*]
