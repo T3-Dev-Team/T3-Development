@@ -1,0 +1,6 @@
+#this should never be on a GitHub
+venv/
+.env
+db.sqlite3
+__pycache__/
+.vs/

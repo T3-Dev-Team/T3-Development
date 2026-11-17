@@ -1,0 +1,53 @@
+{# CityFix base template (A1). Every page extends this one.
+   user.role values (users/models.py): "citizen", "worker", "admin". Sign-in and sign-out use django-allauth.
+   Expected URL names (namespace issues, see issues/urls.py): map, report_create, my_reports, report_detail, assigned_issues, admin_reports,
+   statistics, notifications. Context variables: google_maps_api_key, unread_count (issues/context_processors.py). A link whose URL name does not exist yet is simply hidden. #}
+{% load static socialaccount %}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}CityFix{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'issues/css/style.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <a class="brand" href="/">CityFix</a>
+  <button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav">Menu</button>
+  <nav id="nav" class="nav">
+    {% url 'issues:map' as u %}{% if u %}<a href="{{ u }}">Map</a>{% endif %}
+    {% if user.is_authenticated %}
+      {% if user.role == "citizen" %}
+        {% url 'issues:report_create' as u %}{% if u %}<a href="{{ u }}">Report an issue</a>{% endif %}
+        {% url 'issues:my_reports' as u %}{% if u %}<a href="{{ u }}">My reports</a>{% endif %}
+      {% elif user.role == "worker" %}
+        {% url 'issues:assigned_issues' as u %}{% if u %}<a href="{{ u }}">My tasks</a>{% endif %}
+      {% elif user.role == "admin" %}
+        {% url 'issues:admin_reports' as u %}{% if u %}<a href="{{ u }}">Reports</a>{% endif %}
+        {% url 'issues:statistics' as u %}{% if u %}<a href="{{ u }}">Statistics</a>{% endif %}
+      {% endif %}
+      {% url 'issues:notifications' as u %}{% if u %}<a href="{{ u }}">Notifications{% if unread_count %} <span class="count">{{ unread_count }}</span>{% endif %}</a>{% endif %}
+      {% url 'account_logout' as u %}{% if not u %}{% url 'logout' as u %}{% endif %}{% if u %}<form method="post" action="{{ u }}">{% csrf_token %}<button type="submit" class="linklike">Sign out</button></form>{% endif %}
+    {% else %}
+      <form method="post" action="{% provider_login_url 'google' %}">{% csrf_token %}<button type="submit" class="btn small">Sign in with Google</button></form>
+    {% endif %}
+  </nav>
+</header>
+<main id="main" class="container">
+  {% if messages %}<ul class="messages">{% for m in messages %}<li class="alert {{ m.tags }}">{{ m }}</li>{% endfor %}</ul>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+<script>
+  (function () {
+    var b = document.querySelector(".menu-btn"), n = document.getElementById("nav");
+    b.addEventListener("click", function () {
+      var open = n.classList.toggle("open");
+      b.setAttribute("aria-expanded", open);
+    });
+  })();
+</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

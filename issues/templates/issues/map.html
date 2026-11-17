@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Issue map · CityFix{% endblock %}
+{% block content %}
+<h1>Issue map</h1>
+<form class="filters card" id="filters" onsubmit="return false">
+  <label>Category <select id="f-category"><option value="">All</option></select></label>
+  <label>Status <select id="f-status"><option value="">All</option></select></label>
+  <label>From <input type="date" id="f-from"></label>
+  <label>To <input type="date" id="f-to"></label>
+  <button type="button" class="btn secondary" id="f-reset">Reset filters</button>
+</form>
+<p id="map-count" class="hint" aria-live="polite"></p>
+<p id="map-empty" class="alert" hidden>No report matches these filters. Change or reset them to see more.</p>
+<p id="map-error" class="alert error" role="alert" hidden>The map could not be loaded. <button type="button" class="btn small" onclick="location.reload()">Try again</button></p>
+<div id="issues-map" class="map tall" role="application" aria-label="Map of reported issues"
+     data-center-lat="{{ map_center_lat|default:'' }}" data-center-lng="{{ map_center_lng|default:'' }}"></div>
+{{ reports|json_script:"reports-data" }}
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/@googlemaps/markerclusterer@2.5.3/dist/index.min.js"></script>
+<script src="{% static 'issues/js/issues_map.js' %}"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=marker&loading=async&callback=initIssuesMap"></script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}My reports · CityFix{% endblock %}
+{% block content %}
+<h1>My reports</h1>
+<ul class="reports">
+  {% for r in reports %}
+  <li class="card">
+    <div class="report-head">
+      <strong>{{ r.category }}</strong>
+      <span class="badge status-{{ r.status }}">{{ r.get_status_display }}</span>
+    </div>
+    <p>{{ r.address|default:"No address saved" }}</p>
+    <p class="hint">Reported on {{ r.created_at|date:"d.m.Y." }}</p>
+    {% url 'issues:report_detail' r.id as detail_url %}{% if detail_url %}<a href="{{ detail_url }}">View details and history</a>{% endif %}
+  </li>
+  {% empty %}
+  <li class="card">
+    <p>You have not reported any issues yet.</p>
+    {% url 'issues:report_create' as create_url %}{% if create_url %}<a class="btn" href="{{ create_url }}">Report an issue</a>{% endif %}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
