@@ -1,0 +1,32 @@
+@startuml deployment_diagram
+title CityFix — Deployment Diagram (Render)
+skinparam shadowing false
+
+node "User device" as device <<device>> {
+  node "Web browser" as browser <<executionEnvironment>>
+}
+
+cloud "Render" <<cloud>> {
+  node "Web Service\n(Python runtime)" as web <<executionEnvironment>> {
+    artifact "cityfix (Django project, code/)" as app <<artifact>>
+  }
+  database "Render PostgreSQL" as db <<database>>
+}
+
+cloud "Google Cloud" <<cloud>> {
+  node "Google OAuth 2.0 / OIDC" as oauth
+  node "Google Maps JavaScript API" as maps
+  node "Google Calendar API" as gcal
+}
+node "Cloudinary" as cdn
+node "Weather API" as weather
+
+browser --> app : HTTPS (HTML pages, form posts)
+browser --> maps : HTTPS (map tiles, geocoding)
+browser --> cdn : HTTPS (photo display)
+app --> db : PostgreSQL protocol (DATABASE_URL)
+app --> oauth : HTTPS (sign-in callback)
+app --> gcal : HTTPS (create event)
+app --> cdn : HTTPS (photo upload)
+app --> weather : HTTPS (forecast)
+@enduml
