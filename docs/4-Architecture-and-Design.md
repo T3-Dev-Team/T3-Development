@@ -2,7 +2,7 @@
 
 **Objective:** Design and explain the application's boundary, main choices, parts, data, and important behavior. Start with an architecture that guides implementation. Revise it when design decisions change. At the final review, the descriptions and diagrams should explain the application that was actually built.
 
-This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md). The deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). Every UML diagram has a versioned PlantUML source in [`docs/puml/`](./puml/) and a generated SVG in [`docs/assets/diagrams/`](./assets/diagrams/).
+This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md), and the deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). The component and sequence diagrams have PlantUML sources in [`docs/puml/`](./puml/), and the state diagram source is [`state_issue_lifecycle.puml`](./puml/state_issue_lifecycle.puml). The ER and class diagrams are drawn in draw.io, with sources in [`docs/drawio/`](./drawio/).
 
 | View | Main question |
 | --- | --- |
@@ -32,8 +32,8 @@ This page contains the UML component, class, sequence and state diagrams and the
 **Objective:** Propose the principal parts of the application, assign their responsibilities, and show their dependencies without diagramming every file or class. Revise this view as the system takes shape.
 
 **CityFix component diagram:**  
-![CityFix component diagram](./assets/diagrams/component-diagram.svg)  
-**PlantUML source:** [component-diagram.puml](./puml/component-diagram.puml)
+![CityFix component diagram](./assets/diagrams/component_diagram.svg)  
+**PlantUML source:** [component_diagram.puml](./puml/component_diagram.puml)
 
 The components are logical parts of one Django project, not separately deployed services (ADR-01).
 
@@ -69,8 +69,8 @@ The components are logical parts of one Django project, not separately deployed 
 **Objective:** Show the important stored entities, their identifiers and relationships, and enough attributes to explain the application's data. The ER diagram is separate from the representative UML class diagram below.
 
 **ER diagram:**  
-![CityFix ER diagram](./assets/diagrams/er-diagram.svg)  
-**Diagram source:** [er-diagram.puml](./puml/er-diagram.puml)  
+![CityFix ER diagram](./assets/er_diagram.png)  
+**Diagram source (draw.io):** [er_diagram.drawio](./drawio/er_diagram.drawio)  
 **Implementation:** Django models in [`code/users/models.py`](../code/users/models.py) and [`code/issues/models.py`](../code/issues/models.py). The schema is created by the migrations in `code/users/migrations/` and `code/issues/migrations/`.
 
 | Entity | Purpose |
@@ -92,11 +92,11 @@ Attributes marked *planned* in the diagram are part of the design but not yet in
 **Objective:** Before implementing a representative part of the system, model the classes or interfaces needed to assign responsibilities, operations, and relationships. Revise the design when those choices change.
 
 **Class diagram:**  
-![CityFix class diagram](./assets/diagrams/class-diagram.svg)  
-**PlantUML source:** [class-diagram.puml](./puml/class-diagram.puml)  
+![CityFix class diagram](./assets/class_diagram.png)  
+**Diagram source (draw.io):** [class_diagram.drawio](./drawio/class_diagram.drawio)  
 **Code reference:** [`code/users/models.py`](../code/users/models.py), [`code/issues/models.py`](../code/issues/models.py)
 
-The diagram covers the issue lifecycle, the central part of CityFix. `User` is a single class with a `role`. `Citizen`, `CityWorker` and `Admin` are Django proxy classes that share the same table and only set the role and filter queries. `Issue` owns its history, photos, assignments and notifications (composition: they are deleted with the issue), while links to `User` are plain associations, so deleting a user keeps the issues (ADR-08). `Issue.change_status()` is the single operation for changing a status: it records a `StatusHistory` entry and then saves the new status.
+The diagram covers the issue lifecycle, the central part of CityFix. A user's role can change, because an Administrator can turn a citizen into a City Worker, so the role is modelled as the `Role` enumeration and not as inheritance. In the code, `Citizen`, `CityWorker` and `Admin` are Django proxy classes of `User` that only filter users by role and add no data. The role a user plays in each association is shown by the role name at its end (reporter, worker, assigned_by, changed_by, uploaded_by, recipient). `Issue` owns its history, photos, assignments and notifications (composition: they are deleted with the issue), while links to `User` are plain associations, so deleting a user keeps the issues (ADR-08). `Issue.change_status()` is the single operation for changing a status. It records a `StatusHistory` entry and then saves the new status.
 
 ## 4.4 Runtime Behavior
 
@@ -108,8 +108,8 @@ The diagram covers the issue lifecycle, the central part of CityFix. `User` is a
 
 **Scenario:** Submitting a report with location selection, validation and duplicate check (UC-002, UC-003). The interaction also shows what happens when the address lookup is unavailable (NF-09), required data is missing, the citizen supports an existing report instead of creating a new one, or saving fails. Because CityFix uses server-rendered pages (ADR-02), the browser posts a Django form and receives a re-rendered page or a redirect, not a JSON API response.  
 **Sequence diagram:**  
-![CityFix report submission sequence diagram](./assets/diagrams/sequence-report-submission.svg)  
-**PlantUML source:** [sequence-report-submission.puml](./puml/sequence-report-submission.puml)
+![CityFix report submission sequence diagram](./assets/diagrams/sequence_report_submission.svg)  
+**PlantUML source:** [sequence_report_submission.puml](./puml/sequence_report_submission.puml)
 
 ### 4.4.2 Representative UML State Diagram
 
@@ -117,8 +117,8 @@ The diagram covers the issue lifecycle, the central part of CityFix. `User` is a
 
 **State owner and reason for choosing it:** The Issue (report). Its current state is stored in the `status` field of the ISSUE table (`Issue.Status` in `code/issues/models.py`), and every change is recorded in STATUS_HISTORY (old status, new status, who changed it, note). The transitions matter because they decide who can act next: the Administrator verifies, rejects or assigns a report, and the City Worker repairs or returns it. Some transitions have conditions, such as a reason for a rejection, an explanation when a worker returns an issue, and an "after" photo before an issue can be resolved. Every status change also creates an in-app notification for the citizen who reported the issue (F-008).  
 **State diagram:**  
-![CityFix issue lifecycle state diagram](./assets/diagrams/state-issue-lifecycle.svg)  
-**PlantUML source:** [state-issue-lifecycle.puml](./puml/state-issue-lifecycle.puml)
+![CityFix issue lifecycle state diagram](./assets/state_issue_lifecycle.png)  
+**PlantUML source:** [state_issue_lifecycle.puml](./puml/state_issue_lifecycle.puml)
 
 **Implementation status (checkpoint 1):** the transitions Verified → Assigned (`views_admin.assign_issue`) and Assigned → In Repair → Resolved (`views_worker.update_task_status`) are implemented. The "after" photo condition, returning an issue, validation by the Administrator and notifications are planned.
 
