@@ -2,7 +2,7 @@
 
 **Objective:** Design and explain the application's boundary, main choices, parts, data, and important behavior. Start with an architecture that guides implementation. Revise it when design decisions change. At the final review, the descriptions and diagrams should explain the application that was actually built.
 
-This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md), and the deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). The component and sequence diagrams have PlantUML sources in [`docs/puml/`](./puml/), and the state diagram source is [`state_issue_lifecycle.puml`](./puml/state_issue_lifecycle.puml). The ER and class diagrams are drawn in draw.io, with sources in [`docs/drawio/`](./drawio/).
+This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md), and the deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). The component and sequence diagrams have PlantUML sources in [`docs/puml/`](./puml/), and the state diagram source is [`state_issue_lifecycle.puml`](./puml/state_issue_lifecycle.puml). The ER and class diagrams are drawn in draw.io. Their editable sources are `.drawio.svg` files in [`docs/assets/`](./assets/), shown here as PNG images.
 
 | View | Main question |
 | --- | --- |
@@ -70,7 +70,7 @@ The components are logical parts of one Django project, not separately deployed 
 
 **ER diagram:**  
 ![CityFix ER diagram](./assets/er_diagram.png)  
-**Diagram source (draw.io):** [er_diagram.drawio](./drawio/er_diagram.drawio)  
+**Diagram source (draw.io):** [er_diagram.drawio.svg](./assets/er_diagram.drawio.svg)  
 **Implementation:** Django models in [`code/users/models.py`](../code/users/models.py) and [`code/issues/models.py`](../code/issues/models.py). The schema is created by the migrations in `code/users/migrations/` and `code/issues/migrations/`.
 
 | Entity | Purpose |
@@ -93,7 +93,7 @@ Attributes marked *planned* in the diagram are part of the design but not yet in
 
 **Class diagram:**  
 ![CityFix class diagram](./assets/class_diagram.png)  
-**Diagram source (draw.io):** [class_diagram.drawio](./drawio/class_diagram.drawio)  
+**Diagram source (draw.io):** [class_diagram.drawio.svg](./assets/class_diagram.drawio.svg)  
 **Code reference:** [`code/users/models.py`](../code/users/models.py), [`code/issues/models.py`](../code/issues/models.py)
 
 The diagram covers the issue lifecycle, the central part of CityFix. A user's role can change, because an Administrator can turn a citizen into a City Worker, so the role is modelled as the `Role` enumeration and not as inheritance. In the code, `Citizen`, `CityWorker` and `Admin` are Django proxy classes of `User` that only filter users by role and add no data. The role a user plays in each association is shown by the role name at its end (reporter, worker, assigned_by, changed_by, uploaded_by, recipient). `Issue` owns its history, photos, assignments and notifications (composition: they are deleted with the issue), while links to `User` are plain associations, so deleting a user keeps the issues (ADR-08). `Issue.change_status()` is the single operation for changing a status. It records a `StatusHistory` entry and then saves the new status.

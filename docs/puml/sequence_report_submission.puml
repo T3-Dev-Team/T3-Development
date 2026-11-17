@@ -1,0 +1,79 @@
+@startuml sequence_report_submission
+title CityFix — Report Submission Sequence (UC-002, UC-003)
+skinparam shadowing false
+skinparam sequenceMessageAlign left
+autonumber
+
+actor Citizen
+participant ":Browser\n(report_form.js)" as FE
+participant ":GoogleMapsAPI" as GM <<external>>
+participant ":ReportView" as V
+participant ":IssueService" as S
+participant ":Cloudinary" as CL <<external>>
+database ":PostgreSQL" as DB
+
+== Choose location (UC-002, step 3) ==
+Citizen -> FE : place pin on map
+FE -> GM : reverse geocode coordinates
+alt address found
+  GM --> FE : street address
+  FE --> Citizen : show address for confirmation
+else address lookup unavailable (NF-09)
+  GM --> FE : error or timeout
+  FE --> Citizen : show error, keep entered data and pin
+end
+
+== Submit report (UC-002, step 5) ==
+Citizen -> FE : submit category, description, photos, location
+FE -> V : POST form (CSRF token)
+activate V
+V -> V : validate form
+alt category, description or location missing
+  V --> FE : re-render form with errors
+  FE --> Citizen : show what is missing, keep entered data
+else form valid
+  V -> S : find_duplicates(category, lat, lng)
+  activate S
+  S -> DB : unresolved issues, same category, within 50 m
+  DB --> S : matching issues
+  S --> V : candidates
+  deactivate S
+  opt possible duplicate found (UC-003)
+    V --> FE : page with existing report
+    FE --> Citizen : show existing report
+    Citizen -> FE : "support it" or "different problem"
+    FE -> V : POST choice
+  end
+  alt citizen supports existing report
+    V -> S : support(existing_issue)
+    activate S
+    S -> DB : increase priority
+    S --> V : updated issue
+    deactivate S
+    V --> FE : redirect with confirmation
+    FE --> Citizen : show confirmation, no new report
+  else no duplicate, or different problem
+    V -> S : create_issue(data, photos)
+    activate S
+    opt photos attached (UC-004)
+      S -> CL : upload photos
+      CL --> S : image URLs
+    end
+    S -> DB : INSERT issue (Reported), issue_photo (URLs),\nstatus_history (one transaction)
+    alt save succeeds
+      DB --> S : issue id
+      S --> V : new issue
+      deactivate S
+      V --> FE : redirect to "My reports" with confirmation
+      FE --> Citizen : show confirmation
+    else save fails
+      DB --> S : DatabaseError (transaction rolled back)
+      S --> V : save failed
+      deactivate S
+      V --> FE : error page, no confirmation
+      FE --> Citizen : report was not submitted
+    end
+  end
+end
+deactivate V
+@enduml
