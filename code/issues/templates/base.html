@@ -1,7 +1,9 @@
-{# CityFix base template (A1). Every page extends this one.
+{% comment %}
+  CityFix base template (A1). Every page extends this one.
    user.role values (users/models.py): "citizen", "worker", "admin". Sign-in and sign-out use django-allauth.
    Expected URL names (namespace issues, see issues/urls.py): map, report_create, my_reports, report_detail, assigned_issues, admin_reports,
-   statistics, notifications. Context variables: google_maps_api_key, unread_count (issues/context_processors.py). A link whose URL name does not exist yet is simply hidden. #}
+   statistics, notifications. Context variables: google_maps_api_key, unread_count (issues/context_processors.py). A link whose URL name does not exist yet is simply hidden. 
+   {% endcomment %}
 {% load static socialaccount %}<!DOCTYPE html>
 <html lang="en">
 <head>
