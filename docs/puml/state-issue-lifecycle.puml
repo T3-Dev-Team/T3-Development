@@ -1,0 +1,38 @@
+@startuml state-issue-lifecycle
+title CityFix — Issue Lifecycle
+skinparam shadowing false
+
+state "Reported" as Reported
+state "Verified" as Verified
+state "Rejected" as Rejected
+state "Duplicate" as Duplicate
+state "Assigned" as Assigned
+state "In Repair" as InRepair
+state "Resolved" as Resolved
+
+[*] --> Reported : citizen submits report [category and location given] (F-003)
+
+Reported --> Verified : administrator verifies (F-009)
+Reported --> Rejected : administrator rejects [reason entered] (F-009)
+Reported --> Duplicate : administrator marks duplicate\n[existing report selected] (F-009)
+
+Verified --> Assigned : administrator assigns worker\n[priority, deadline set;\nworker is from responsible department] (F-010)
+
+Assigned --> InRepair : worker starts repair (F-012)
+Assigned --> Resolved : worker marks resolved\n[after photo uploaded] (F-012, F-013)
+InRepair --> Resolved : worker marks resolved\n[after photo uploaded] (F-012, F-013)
+
+Assigned --> Verified : worker returns issue\n[explanation entered] (F-014)
+InRepair --> Verified : worker returns issue\n[explanation entered] (F-014)
+
+Assigned : priority raised and administrator alerted\nwhen deadline approaches without updates (F-017)
+
+Rejected --> [*]
+Duplicate --> [*]
+Resolved --> [*]
+
+note bottom of Resolved
+  Every status change is saved in the status history
+  and creates an in-app notification for the citizen (F-008).
+end note
+@enduml

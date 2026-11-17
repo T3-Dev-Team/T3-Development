@@ -1,0 +1,56 @@
+@startuml sequence-report-submission
+title CityFix — Report Submission Sequence (UC-002, UC-003)
+skinparam shadowing false
+skinparam sequenceMessageAlign left
+autonumber
+
+actor Citizen
+participant "<<UI>>\nWebClient" as FE
+participant "<<External>>\nGoogleMapsAPI" as GM
+participant "<<API>>\nBackendAPI" as BE
+database "<<Persistence>>\nDatabase" as DB
+
+== Choose location (UC-002, step 3) ==
+Citizen -> FE : place pin on map
+FE -> GM : convert coordinates to address
+alt address found
+  GM --> FE : street address
+  FE --> Citizen : show address for confirmation
+else address lookup unavailable (NF-09)
+  GM --> FE : error or timeout
+  FE --> Citizen : show error, keep entered data and pin
+end
+
+== Submit report (UC-002, step 5) ==
+Citizen -> FE : submit category, description, photos, location
+FE -> BE : POST /reports
+alt category or location missing
+  BE --> FE : 400 Bad Request (what is missing)
+  FE --> Citizen : show what is missing, keep entered data
+else data valid
+  BE -> DB : find unresolved ISSUE rows, same category_id, within 50 m (latitude, longitude)
+  DB --> BE : matching issues
+  opt possible duplicate found (UC-003)
+    BE --> FE : existing report
+    FE --> Citizen : show existing report
+    Citizen -> FE : support it, or "different problem"
+  end
+  alt citizen supports existing report
+    FE -> BE : support existing report
+    BE -> DB : increase ISSUE.priority of existing report
+    BE --> FE : 200 OK
+    FE --> Citizen : show confirmation, no new report created
+  else no duplicate, or citizen says it is a different problem
+    BE -> DB : save ISSUE (status "Reported"), ISSUE_PHOTO and STATUS_HISTORY entry
+    alt save succeeds
+      DB --> BE : report ID
+      BE --> FE : 201 Created
+      FE --> Citizen : show confirmation
+    else save fails
+      DB --> BE : DataException
+      BE --> FE : 500 Internal Server Error
+      FE --> Citizen : say report was not submitted, no confirmation
+    end
+  end
+end
+@enduml

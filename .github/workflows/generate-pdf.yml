@@ -1,0 +1,37 @@
+name: Compile Documentation PDF
+
+on:
+  workflow_dispatch:
+    inputs:
+      group_number:
+        description: "Student Group ID (e.g. G03.2)"
+        required: true
+        default: "Gxx.x"
+      app_acronym:
+        description: "App Acronym (e.g. GYMREC)"
+        required: true
+        default: "AppAcronym"
+      version:
+        description: "Deliverable Version (v1 or v2)"
+        required: true
+        default: "v1"
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Tooling
+        run: sudo apt-get update && sudo apt-get install -y pandoc plantuml wkhtmltopdf graphviz
+      - name: Inline PlantUML Compilation
+        run: |
+          mkdir -p docs/assets/diagrams
+          plantuml -tsvg docs/puml/*.puml -o "../assets/diagrams"
+      - name: Build PDF Deliverable
+        run: |
+          mkdir -p docs/deliverables
+          FILE_NAME="SE26_${{ github.event.inputs.group_number }}_${{ github.event.inputs.app_acronym }}_${{ github.event.inputs.version }}.pdf"
+          cat docs/Home.md docs/1*.md docs/2*.md docs/3*.md docs/4*.md docs/5*.md \
+              docs/6*.md docs/7*.md docs/8*.md docs/9*.md docs/A*.md docs/B*.md > docs/full-report.md
+          cd docs
+          pandoc full-report.md --from gfm --toc --toc-depth=3 --pdf-engine=wkhtmltopdf -o "deliverables/$FILE_NAME"
