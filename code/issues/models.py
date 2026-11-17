@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-
+from django.db import transaction
 # models
 class CityService(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -62,16 +62,31 @@ class Issue(models.Model):
     def __str__(self):
         return f"Issue {self.id} - {self.status}"
 
-    def change_status(self, new_status, changed_by, note=""):
-        StatusHistory.objects.create(
-            issue=self,
-            changed_by=changed_by,
-            old_status=self.status,
-            new_status=new_status,
-            note=note)
+    # def change_status(self, new_status, changed_by, note=""):
+    #     StatusHistory.objects.create(
+    #         issue=self,
+    #         changed_by=changed_by,
+    #         old_status=self.status,
+    #         new_status=new_status,
+    #         note=note)
         
-        self.status = new_status
-        self.save(update_fields=["status", "updated_at"])
+    #     self.status = new_status
+    #     self.save(update_fields=["status", "updated_at"])
+
+    def change_status(self, new_status, changed_by, note=""):
+        from .services import notify  # import aqui evita um import circular
+        with transaction.atomic():
+            StatusHistory.objects.create(
+                issue=self, 
+                changed_by=changed_by,
+                old_status=self.status,
+                new_status=new_status, 
+                note=note)
+            
+            self.status = new_status
+            self.save(update_fields=["status", "updated_at"])
+            kind = "assigned" if new_status == Issue.Status.ASSIGNED else "status_changed"
+            notify(self, self.reporter, kind)
 
 class Assignment(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE, related_name="assignments")

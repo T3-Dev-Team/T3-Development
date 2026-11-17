@@ -41,6 +41,7 @@ def my_reports(request):
     reports = (
         Issue.objects.filter(reporter=request.user)
         .select_related("category")
+        .prefetch_related("photos")
         .order_by("-created_at")
     )
     return render(request, "issues/my_reports.html", {"reports": reports})
