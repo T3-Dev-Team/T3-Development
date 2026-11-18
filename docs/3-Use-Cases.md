@@ -217,14 +217,13 @@
 | Actor | Each primary actor matches a role in 2.3: Citizen (A-01), City Worker (A-02) and Administrator (A-03). Each role performs only the use cases permitted to it (NF-06). |
 | Application | All use cases have a main flow, a result and at least one alternative or failure flow. They describe the agreed design. The implementation status of each use case is shown below and will be updated for the final review. |
 
-**Implementation status** (code at commit `77acd9b`):
+**Implementation status** (code at commit `f56182d` on the main branch):
 
 | Status | Use cases |
 | --- | --- |
-| Implemented | UC-001 Sign-In, UC-016 Delete Account |
-| Partially implemented | UC-008 (list of assigned issues sorted by deadline, no map yet), UC-009 (status changes Assigned → In Repair → Resolved with history, no comments or repair photo yet), UC-013 (assignment with worker and deadline, no priority or department filter yet), UC-014 (accounts, roles, categories and departments are managed through the Django administration site) |
-| Pages exist, not yet connected | UC-002 and UC-004 (report form with location selection and photo preview), UC-005 (map with filters), UC-006 ("My reports") |
-| Planned | UC-003, UC-007, UC-010, UC-011, UC-012, UC-015, UC-017 |
+| Implemented | UC-001 Sign-In, UC-002 Report Issue (without the duplicate check), UC-004 Attach Photo (upload to Cloudinary), UC-005 View Issue Map, UC-016 Delete Account |
+| Partially implemented | UC-006 ("My reports" list and in-app notifications, no details and history page yet), UC-008 (list of assigned issues sorted by deadline, no map yet), UC-009 (status changes Assigned → In Repair → Resolved with history and a notification, no comments or repair photo yet), UC-012 (verify or reject with a note, no duplicate marking yet), UC-013 (assignment with worker and deadline, the worker is notified, no priority or department filter yet), UC-014 (accounts, roles, categories and departments are managed through the Django administration site) |
+| Planned | UC-003, UC-007, UC-010, UC-011, UC-015, UC-017 |
 
 **Requirements without a direct actor interaction.** F-004 (address and coordinate conversion) is done by the system inside UC-002. F-008 (notifications for status change) happens in UC-006, UC-009 and UC-012. The non-functional requirements apply across all use cases.
 
