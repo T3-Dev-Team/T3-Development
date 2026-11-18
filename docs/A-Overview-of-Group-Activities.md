@@ -6,11 +6,17 @@
 
 **Objective:** Keep a brief record of project meetings and weekly coordination: who participated, what was decided, and which action followed. Record a discussion that produced no decision only if it left an important issue open.
 
-**Team member abbreviations, if used below:** [Unique short code = full name. Define each code once, before its first use. Omit this line if you write full names throughout.]
+**Team member abbreviations, if used below:** RY = Rodrigo Yañez; KT = Konstiantyn Tuirikov; MP = Mafalda Pinho; KB = Karla Barković; IJ = Iva Jončić; MS = Macarena Santana.
 
 | Date and participants | Main topic | Decision, action, or open question | Link to task or resulting work, if available |
 | --- | --- | --- | --- |
-|  |  |  |  |
+| 12.10.26 - RY, KT MP, KB, IJ, MS | Decided the team and discussed project ideas. | Project: CityFix |  |
+| 19.10.26 - RY, KT MP, KB, IJ, MS | Created Kanban, organized tasks(templates until 3), wrote them to Kanban. |  |  |
+| 01.11.26 - RY, KT MP, KB, IJ, MS | Divide work of template 4, UMLs | 4.1 RY, 4.2 MS, 4.3 RY, 4.4 KB, 4.5 IJ, 4.6 MP, 4.7 KT |  |
+| 04.11.26 - RY, KT MP, KB, IJ, MS | Frontend, Backend, Database, Host, Sign-in, Notifications and Photo Storage |  |  |
+| 11.11.26 - RY, KT MP, KB, IJ, MS |  |  |  |
+| 15.11.26 - KT MP, KB, IJ, MS | Solved teammates questions, finished template 4 until 4.4 |  |  |
+| 18.11.26 - KT MP, KB, IJ, MS | Tested our web application, wrote changes we have to do, like notifications for worker, admin views, etc.|  |  |  |
 
 Write one concise row per relevant meeting or weekly coordination entry. An assignment should name its owner; an unresolved point should say who will follow up. A meeting title alone does not show what changed. Do not copy the complete issue list or the transcript of a conversation into this log.
 
