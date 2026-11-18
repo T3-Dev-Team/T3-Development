@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views, views_admin, views_worker
+from . import views, views_admin, views_worker, views_map 
 
 app_name = "issues"
 from .views_home import home
