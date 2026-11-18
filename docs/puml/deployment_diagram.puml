@@ -7,8 +7,10 @@ node "User device" as device <<device>> {
 }
 
 cloud "Render" <<cloud>> {
-  node "Web Service\n(Python runtime)" as web <<executionEnvironment>> {
-    artifact "cityfix (Django project, code/)" as app <<artifact>>
+  node "Web Service" as web <<device>> {
+    node "Docker container\n(python:3.15-slim, gunicorn)" as container <<executionEnvironment>> {
+      artifact "cityfix (Django project, code/)" as app <<artifact>>
+    }
   }
   database "Render PostgreSQL" as db <<database>>
 }

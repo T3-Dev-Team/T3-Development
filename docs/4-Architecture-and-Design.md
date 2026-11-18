@@ -52,12 +52,12 @@ The components are logical parts of one Django project, not separately deployed 
 
 | Component | Code location | Status |
 | --- | --- | --- |
-| Web client | `code/issues/templates/`, `code/issues/static/issues/js/` | Templates exist for the map, report form, "My reports" list (UC-006, including the empty state from 1a), admin list, assignment and worker task list. HTMX is not yet used. |
-| Web views | `code/issues/views_admin.py`, `code/issues/views_worker.py`, `code/users/views.py` | Admin issue list and assignment, worker task list and status update, and account deletion are implemented. Citizen views are not yet wired in `issues/urls.py`. |
+| Web client | `code/issues/templates/`, `code/issues/static/issues/js/` | Templates for the home page, public map, report form, "My reports", notifications, admin list, review, assignment and worker task list are in use. HTMX is not yet used. |
+| Web views | `code/issues/views.py`, `code/issues/views_admin.py`, `code/issues/views_worker.py`, `code/issues/views_map.py`, `code/issues/views_home.py`, `code/users/views.py` | The public map, report creation, "My reports", notifications, admin review and assignment, worker task list and status update, and account deletion are implemented. The report details page is not yet connected. |
 | User service | `code/users/adapters.py`, `code/users/permissions.py`, `code/users/services.py` | Google sign-in, role checks and account deletion are implemented. |
-| Issue service | `code/issues/models.py` (`Issue.change_status`) | Status change with history entry is implemented. Duplicate detection and photo upload are planned. |
+| Issue service | `code/issues/services.py` (`create_report`, `upload_photo`), `code/issues/models.py` (`Issue.change_status`) | Report creation with photo upload to Cloudinary is implemented. A failed upload saves nothing. Each status change writes a history entry and a notification in one transaction. Duplicate detection is planned. |
 | Assignment service | `code/issues/views_admin.py`, `code/issues/forms.py` | Assignment is implemented. Filtering workers by department and returning an issue are planned. |
-| Notification service | `code/issues/models.py` (`Notification`) | The model exists. Notifications are not yet created. |
+| Notification service | `code/issues/services.py` (`notify`), `code/issues/views.py` | Implemented. Notifications are created for the citizen on every status change and for the worker when an issue is assigned to them, listed on the notifications page and counted in the navigation bar. |
 | Calendar sync, Weather client | — | Planned. |
 
 ## 4.3 Data and Detailed Design
@@ -111,6 +111,8 @@ The diagram covers the issue lifecycle, the central part of CityFix. A user's ro
 ![CityFix report submission sequence diagram](./assets/diagrams/sequence_report_submission.svg)  
 **PlantUML source:** [sequence_report_submission.puml](./puml/sequence_report_submission.puml)
 
+**Implementation status (checkpoint 1):** validation, photo upload to Cloudinary and saving the report are implemented as shown (`views.report_create`, `services.create_report`). Photos are uploaded before anything is saved, so a failed upload leaves no partial report. The duplicate check and supporting an existing report (UC-003) are planned. The status history starts with the first status change after the report is submitted.
+
 ### 4.4.2 Representative UML State Diagram
 
 **Objective:** Show the meaningful states of one domain object or an explicitly managed system mode, and the events or conditions that change it.
@@ -120,7 +122,7 @@ The diagram covers the issue lifecycle, the central part of CityFix. A user's ro
 ![CityFix issue lifecycle state diagram](./assets/state_issue_lifecycle.png)  
 **PlantUML source:** [state_issue_lifecycle.puml](./puml/state_issue_lifecycle.puml)
 
-**Implementation status (checkpoint 1):** the transitions Verified → Assigned (`views_admin.assign_issue`) and Assigned → In Repair → Resolved (`views_worker.update_task_status`) are implemented. The "after" photo condition, returning an issue, validation by the Administrator and notifications are planned.
+**Implementation status (checkpoint 1):** the transitions Reported → Verified and Reported → Rejected (`views_admin.review_issue`), Verified → Assigned (`views_admin.assign_issue`) and Assigned → In Repair → Resolved (`views_worker.update_task_status`) are implemented. Every status change creates a notification for the citizen. Marking a duplicate, the "after" photo condition and returning an issue are planned.
 
 ## 4.5 Architecture Decision Records
 
