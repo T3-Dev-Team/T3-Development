@@ -6,4 +6,10 @@
 {% if not user.is_authenticated %}
 <p>Sign in with Google to get started.</p>
 {% endif %}
+<p class="home-actions">
+  {% url 'issues:map' as map_url %}{% if map_url %}<a class="btn" href="{{ map_url }}">View the map</a>{% endif %}
+  {% if user.is_authenticated %}
+    {% url 'issues:report_create' as create_url %}{% if create_url %}<a class="btn secondary" href="{{ create_url }}">Report an issue</a>{% endif %}
+  {% endif %}
+</p>
 {% endblock %}
