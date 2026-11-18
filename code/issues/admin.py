@@ -17,6 +17,7 @@ class IssueAdmin(admin.ModelAdmin):
     list_display = ("id", "category", "status", "district", "reporter", "created_at")
     list_filter = ("status", "category", "district")
     search_fields = ("description", "address")
+    readonly_fields = ("status",)
 
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):

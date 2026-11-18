@@ -1,7 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Issues to assign · CityFix{% endblock %}
 {% block content %}
-  <h1>Issues waiting for assignments</h1>
+  <h1>Reports</h1>
+
+  <h2>New reports</h2>
+  <ul>
+    {% for issue in new_issues %}
+      <li>
+        {{ issue.id }} - {{ issue.category }} — {{ issue.description }} - {{ issue.created_at }}
+        <form method="post" action="{% url 'issues:review_issue' issue.pk %}">
+          {% csrf_token %}
+          <input type="text" name="note" placeholder="Reason (if rejecting)">
+          <button type="submit" name="action" value="verify">Verify</button>
+          <button type="submit" name="action" value="reject">Reject</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No new reports.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Verified - waiting for assignment</h2>
   <ul>
     {% for issue in issues %}
       <li>{{ issue.id }} - {{ issue.category }} — {{ issue.description }} - {{ issue.district|default:"Not specified" }} - {{ issue.created_at }} <a href="{% url 'issues:assign_issue' issue.id %}">Assign</a></li>
