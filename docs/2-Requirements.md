@@ -108,20 +108,20 @@ The requirements follow from the problems described in [1.1](./1-Project-Scope.m
 
 **Objective:** Show where important requirements are described in use cases, where relevant, and where they are checked.
 
-The status reflects the code on 25.10.2026.
+The status reflects the code at commit `f56182d` on the main branch.
 
 | Requirement ID | Use case or design location | Test or verification location | Status |
 | --- | --- | --- | --- |
 | F-001 | UC-001 | Manual check: sign in with a Google account | Implemented – not tested yet |
 | F-002 | UC-001, UC-014 | Planned – testing phase | Partially implemented – an account created with the same email is linked on Google sign-in. Departments are not yet assigned |
-| F-003 | UC-002, UC-004 | Planned – testing phase | In progress – report form and location selection (`report_form.html`, `report_form.js`) exist. Saving is not yet connected |
-| F-004 | UC-002 | Planned – testing phase | In progress – address suggestions and reverse geocoding exist in `report_form.js` |
+| F-003 | UC-002, UC-004 | Unit tests: `code/issues/tests.py` (`ReportCreateTests`) | Implemented – report form, location selection and photo upload to Cloudinary (`views.report_create`, `services.create_report`). 6 tests pass |
+| F-004 | UC-002 | Manual check in the report form | Implemented – not tested yet (address suggestions and reverse geocoding in `report_form.js`) |
 | F-005 | UC-003 | Planned – testing phase | Pending – not tested yet |
-| F-006 | UC-005 | Planned – testing phase | In progress – map with filters and grouped markers (`map.html`, `issues_map.js`) exists. The page is not yet connected to a URL |
-| F-007 | UC-006 | Planned – testing phase | In progress – "My reports" page (`my_reports.html`) exists. The page is not yet connected to a URL |
-| F-008 | UC-006, UC-009, UC-012 | Planned – testing phase | Pending – not tested yet |
-| F-009 | UC-012 | Planned – testing phase | Pending – not tested yet |
-| F-010 | UC-013 | Planned – testing phase | Partially implemented – assignment with worker and deadline (`views_admin.assign_issue`). Priority and department filter are missing |
+| F-006 | UC-005 | Unit tests: `code/issues/test_map_view.py` (`MapViewTests`) | Implemented – public map at `/map/` with category, status and date range filters, reset, grouped markers and an empty-result message (`views_map.map_view`, `map.html`, `issues_map.js`). Rejected and duplicate reports are hidden. 3 tests pass |
+| F-007 | UC-006 | Unit tests: `code/issues/tests.py` (`MyReportsTests`) | Partially implemented – "My reports" list (`views.my_reports`) shows only the citizen's own reports. The report details and history page is missing |
+| F-008 | UC-006, UC-009, UC-012 | Unit tests: `code/issues/tests.py` (`NotificationTests`) | Implemented – `Issue.change_status()` creates a notification in the same transaction. Notifications page and unread counter in the navigation bar (`services.notify`, `views.notifications`). 6 tests pass |
+| F-009 | UC-012 | Planned – testing phase | Partially implemented – the Administrator verifies or rejects a report with a note (`views_admin.review_issue`). Marking a report as a duplicate is missing |
+| F-010 | UC-013 | Planned – testing phase | Partially implemented – assignment with worker and deadline, and the worker is notified (`views_admin.assign_issue`). Priority and department filter are missing |
 | F-011 | UC-008 | Planned – testing phase | Partially implemented – list of assigned issues sorted by deadline (`views_worker.worker_task_list`). Map view is missing |
 | F-012 | UC-009 | Planned – testing phase | Partially implemented – status changes Assigned → In Repair → Resolved with history (`views_worker.update_task_status`). Comments are missing |
 | F-013 | UC-006, UC-007, UC-009, UC-010 | Planned – testing phase | Pending – not tested yet |
@@ -130,26 +130,7 @@ The status reflects the code on 25.10.2026.
 | F-016 | UC-008, UC-013 | Planned – testing phase | Pending – not tested yet |
 | F-017 | UC-017 | Planned – testing phase | Pending – not tested yet |
 | F-018 | UC-007 | Planned – testing phase | Pending – not tested yet |
-| F-019 | UC-015 | Planned – testing phase | Pending – not tested yet |
-| F-020 | UC-014 | Planned – testing phase | Pending – not tested yet |
-| F-021 | UC-016 | Planned – testing phase | Implemented – not tested yet (`users/views.py`, `users/services.py`) |
-| NF-01 | UC-002, UC-004 | Planned – testing phase | Pending – not tested yet |
-| NF-02 | UC-005 | Planned – testing phase | Pending – not tested yet |
-| NF-03 | UC-001, UC-005, UC-006 | Planned – testing phase | Pending – not tested yet |
-| NF-04 | UC-004, UC-005 | Planned – testing phase | Pending – not tested yet |
-| NF-05 | UC-001 | Planned – testing phase | Pending – not tested yet |
-| NF-06 | UC-001, UC-014 | Unit tests: `code/users/tests.py` (`RolePermissionTests`) | Passed – 6 role-permission tests (whole suite 9/9), 25.10.2026, commit 77acd9b. Checks with the real views are pending |
-| NF-07 | UC-005 | Planned – testing phase | Pending – not tested yet |
-| NF-08 | UC-002, UC-006, UC-009 | Planned – testing phase | Pending – not tested yet |
-| NF-09 | UC-002 | Planned – testing phase | Pending – not tested yet |
-| NF-10 | UC-002 | Planned – testing phase | Pending – not tested yet |
-| NF-11 | UC-006, UC-009, UC-012, UC-013 | Planned – testing phase | Pending – not tested yet |
-| NF-12 | All use cases | Planned – testing phase | Pending – not tested yet |
-| NF-13 | UC-002, UC-006 | Planned – testing phase | Pending – not tested yet |
-| NF-14 | All use cases | Planned – testing phase | Pending – not tested yet |
-| NF-15 | Project-wide (repository) | Planned – testing phase | Pending – not tested yet |
-
----
+| F-019
 
 ## 2.7 Review of Requirements
 
