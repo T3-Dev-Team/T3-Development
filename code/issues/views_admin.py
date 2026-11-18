@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import AssignmentForm
 from users.models import Role
 from users.permissions import role_required
-from .models import Issue
+from .models import Issue, Notification
+from .services import notify
 from django.views.decorators.http import require_POST
 
 @role_required(Role.ADMIN)
@@ -22,6 +23,7 @@ def assign_issue(request, pk):
             assignment.issue = issue
             assignment.assigned_by = request.user
             assignment.save()
+            notify(issue, assignment.worker, Notification.NotificationType.ASSIGNED)
             issue.change_status(Issue.Status.ASSIGNED, request.user, note="Issue assigned to worker")
             return redirect("issues:admin_reports")
     else:
