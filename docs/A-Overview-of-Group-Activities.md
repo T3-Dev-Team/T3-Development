@@ -11,7 +11,7 @@
 | Date and participants | Main topic | Decision, action, or open question | Link to task or resulting work, if available |
 | --- | --- | --- | --- |
 | 12.10.26 - RY, KT MP, KB, IJ, MS | Decided the team and discussed project ideas. | Project: CityFix |  |
-| 19.10.26 - RY, KT MP, KB, IJ, MS | Created Kanban, organized tasks(templates until 3), wrote them to Kanban. |  |  |
+| 19.10.26 - RY, KT MP, KB, IJ, MS | Created Kanban, organized tasks (templates until 3), wrote them to Kanban. | Section 1: IJ, KT; Section 2: KB, MS; Section 3: MP, RY |  |
 | 01.11.26 - RY, KT MP, KB, IJ, MS | Divide work of template 4, UMLs | 4.1 RY, 4.2 MS, 4.3 RY, 4.4 KB, 4.5 IJ, 4.6 MP, 4.7 KT |  |
 | 04.11.26 - RY, KT MP, KB, IJ, MS | Frontend, backend, database, hosting, sign-in, notifications and photo storage | One Django backend with templates + HTMX, PostgreSQL, Render hosting, Google-only sign-in, in-app notifications only, photos on Cloudinary. Division of work: RY (D1) users, roles and Google sign-in; MS (D2) issue, category and assignment models, Django admin, admin and worker views; MP (D3) citizen report flow and notifications; KB (A1) templates, navbar and Google Maps JavaScript; KT (A2) deployment on Render, credentials and testing; IJ (A3) documentation and coordination. | ADR-01 to ADR-07 (section 4.5) |
 | 11.11.26 - RY, KT MP, KB, IJ, MS | Check organization and workflow |  |  |
@@ -41,12 +41,12 @@ Write one concise row per relevant meeting or weekly coordination entry. An assi
 | Week 6 (09–15.11.26) | Users and Google sign-in; data model; admin and worker views; templates | RY (D1), MS (D2), KB (A1) | PR #50, #52, #53 |
 | Week 7 (16–20.11.26) | Citizen flow and notifications; map; deployment on Render; documentation up to 4.4; first functional version | MP (D3), KB (A1), MS + KT (deploy), IJ (docs) | PR #63, #64, #65, #66 |
 | Week 8 (23-27.11.26) | - | - | - |
-| Week 9 () |  |  |  |
-| Week 10 () |  |  |  |
-| Week 11 () |  |  |  |
-| Week 12 () |  |  |  |
-| Week 13 () |  |  |  |
-| Week 14 () |  |  |  |
+| Week 9 () | - | - | - |
+| Week 10 () | - | - | - |
+| Week 11 () | - | - | - |
+| Week 12 () | - | - | - |
+| Week 13 () | - | - | - |
+| Week 14 () | - | - | - |
 
 Keep the plan at a useful weekly level when a table is used; revise it when priorities change. If you use member abbreviations, define them in A.1 and use them consistently here; extend a code if two members share the same initials. The plan is not evidence that planned work was completed. Only the 8th and 14th weeks are formal course checkpoints; ordinary meetings and internal plans are not additional hand-ins.
 
