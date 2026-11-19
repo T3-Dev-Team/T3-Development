@@ -37,7 +37,7 @@ The application runs as a Docker container on Render, with a PostgreSQL database
 **Prerequisites:** Python 3.12 or newer and Git. Without a database URL the application uses a local SQLite database, so PostgreSQL is not needed for local development.
 
 ```bash
-git clone <repository URL>
+git clone https://github.com/T3-Dev-Team/T3-Development
 cd T3-Development/code
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
