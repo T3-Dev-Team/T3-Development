@@ -10,13 +10,13 @@
 
 | Date and participants | Main topic | Decision, action, or open question | Link to task or resulting work, if available |
 | --- | --- | --- | --- |
-| 12.10.26 - RY, KT MP, KB, IJ, MS | Decided the team and discussed project ideas. | Project: CityFix |  |
-| 19.10.26 - RY, KT MP, KB, IJ, MS | Created Kanban, organized tasks (templates until 3), wrote them to Kanban. | Section 1: IJ, KT; Section 2: KB, MS; Section 3: MP, RY |  |
-| 01.11.26 - RY, KT MP, KB, IJ, MS | Divide work of template 4, UMLs | 4.1 RY, 4.2 MS, 4.3 RY, 4.4 KB, 4.5 IJ, 4.6 MP, 4.7 KT |  |
-| 04.11.26 - RY, KT MP, KB, IJ, MS | Frontend, backend, database, hosting, sign-in, notifications and photo storage | One Django backend with templates + HTMX, PostgreSQL, Render hosting, Google-only sign-in, in-app notifications only, photos on Cloudinary. Division of work: RY (D1) users, roles and Google sign-in; MS (D2) issue, category and assignment models, Django admin, admin and worker views; MP (D3) citizen report flow and notifications; KB (A1) templates, navbar and Google Maps JavaScript; KT (A2) deployment on Render, credentials and testing; IJ (A3) documentation and coordination. | ADR-01 to ADR-07 (section 4.5) |
-| 11.11.26 - RY, KT MP, KB, IJ, MS | Check organization and workflow |  |  |
+| 12.10.26 - RY, KT MP, KB, IJ, MS | Decided the team and discussed project ideas. | Project: CityFix | Section 1](./1-Project-Scope.md) |
+| 19.10.26 - RY, KT MP, KB, IJ, MS | Created Kanban, organized tasks (templates until 3), wrote them to Kanban. | Section 1: IJ, KT; Section 2: KB, MS; Section 3: MP, RY | [Sections 1–3](./1-Project-Scope.md) |
+| 01.11.26 - RY, KT MP, KB, IJ, MS | Divide work of template 4, UMLs | 4.1 RY, 4.2 MS, 4.3 RY, 4.4 KB, 4.5 IJ, 4.6 MP, 4.7 KT | [Section 4](./4-Architecture-and-Design.md) |
+| 04.11.26 - RY, KT MP, KB, IJ, MS | Frontend, backend, database, hosting, sign-in, notifications and photo storage | One Django backend with templates + HTMX, PostgreSQL, Render hosting, Google-only sign-in, in-app notifications only, photos on Cloudinary. Division of work: RY (D1) users, roles and Google sign-in; MS (D2) issue, category and assignment models, Django admin, admin and worker views; MP (D3) citizen report flow and notifications; KB (A1) templates, navbar and Google Maps JavaScript; KT (A2) deployment on Render, credentials and testing; IJ (A3) documentation and coordination. | ADR-01 to ADR-07 [ADRs, section 4.5](./4-Architecture-and-Design.md#45-architecture-decision-records) |
+| 11.11.26 - RY, KT MP, KB, IJ, MS | Check organization and workflow | - | - |
 | 15.11.26 - KT MP, KB, IJ, MS | Open questions per role, finished template 4 until 4.7 | Deployment with Google login on Render is the priority (KT, RY). MS builds the worker status update. KB provides base.html and the navbar URL names. | PR #50, PR #52 |
-| 18.11.26 - KT MP, KB, IJ, MS | Testing the deployed application | MS: admin verify/reject and worker notification. KB: map view. KT: Render on main + environment variables. RY: disable email-only sign-up. | PR #64, #65, #66 |
+| 18.11.26 - KT MP, KB, IJ, MS | Testing the deployed application | MS: admin verify/reject and worker notification. KB: map view. KT: Render on main + environment variables. RY: disable email-only sign-up. | PR #64, #65, #66; [Section 4.4](./4-Architecture-and-Design.md#44-runtime-behavior)|
 
 Write one concise row per relevant meeting or weekly coordination entry. An assignment should name its owner; an unresolved point should say who will follow up. A meeting title alone does not show what changed. Do not copy the complete issue list or the transcript of a conversation into this log.
 
