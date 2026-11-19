@@ -79,7 +79,7 @@ Team TG01.3 – T3-Development
 | Member | Main role or contribution |
 | --- | --- |
 | Rodrigo Yañez |  |
-| Macarena Santana | Team leader |
+| Macarena Santana Mardones | Team leader |
 | Mafalda Pinho |  |
 | Karla Barković |  |
 | Konstiantyn Tiurikov |  |
