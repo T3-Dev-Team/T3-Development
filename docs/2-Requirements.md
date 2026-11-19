@@ -99,8 +99,15 @@ The requirements follow from the problems described in [1.1](./1-Project-Scope.m
 | Date | Requirement ID | Change and reason | Agreed with / evidence |
 | --- | --- | --- | --- |
 | 16.10.2026 | NF-12 | All functionality is implemented as a responsive web application. The teaching assistant recommended a web application to keep the architecture consistent. | Teaching assistant (proposal feedback, 16.10.2026) |
-| 25.10.2026 | NF-04 | Priority lowered from High to Low. Automatic blurring of faces and license plates will be implemented only if time allows (C-08). | Team decision (25.10.2026) |
-| 25.10.2026 | F-021 | Account deletion is available to all roles, not only to citizens, because City Workers and Administrators also have personal data covered by GDPR. The last active Administrator cannot be deleted, so the system always keeps someone who can manage accounts. | Team decision, implemented in `code/users/views.py` and `code/users/services.py` |
+| 25.10.2026 | NF-04 | Priority lowered from High to Low. Automatic blurring of faces and license plates will be implemented only if time allows (C-08). | Team decision, after a conversation with the teaching assistant |  
+| 25.10.2026 | F-021 | Account deletion is available to all roles, not only to citizens, because City Workers and Administrators also have personal data covered by GDPR. The last active Administrator cannot be deleted, so the system always keeps someone who can manage accounts. | Implemented in `code/users/views.py` and `code/users/services.py` |
+| Initial version | NF-03 | Added by the team: a response-time target for common requests, so that performance can be checked with a load test. | Team decision |
+| Initial version | NF-08 | Added by the team: reports, status changes and comments must survive a server restart, because the city relies on the report history. | Team decision |
+| Initial version | NF-14 | Added by the team: an accessibility target (WCAG 2.1 AA, Lighthouse score of at least 90) for the main pages. | Team decision |
+| Initial version | NF-15 | Added by the team: at least 60% backend test coverage and a reviewed pull request for every change. | Team decision |
+| Initial version | A-01 | Added by the team: citizens are assumed to have a device with a camera, an internet connection and a Google account. | Team decision |
+| Initial version | A-03 | Added by the team: the free limits of the Google and weather APIs are assumed to be enough for the demo and testing. | Team decision |
+| Initial version | A-05 | Added by the team: face and license plate detection is assumed to reach the 90% target in NF-04. | Team decision |
 
 ---
 
@@ -130,7 +137,26 @@ The status reflects the code at commit `f56182d` on the main branch.
 | F-016 | UC-008, UC-013 | Planned – testing phase | Pending – not tested yet |
 | F-017 | UC-017 | Planned – testing phase | Pending – not tested yet |
 | F-018 | UC-007 | Planned – testing phase | Pending – not tested yet |
-| F-019
+| F-019 | UC-015 | Planned – testing phase | Pending – not tested yet |
+| F-020 | UC-014 | Planned – testing phase | Pending – not tested yet |
+| F-021 | UC-016 | Planned – testing phase | Implemented – not tested yet (`users/views.py`, `users/services.py`) |
+| NF-01 | UC-002, UC-004 | Planned – testing phase | Pending – not tested yet |
+| NF-02 | UC-005 | Planned – testing phase | Pending – not tested yet |
+| NF-03 | UC-001, UC-005, UC-006 | Planned – testing phase | Pending – not tested yet |
+| NF-04 | UC-004, UC-005 | Planned – testing phase | Pending – not tested yet |
+| NF-05 | UC-001 | Planned – testing phase | Pending – not tested yet |
+| NF-06 | UC-001, UC-014 | Unit tests: `code/users/tests.py` (`RolePermissionTests`) | Passed – 6 role-permission tests (whole suite 25/25, commit f56182d). Checks with the real views are pending |
+| NF-07 | UC-005 | Unit tests: `code/issues/test_map_view.py` (`MapViewTests`) | Passed – the map data contains no reporter name or email. Check while signed out in the browser is pending |
+| NF-08 | UC-002, UC-006, UC-009 | Planned – testing phase | Pending – not tested yet |
+| NF-09 | UC-002 | Planned – testing phase | Pending – not tested yet |
+| NF-10 | UC-002 | Planned – testing phase | Pending – not tested yet |
+| NF-11 | UC-006, UC-009, UC-012, UC-013 | Planned – testing phase | Pending – not tested yet |
+| NF-12 | All use cases | Planned – testing phase | Pending – not tested yet |
+| NF-13 | UC-002, UC-006 | Planned – testing phase | Pending – not tested yet |
+| NF-14 | All use cases | Planned – testing phase | Pending – not tested yet |
+| NF-15 | Project-wide (repository) | Planned – testing phase | Pending – not tested yet |
+
+---
 
 ## 2.7 Review of Requirements
 
@@ -138,5 +164,5 @@ The status reflects the code at commit `f56182d` on the main branch.
 
 | Checkpoint | Feedback or finding | Resulting requirement or scope decision |
 | --- | --- | --- |
-| Week 7 – first review | Pending – no feedback recorded yet. | Pending – no decision yet, see 2.5. |
+| Week 7 – first review (teaching assistant, 19.11.2026) | Requirements and constraints with "Team decision" as their source should be tracked in 2.5 and confirmed by someone. The use case and class diagrams should be PlantUML models, like the component diagram. README.md and Home.md should be filled in. | Every requirement with "Team decision" as its source is recorded in 2.5 and confirmed by the team. The use case, class and ER diagrams were converted to PlantUML (see [3.1](./3-Use-Cases.md) and [4.3](./4-Architecture-and-Design.md)). README.md and Home.md were filled in. |
 | Week 14 – final review | Pending – no feedback recorded yet. | Pending – no decision yet, see 2.5. |

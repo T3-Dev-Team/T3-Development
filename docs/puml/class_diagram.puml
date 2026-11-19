@@ -1,0 +1,124 @@
+@startuml class_diagram
+title CityFix — Class Diagram (issue lifecycle)
+hide circle
+hide empty methods
+skinparam classAttributeIconSize 0
+skinparam minClassWidth 240
+skinparam ranksep 110
+skinparam nodesep 90
+skinparam classBackgroundColor #ffffff
+skinparam classBorderColor #555555
+skinparam classHeaderBackgroundColor<<enumeration>> #f5f5f5
+skinparam noteBackgroundColor #fff2cc
+skinparam noteBorderColor #d6b656
+
+class Notification #d5e8d4 {
+  - type : NotificationType
+  - is_read : Boolean
+  - created_at : DateTime
+}
+class IssuePhoto #d5e8d4 {
+  - image_url : URL
+  - kind : PhotoKind
+  - uploaded_at : DateTime
+}
+class StatusHistory #d5e8d4 {
+  - old_status : IssueStatus
+  - new_status : IssueStatus
+  - note : String
+  - changed_at : DateTime
+}
+class Assignment #d5e8d4 {
+  - deadline : DateTime
+  - assigned_at : DateTime
+  - returned_at : DateTime [0..1]
+  - return_reason : String
+}
+class User {
+  - google_sub : String {unique}
+  - email : String {unique}
+  - name : String
+  - role : Role
+  - is_active : Boolean
+  / is_staff : Boolean
+}
+
+class CityService {
+  - name : String {unique}
+}
+class Category {
+  - name : String {unique}
+}
+class District {
+  - name : String {unique}
+}
+
+class Issue #e1d5e7 {
+  - description : String
+  - latitude : Float
+  - longitude : Float
+  - address : String
+  - status : IssueStatus
+  - priority : Integer
+  - created_at : DateTime
+  - updated_at : DateTime
+  + change_status(new_status : IssueStatus, changed_by : User, note : String) : void
+}
+
+
+enum Role <<enumeration>> {
+  CITIZEN
+  WORKER
+  ADMIN
+}
+enum IssueStatus <<enumeration>> {
+  REPORTED
+  VERIFIED
+  REJECTED
+  DUPLICATE
+  ASSIGNED
+  IN_REPAIR
+  RESOLVED
+}
+enum PhotoKind <<enumeration>> {
+  BEFORE
+  AFTER
+}
+enum NotificationType <<enumeration>> {
+  STATUS_CHANGED
+  ASSIGNED
+  RETURNED
+}
+
+CityService "1" -- "0..*" Category : handles
+Category "1" -- "0..*" Issue : classifies
+District "0..1" -- "0..*" Issue : located in
+Issue "0..*" -- "0..1\noriginal" Issue : duplicate of
+Issue "1" *-- "0..*" Notification : notifies
+Issue "1" *-- "0..*" IssuePhoto : has
+Issue "1" *-- "0..*" StatusHistory : logs
+Issue "1" *-- "0..*" Assignment : assigned via
+
+
+
+Issue "0..*" -- "0..1\nreporter" User : reports
+IssuePhoto "0..*" -- "0..1\nuploaded_by" User : uploads
+Assignment "0..*" -- "0..1\nworker" User : works on
+Assignment "0..*" -- "0..1\nassigned_by" User : assigns
+StatusHistory "0..*" -- "0..1\nchanged_by" User : changes
+
+Notification "0..*" -- "0..1\nrecipient" User : receives
+User ..> Role
+Issue ..> IssueStatus
+IssuePhoto ..> PhotoKind
+Notification ..> NotificationType
+
+note right of User
+  A user's role can change (an Administrator
+  turns a citizen into a City Worker), so it is
+  modelled as the Role enumeration, not as
+  inheritance. In the code, Citizen, CityWorker
+  and Admin are Django proxy classes of User
+  that only filter users by role and add no data.
+end note
+@enduml

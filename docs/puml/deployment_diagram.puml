@@ -26,9 +26,9 @@ node "Weather API" as weather
 browser --> app : HTTPS (HTML pages, form posts)
 browser --> maps : HTTPS (map tiles, geocoding)
 browser --> cdn : HTTPS (photo display)
-app --> db : PostgreSQL protocol (DATABASE_URL)
+app --> db : PostgreSQL\n(DATABASE_URL)
 app --> oauth : HTTPS (sign-in callback)
 app --> gcal : HTTPS (create event)
 app --> cdn : HTTPS (photo upload)
-app --> weather : HTTPS (forecast)
+app --> weather : HTTPS\n(forecast)
 @enduml

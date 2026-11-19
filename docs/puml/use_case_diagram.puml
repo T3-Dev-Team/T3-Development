@@ -1,0 +1,74 @@
+@startuml use_case_diagram
+title CityFix — Use Case Diagram
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle default
+skinparam usecaseBackgroundColor #ffffff
+skinparam usecaseBorderColor #000000
+skinparam rectangleBackgroundColor #e6f2f8
+skinparam rectangleBorderColor #6b8bc9
+skinparam ranksep 60
+skinparam nodesep 18
+skinparam linetype polyline
+
+actor "User" as User
+actor "Citizen" as Citizen
+actor "City Worker" as Worker
+actor "Administrator" as Admin
+User <|-- Citizen
+User <|-- Worker
+User <|-- Admin
+
+actor "Google Sign-In" as GID <<external>>
+actor "Google\nMaps API" as MAPS <<external>>
+actor "Weather API" as WX <<external>>
+actor "Google\nCalendar API" as CAL <<external>>
+
+rectangle "CityFix" {
+  usecase "UC-001 Sign In\n(F-001, F-002)" as UC1
+  usecase "UC-016 Delete Account\n(F-021)" as UC16
+  usecase "UC-002 Report Issue\n(F-003, F-004)\n--\nextension points:\nattach photo" as UC2
+  usecase "UC-003 Detect Duplicate Issue\n(F-005)" as UC3
+  usecase "UC-004 Attach Photo\n(F-003)" as UC4
+  usecase "UC-005 View Issue Map\n(F-006)" as UC5
+  usecase "UC-006 Track Issue Status\n(F-007, F-008, F-013)" as UC6
+  usecase "UC-007 Confirm Resolution and Rate\n(F-013, F-018)" as UC7
+  usecase "UC-008 View Assigned Issues\n(F-011, F-016)" as UC8
+  usecase "UC-009 Update Issue Status\n(F-008, F-012, F-013)\n--\nextension points:\nresolve issue" as UC9
+  usecase "UC-010 Upload Repair Photo\n(F-013)" as UC10
+  usecase "UC-011 Return Issue\n(F-014)" as UC11
+  usecase "UC-012 Validate Report\n(F-008, F-009)" as UC12
+  usecase "UC-013 Assign Issue\n(F-010, F-015, F-016)" as UC13
+  usecase "UC-014 Manage Accounts and Departments\n(F-002, F-020)" as UC14
+  usecase "UC-015 View Statistics and Heatmap\n(F-019)" as UC15
+  usecase "UC-017 Define Time Settings\n(F-017)" as UC17
+}
+
+User -- UC1
+User -- UC16
+Citizen -- UC2
+Citizen -- UC5
+Citizen -- UC6
+Citizen -- UC7
+Worker -- UC8
+Worker -- UC9
+Worker -- UC11
+Admin -- UC12
+Admin -- UC13
+Admin -- UC14
+Admin -- UC15
+Admin -- UC17
+
+UC2 ..> UC3 : <<include>>
+UC2 <.. UC4 : <<extend>>\n[photo added]
+UC9 <.. UC10 : <<extend>>\n[status = Resolved]
+
+UC1 --- GID
+UC2 --- MAPS
+UC5 --- MAPS
+UC8 --- MAPS
+UC15 --- MAPS
+UC8 --- WX
+UC13 --- WX
+UC13 --- CAL
+@enduml
