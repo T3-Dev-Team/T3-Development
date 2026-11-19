@@ -2,7 +2,7 @@
 
 **Objective:** Design and explain the application's boundary, main choices, parts, data, and important behavior. Start with an architecture that guides implementation. Revise it when design decisions change. At the final review, the descriptions and diagrams should explain the application that was actually built.
 
-This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md), and the deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). The component and sequence diagrams have PlantUML sources in [`docs/puml/`](./puml/), and the state diagram source is [`state_issue_lifecycle.puml`](./puml/state_issue_lifecycle.puml). The ER and class diagrams are drawn in draw.io. Their editable sources are `.drawio.svg` files in [`docs/assets/`](./assets/), shown here as PNG images.
+This page contains the UML component, class, sequence and state diagrams and the ER data model of CityFix. The use case diagram is in [3. Use Cases](./3-Use-Cases.md), and the deployment diagram belongs in [6. Deployment](./6-Deployment-Installation-and-Configuration.md). All diagrams are PlantUML models. Each diagram has its source in [`docs/puml/`](./puml/) and its image in [`docs/assets/diagrams/`](./assets/diagrams/).
 
 | View | Main question |
 | --- | --- |
@@ -22,7 +22,7 @@ This page contains the UML component, class, sequence and state diagrams and the
 | One Django backend, organised as separate apps (`users`, `issues`), with server-rendered Django templates | Separately deployed services, or a separate frontend and API | Citizens, City Workers and Administrators all work on the same issues, so one deployable keeps authentication, permissions and data in one place and is manageable for a team of six. A backend failure interrupts every role, and all apps share one codebase and release cycle. See ADR-01, ADR-02. |
 | Relational database through the Django ORM and migrations: SQLite for local development, PostgreSQL in production | Document-oriented storage | An issue is explicitly linked to its reporter, category, district, photos, status history and assignments. A relational schema enforces these links and supports the statistics use case (UC-015). Every schema change needs a migration the team must coordinate. The custom user model had to exist before the first migration. See ADR-03. |
 | Google sign-in (OIDC via django-allauth) as the only way to log in | Own email and password accounts | Citizens report without another password, and CityFix stores none (C-01). `google_sub` identifies the person even if the email changes. CityFix depends on Google's availability and every user needs a Google account. Workers and admins are created by an Administrator with their email and linked on first sign-in. See ADR-04. |
-| One `User` table with a `role` column. `Citizen`, `CityWorker` and `Admin` are proxy subclasses | One table per subclass (multi-table inheritance) | Django needs one user model for authentication, and every foreign key to a user (reporter, worker, changed by) stays simple. The class diagram (§4.3.2) shows the subclasses. The ER diagram (§4.3.1) maps them to one USER table. Role-specific columns such as `service_id` stay empty for other roles, and the rules per role are enforced in code (`users/permissions.py`: role mixins and the `role_required` decorator), not by the database. |
+| One `User` table with a `role` column. `Citizen`, `CityWorker` and `Admin` are proxy subclasses | One table per subclass (multi-table inheritance) | Django needs one user model for authentication, and every foreign key to a user (reporter, worker, changed by) stays simple. The class diagram (§4.3.2) models the role as the `Role` enumeration, and the ER diagram (§4.3.1) maps all roles to one USER table. Role-specific columns such as `service_id` stay empty for other roles, and the rules per role are enforced in code (`users/permissions.py`: role mixins and the `role_required` decorator), not by the database. |
 | Account deletion removes the user row. Foreign keys to users are nullable with `SET_NULL` | Cascade delete, or keeping the row and blanking its fields | Personal data must disappear while reports stay part of the city's record (F-021). Deleting the row guarantees no personal data remains. Every user foreign key must be declared `null=True, on_delete=SET_NULL`, and old reports and assignments lose their author or worker. See ADR-08. |
 | Status changes and assignments stored as their own records (STATUS_HISTORY, ASSIGNMENT) beside the current `status` on the issue | Only a current status and assigned worker on the issue | Status tracking and statistics need to know who changed what and when, and a returned assignment keeps its reason before the issue goes to another worker. Every change needs extra writes, which must happen in the same transaction as the status update so the issue and its history never disagree. |
 | Photos, maps, calendar and weather come from external services called from isolated components | Building or hosting these features ourselves | Saves development time and storage. Each integration needs a defined fallback when the service is unavailable (NF-09, UC-008 2a, UC-013 5a). See ADR-05 and §4.6. |
@@ -69,8 +69,10 @@ The components are logical parts of one Django project, not separately deployed 
 **Objective:** Show the important stored entities, their identifiers and relationships, and enough attributes to explain the application's data. The ER diagram is separate from the representative UML class diagram below.
 
 **ER diagram:**  
-![CityFix ER diagram](./assets/er_diagram.png)  
-**Diagram source (draw.io):** [er_diagram.drawio.svg](./assets/er_diagram.drawio.svg)  
+![CityFix ER diagram](./assets/diagrams/er_diagram.svg)  
+**PlantUML source:** [er_diagram.puml](./puml/er_diagram.puml)
+
+
 **Implementation:** Django models in [`code/users/models.py`](../code/users/models.py) and [`code/issues/models.py`](../code/issues/models.py). The schema is created by the migrations in `code/users/migrations/` and `code/issues/migrations/`.
 
 | Entity | Purpose |
@@ -85,15 +87,18 @@ The components are logical parts of one Django project, not separately deployed 
 | ASSIGNMENT | Assignment of an issue to a worker with a deadline. A returned assignment keeps `returned_at` and `return_reason` (F-014), so an issue can have several assignments over time. |
 | NOTIFICATION | In-app notification for a user about an issue (F-008). |
 
-Attributes marked *planned* in the diagram are part of the design but not yet in the models: `USER.service_id` (F-010), `CATEGORY.default_resolution_days` (F-017) and `ISSUE.rating` (F-018).
+Attributes marked *(planned)* in the diagram are part of the design but not yet in the models: `USER.service_id` (F-010), `CATEGORY.default_resolution_days` (F-017) and `ISSUE.rating` (F-018).
 
 ### 4.3.2 Representative UML Class Diagram
 
 **Objective:** Before implementing a representative part of the system, model the classes or interfaces needed to assign responsibilities, operations, and relationships. Revise the design when those choices change.
 
 **Class diagram:**  
-![CityFix class diagram](./assets/class_diagram.png)  
-**Diagram source (draw.io):** [class_diagram.drawio.svg](./assets/class_diagram.drawio.svg)  
+
+
+![CityFix class diagram](./assets/diagrams/class_diagram.svg)  
+**PlantUML source:** [class_diagram.puml](./puml/class_diagram.puml)
+
 **Code reference:** [`code/users/models.py`](../code/users/models.py), [`code/issues/models.py`](../code/issues/models.py)
 
 The diagram covers the issue lifecycle, the central part of CityFix. A user's role can change, because an Administrator can turn a citizen into a City Worker, so the role is modelled as the `Role` enumeration and not as inheritance. In the code, `Citizen`, `CityWorker` and `Admin` are Django proxy classes of `User` that only filter users by role and add no data. The role a user plays in each association is shown by the role name at its end (reporter, worker, assigned_by, changed_by, uploaded_by, recipient). `Issue` owns its history, photos, assignments and notifications (composition: they are deleted with the issue), while links to `User` are plain associations, so deleting a user keeps the issues (ADR-08). `Issue.change_status()` is the single operation for changing a status. It records a `StatusHistory` entry and then saves the new status.
@@ -119,7 +124,7 @@ The diagram covers the issue lifecycle, the central part of CityFix. A user's ro
 
 **State owner and reason for choosing it:** The Issue (report). Its current state is stored in the `status` field of the ISSUE table (`Issue.Status` in `code/issues/models.py`), and every change is recorded in STATUS_HISTORY (old status, new status, who changed it, note). The transitions matter because they decide who can act next: the Administrator verifies, rejects or assigns a report, and the City Worker repairs or returns it. Some transitions have conditions, such as a reason for a rejection, an explanation when a worker returns an issue, and an "after" photo before an issue can be resolved. Every status change also creates an in-app notification for the citizen who reported the issue (F-008).  
 **State diagram:**  
-![CityFix issue lifecycle state diagram](./assets/state_issue_lifecycle.png)  
+![CityFix issue lifecycle state diagram](./assets/diagrams/state_issue_lifecycle.svg)  
 **PlantUML source:** [state_issue_lifecycle.puml](./puml/state_issue_lifecycle.puml)
 
 **Implementation status (checkpoint 1):** the transitions Reported → Verified and Reported → Rejected (`views_admin.review_issue`), Verified → Assigned (`views_admin.assign_issue`) and Assigned → In Repair → Resolved (`views_worker.update_task_status`) are implemented. Every status change creates a notification for the citizen. Marking a duplicate, the "after" photo condition and returning an issue are planned.

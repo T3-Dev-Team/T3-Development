@@ -25,7 +25,7 @@ InRepair --> Resolved : worker marks resolved\n[after photo uploaded] (F-012, F-
 Assigned --> Verified : worker returns issue\n[explanation entered] (F-014)
 InRepair --> Verified : worker returns issue\n[explanation entered] (F-014)
 
-Assigned : deadline in less than 24 h /\nraise priority, alert administrator (F-017)
+Assigned : deadline check [less than 24 h left] /\nraise priority, alert administrator (F-017)
 
 Rejected --> [*]
 Duplicate --> [*]

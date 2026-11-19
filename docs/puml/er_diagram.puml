@@ -1,0 +1,115 @@
+@startuml er_diagram
+title CityFix — ER Diagram
+hide circle
+hide empty methods
+skinparam linetype polyline
+skinparam ranksep 70
+skinparam nodesep 60
+skinparam classBackgroundColor #ffffff
+skinparam classBorderColor #555555
+skinparam classFontStyle bold
+
+entity "CITY_SERVICE" as CS #dae8fc {
+  * id : int <<PK>>
+  --
+  * name : string <<UK>>
+}
+entity "CATEGORY" as CAT #dae8fc {
+  * id : int <<PK>>
+  --
+  * name : string <<UK>>
+  * service_id : int <<FK>>
+  default_resolution_days : int <i>(planned)</i>
+}
+entity "DISTRICT" as DI #dae8fc {
+  * id : int <<PK>>
+  --
+  * name : string <<UK>>
+}
+entity "USER" as USER #e1d5e7 {
+  * id : int <<PK>>
+  --
+  google_sub : string <<UK>>
+  * email : string <<UK>>
+  name : string
+  * role : string
+  * is_active : boolean
+  * password : string (unusable)
+  last_login : datetime
+  * is_superuser : boolean
+  service_id : int <<FK>> <i>(planned)</i>
+}
+entity "ISSUE" as IS #e1d5e7 {
+  * id : int <<PK>>
+  --
+  reporter_id : int <<FK>>
+  * category_id : int <<FK>>
+  district_id : int <<FK>>
+  duplicate_of_id : int <<FK>>
+  * description : text
+  * latitude : float
+  * longitude : float
+  address : string
+  * status : string
+  * priority : int
+  * created_at : datetime
+  * updated_at : datetime
+  rating : int <i>(planned)</i>
+}
+entity "ISSUE_PHOTO" as PH #d5e8d4 {
+  * id : int <<PK>>
+  --
+  * issue_id : int <<FK>>
+  uploaded_by_id : int <<FK>>
+  * image_url : string
+  * kind : string
+  * uploaded_at : datetime
+}
+entity "STATUS_HISTORY" as SH #d5e8d4 {
+  * id : int <<PK>>
+  --
+  * issue_id : int <<FK>>
+  changed_by_id : int <<FK>>
+  * old_status : string
+  * new_status : string
+  note : text
+  * changed_at : datetime
+}
+entity "ASSIGNMENT" as AS #d5e8d4 {
+  * id : int <<PK>>
+  --
+  * issue_id : int <<FK>>
+  worker_id : int <<FK>>
+  assigned_by_id : int <<FK>>
+  * deadline : datetime
+  * assigned_at : datetime
+  returned_at : datetime
+  return_reason : text
+}
+entity "NOTIFICATION" as NO #d5e8d4 {
+  * id : int <<PK>>
+  --
+  * issue_id : int <<FK>>
+  recipient_id : int <<FK>>
+  * type : string
+  * is_read : boolean
+  * created_at : datetime
+}
+
+CS ||--o{ CAT : handles
+CS |o..o{ USER : employs (planned)
+CAT ||--o{ IS : classifies
+DI |o--o{ IS : located_in
+IS |o--o{ IS : duplicate_of
+IS ||--o{ PH : has
+IS ||--o{ SH : logs
+IS ||--o{ AS : assigned_via
+IS ||--o{ NO : triggers
+USER |o--o{ IS : reports
+USER |o--o{ PH : uploads
+USER |o--o{ SH : changes
+USER |o--o{ AS : works_on
+USER |o--o{ AS : assigns
+USER |o--o{ NO : receives
+
+@enduml

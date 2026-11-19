@@ -7,8 +7,8 @@
 **Objective:** Show the system boundary, its relevant actors, and their main goals in **one readable UML use case diagram**. Add a focused second diagram only if the complete view cannot remain clear. A third requires a distinct project-specific reason.
 
 **Rendered use case diagram:**  
-![CityFix use case diagram](./assets/use_case_diagram.png)  
-**Versioned source (draw.io):** [use_case_diagram.drawio.svg](./assets/use_case_diagram.drawio.svg)
+![CityFix use case diagram](./assets/diagrams/use_case_diagram.svg)  
+**PlantUML source:** [use_case_diagram.puml](./puml/use_case_diagram.puml)
 
 **Reading the diagram:** The three primary actors are the roles from §2.3. They are specialisations of a general User actor, so the use cases every signed-in user can perform (UC-001 Sign In and UC-016 Delete Account) are connected once, to User. Google Sign-In, Google Maps, the weather API and Google Calendar are external systems that CityFix uses. Duplicate detection (UC-003) is always performed when a report is submitted, so it is an `<<include>>` of UC-002. Attaching a photo (UC-004) is optional and therefore an `<<extend>>` of UC-002. Uploading a repair photo (UC-010) extends UC-009 when the new status is "Resolved".
 

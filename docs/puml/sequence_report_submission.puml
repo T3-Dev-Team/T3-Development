@@ -74,6 +74,7 @@ else form valid
         V --> FE : redirect to "My reports" with confirmation
         FE --> Citizen : show confirmation
       else save fails
+        activate S
         DB --> S : DatabaseError (transaction rolled back)
         S --> V : save failed
         deactivate S
