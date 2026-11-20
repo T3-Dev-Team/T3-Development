@@ -20,13 +20,6 @@
 
 Write one concise row per relevant meeting or weekly coordination entry. An assignment should name its owner; an unresolved point should say who will follow up. A meeting title alone does not show what changed. Do not copy the complete issue list or the transcript of a conversation into this log.
 
-<details>
-<summary><strong>From a meeting topic to an actionable record</strong></summary>
-
-
-**Outcome and ownership:** “Discussed location handling” would conceal whether anyone committed to a change. These rows identify a decision or an open action, its owner, and the work to inspect. They do not create additional course checkpoints.
-
-</details>
 
 ## A.2 Work Plan
 
@@ -50,12 +43,6 @@ Write one concise row per relevant meeting or weekly coordination entry. An assi
 
 Keep the plan at a useful weekly level when a table is used; revise it when priorities change. If you use member abbreviations, define them in A.1 and use them consistently here; extend a code if two members share the same initials. The plan is not evidence that planned work was completed. Only the 8th and 14th weeks are formal course checkpoints; ordinary meetings and internal plans are not additional hand-ins.
 
-<details>
-<summary><strong>Planning the first public report flow</strong></summary>
-
-**Reading the plan:** The short codes save space in the compact plan; their definitions at the start of A.1 apply throughout this example. When work slips, update the actual task and the plan's expectation; do not claim an unfinished feature was completed merely because its week has passed.
-
-</details>
 
 ## A.3 Activity Table
 
@@ -85,21 +72,6 @@ Keep the plan at a useful weekly level when a table is used; revise it when prio
 
 Use project-specific activities rather than a mandatory row for every Wiki chapter or every UML diagram. The team should record hours consistently and avoid double-counting joint work; the representative result explains what the reported effort produced. Hours are self-reported effort, not a measure of quality or a substitute for examining code and artefacts.
 
-<details>
-<summary><strong>Recording feature, integration, and documentation work</strong></summary>
-
-**Example — Crisis Guard:** The table distinguishes implementation, integration, and documentation work and links each activity to a result.
-
-| Activity or deliverable | Member | Reported hours | Representative result or link |
-| --- | --- | --- | --- |
-| Manual map-position input | Ana | 8 | Example issue #21; frontend change. |
-| Report validation and persistence | Luka | 10 | Example issue #23; backend change and test. |
-| Client–API integration and public deployment | Ema | 7 | Example issue #25; deployment revision. |
-| Report-submission use case and permission-denied check | Nika | 5 | Example UC-002 revision and test ST-03. |
-
-**Effort and result:** The final column makes it possible to discuss a contribution without treating a high hour count as proof of delivery. A team can report a genuinely time-consuming unresolved integration problem as work and describe its outcome honestly.
-
-</details>
 
 ## A.4 Change Overview Diagram
 
@@ -119,11 +91,3 @@ The graph represents some of our work. Documentation, diagrams and coordination 
 | A Cloudinary API secret was committed in a pull request (#59). | The PR was closed, the secret was regenerated, and all credentials are now only in Render environment variables. | No credentials in the code; the old secret is invalid. |
 | New reports stayed in "Reported" because no page let the Administrator verify them, and changing the status in the Django admin skipped the history and notifications (found by MP). | MS added Verify/Reject buttons on /reports/manage/ that use change_status, and made status read-only in the Django admin. | Every status change is recorded and notified. |
 |  |  |  |
-
-<details>
-<summary><strong>Resolving a location-format mismatch</strong></summary>
-
-
-</details>
-
-**Final consistency check:** Meetings identify meaningful outcomes and owners; the plan reflects intended work; the effort table and generated repository view refer to the same project; and concrete challenges are connected to actions and their results. The issue board remains the live source for task status.
