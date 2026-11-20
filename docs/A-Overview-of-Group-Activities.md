@@ -65,20 +65,20 @@ Keep the plan at a useful weekly level when a table is used; revise it when prio
 | --- | --- | --- | --- |
 | Project idea selection and proposal (CityFix scope, user roles) | RY, KT, MP, KB, IJ, MS | 2 | Accepted project proposal; scope reduced to web app only after TA feedback |
 | Requirements and use cases (Citizen, City Worker, Administrator) | RY, MP, KB, MS | 4 | Sections 2 and 3; use case diagram |
-| Architecture decisions (Django modular monolith, HTMX, PostgreSQL, Render) | RY |  | Section 4.1 |
+| Architecture decisions (Django modular monolith, HTMX, PostgreSQL, Render) | RY | 2 | Section 4.1 |
 | Building blocks and UML component diagram | MS | 4 | Section 4.2 |
-| ER and class diagrams | RY |  | Section 4.3 |
+| ER and class diagrams | RY | 3 | Section 4.3 |
 | Sequence diagram (report submission) and state diagram (issue lifecycle) | KB | 3 | Section 4.4 |
 | Risk assessment (architectural risks, domain risks and technical debt) | KT | 3 | Section 4.7 | 
-| D1 – Google sign-in (OIDC/OAuth 2.0), user model with roles, permissions, account deletion | RY |  | Google sign-in works on the deployed app |
+| D1 – Google sign-in (OIDC/OAuth 2.0), user model with roles, permissions, account deletion | RY | 6 | Google sign-in works on the deployed app |
 | D2 – Data model (8 models), migrations and Django admin | MS | 7 | PR #50 |
 | D2 – Admin views (verify/reject, assign with deadline) and worker views (task list, status update) | MS | 6 | PR #52, #53, #64 |
 | D3 – Report form with photos, "My reports", notification pages | MP | 6 | Citizens submit reports with photos and follow them in "My reports" PR #63 |
 | A1 – Base template, navbar, CSS, report form and map JavaScript, public map view | KB | 6 | PR #51, #56, #65 |
 | Photo upload integration (Cloudinary) | KT, MP | 2 | Photos stored on Cloudinary |
 | In-app notifications | MP, MS | 1 | Citizens notified on every status change; workers notified when an issue is assigned PR #63, #66 |
-| Automated tests | RY, MP, KB |  | 25 tests passing on `main` (`users/tests.py`, `issues/tests.py`, `issues/test_map_view.py`) |
-| Integration of modules and merge of branches | RY, KT, MP, KB, IJ, MS |  | Main branch with all apps working together |
+| Automated tests | RY, MP, KB | 4 | 25 tests passing on `main` (`users/tests.py`, `issues/tests.py`, `issues/test_map_view.py`) |
+| Integration of modules and merge of branches | RY, KT, MP, KB, IJ, MS | 4 | Main branch with all apps working together |
 | Deployment on Render (web service + managed PostgreSQL) | MS, KT | 5 | [t3-development.onrender.com](https://t3-development.onrender.com), PR #64 |
 | Integration of Google Cloud APIs (Google Maps Platform, OAuth 2.0) | KT | 4 | Credentials are connected to Render, access to Google Maps and Google sign-in |
 | Documentation editing and PDF export | IJ |  | Final documentation PDF |
