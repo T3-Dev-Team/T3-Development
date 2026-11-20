@@ -73,7 +73,7 @@ Keep the plan at a useful weekly level when a table is used; revise it when prio
 | D1 – Google sign-in (OIDC/OAuth 2.0), user model with roles, permissions, account deletion | RY |  | Google sign-in works on the deployed app |
 | D2 – Data model (8 models), migrations and Django admin | MS | 7 | PR #50 |
 | D2 – Admin views (verify/reject, assign with deadline) and worker views (task list, status update) | MS | 6 | PR #52, #53, #64 |
-| D3 – Report form with photos, "My reports", notification pages | MP |  | Citizens submit reports with photos and follow them in "My reports" PR #63 |
+| D3 – Report form with photos, "My reports", notification pages | MP | 6 | Citizens submit reports with photos and follow them in "My reports" PR #63 |
 | A1 – Base template, navbar, CSS, report form and map JavaScript, public map view | KB |  | PR #51, #56, #65 |
 | Photo upload integration (Cloudinary) | KT, MP | 2 | Photos stored on Cloudinary |
 | In-app notifications | MP, MS | 1 | Citizens notified on every status change; workers notified when an issue is assigned PR #63, #66 |
