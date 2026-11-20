@@ -73,16 +73,16 @@ Keep the plan at a useful weekly level when a table is used; revise it when prio
 | D1 – Google sign-in (OIDC/OAuth 2.0), user model with roles, permissions, account deletion | RY |  | Google sign-in works on the deployed app |
 | D2 – Data model (8 models), migrations and Django admin | MS | 7 | PR #50 |
 | D2 – Admin views (verify/reject, assign with deadline) and worker views (task list, status update) | MS | 6 | PR #52, #53, #64 |
-| D3 – Report form with photos, "My reports", notification pages | MP |  | Citizens submit reports with photos and follow them in "My reports" PR #63 |
+| D3 – Report form with photos, "My reports", notification pages | MP | 6 | Citizens submit reports with photos and follow them in "My reports" PR #63 |
 | A1 – Base template, navbar, CSS, report form and map JavaScript, public map view | KB | 6 | PR #51, #56, #65 |
 | Photo upload integration (Cloudinary) | KT, MP | 2 | Photos stored on Cloudinary |
 | In-app notifications | MP, MS | 1 | Citizens notified on every status change; workers notified when an issue is assigned PR #63, #66 |
 | Automated tests | RY, MP, KB |  | 25 tests passing on `main` (`users/tests.py`, `issues/tests.py`, `issues/test_map_view.py`) |
 | Integration of modules and merge of branches | RY, KT, MP, KB, IJ, MS |  | Main branch with all apps working together |
 | Deployment on Render (web service + managed PostgreSQL) | MS, KT | 5 | [t3-development.onrender.com](https://t3-development.onrender.com), PR #64 |
-| Integration of Google Cloud APIs (Google Maps Platform, OAuth 2.0) | KT | 4 | Credidentials are connected to Render, access to Google Maps and Google sign-in |
+| Integration of Google Cloud APIs (Google Maps Platform, OAuth 2.0) | KT | 4 | Credentials are connected to Render, access to Google Maps and Google sign-in |
 | Documentation editing and PDF export | IJ |  | Final documentation PDF |
-| Project coordination (meetings, task split, review prep 18 Nov) | MS | 3-5 | Meeting notes (Meeting log in A.1) / task organization |
+| Project coordination (meetings, task split, review prep 18 Nov) | MS | 3 | Meeting notes (Meeting log in A.1) / task organization |
 
 
 Use project-specific activities rather than a mandatory row for every Wiki chapter or every UML diagram. The team should record hours consistently and avoid double-counting joint work; the representative result explains what the reported effort produced. Hours are self-reported effort, not a measure of quality or a substitute for examining code and artefacts.
