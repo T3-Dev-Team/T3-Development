@@ -81,7 +81,7 @@ Keep the plan at a useful weekly level when a table is used; revise it when prio
 | Integration of modules and merge of branches | RY, KT, MP, KB, IJ, MS |  | Main branch with all apps working together |
 | Deployment on Render (web service + managed PostgreSQL) | MS, KT | 5 | [t3-development.onrender.com](https://t3-development.onrender.com), PR #64 |
 | Integration of Google Cloud APIs (Google Maps Platform, OAuth 2.0) | KT | 4 | Credentials are connected to Render, access to Google Maps and Google sign-in |
-| Documentation editing and PDF export | IJ |  | Final documentation PDF |
+| Documentation editing and PDF export | IJ | 6 | Final documentation PDF |
 | Project coordination (meetings, task split, review prep 18 Nov) | MS | 3 | Meeting notes (Meeting log in A.1) / task organization |
 
 
