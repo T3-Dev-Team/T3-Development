@@ -98,16 +98,16 @@ The requirements follow from the problems described in [1.1](./1-Project-Scope.m
 
 | Date | Requirement ID | Change and reason | Agreed with / evidence |
 | --- | --- | --- | --- |
+| Initial version | NF-03 | Added by the team: a response-time target for common requests, so that performance can be checked with a load test. | Agreed by all members at the team meeting on 19.10.2026 |
+| Initial version | NF-08 | Added by the team: reports, status changes and comments must survive a server restart, because the city relies on the report history. | Agreed by all members at the team meeting on 19.10.2026 |
+| Initial version | NF-14 | Added by the team: an accessibility target (WCAG 2.1 AA, Lighthouse score of at least 90) for the main pages. | Agreed by all members at the team meeting on 19.10.2026 |
+| Initial version | NF-15 | Added by the team: at least 60% backend test coverage and a reviewed pull request for every change. | Agreed by all members at the team meeting on 19.10.2026 |
+| Initial version | A-01 | Added by the team: citizens are assumed to have a device with a camera, an internet connection and a Google account. | Agreed by all members at the team meeting on 19.10.2026 |
+| Initial version | A-03 | Added by the team: the free limits of the Google and weather APIs are assumed to be enough for the demo and testing. | Agreed by all members at the team meeting on 19.10.2026 |
+| Initial version | A-05 | Added by the team: face and license plate detection is assumed to reach the 90% target in NF-04. | Agreed by all members at the team meeting on 19.10.2026 |
 | 16.10.2026 | NF-12 | All functionality is implemented as a responsive web application. The teaching assistant recommended a web application to keep the architecture consistent. | Teaching assistant (proposal feedback, 16.10.2026) |
-| 25.10.2026 | NF-04 | Priority lowered from High to Low. Automatic blurring of faces and license plates will be implemented only if time allows (C-08). | Team decision, after a conversation with the teaching assistant |  
-| 25.10.2026 | F-021 | Account deletion is available to all roles, not only to citizens, because City Workers and Administrators also have personal data covered by GDPR. The last active Administrator cannot be deleted, so the system always keeps someone who can manage accounts. | Implemented in `code/users/views.py` and `code/users/services.py` |
-| Initial version | NF-03 | Added by the team: a response-time target for common requests, so that performance can be checked with a load test. | Team decision |
-| Initial version | NF-08 | Added by the team: reports, status changes and comments must survive a server restart, because the city relies on the report history. | Team decision |
-| Initial version | NF-14 | Added by the team: an accessibility target (WCAG 2.1 AA, Lighthouse score of at least 90) for the main pages. | Team decision |
-| Initial version | NF-15 | Added by the team: at least 60% backend test coverage and a reviewed pull request for every change. | Team decision |
-| Initial version | A-01 | Added by the team: citizens are assumed to have a device with a camera, an internet connection and a Google account. | Team decision |
-| Initial version | A-03 | Added by the team: the free limits of the Google and weather APIs are assumed to be enough for the demo and testing. | Team decision |
-| Initial version | A-05 | Added by the team: face and license plate detection is assumed to reach the 90% target in NF-04. | Team decision |
+| 26.10.2026 | NF-04 | Priority lowered from High to Low. Automatic blurring of faces and license plates will be implemented only if time allows (C-08). | Team decision, after a conversation with the teaching assistant (26.10.2026) |  
+| 01.11.2026 | F-021 | Account deletion is available to all roles, not only to citizens, because City Workers and Administrators also have personal data covered by GDPR. The last active Administrator cannot be deleted, so the system always keeps someone who can manage accounts. | Prof. Sruk (suggestion, 29.10.2026). Implemented in `code/users/views.py` and `code/users/services.py` |
 
 ---
 
