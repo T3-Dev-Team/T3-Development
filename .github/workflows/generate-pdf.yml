@@ -29,7 +29,8 @@ jobs:
           FILE_NAME="SE26_${{ github.event.inputs.group_number }}_${{ github.event.inputs.app_acronym }}_${{ github.event.inputs.version }}.pdf"
           cat docs/Home.md docs/[1-7]-*.md docs/A-*.md > docs/full-report.md
           cd docs
-          pandoc full-report.md --from gfm --toc --toc-depth=3 --metadata title="CityFix - Project Documentation" --pdf-engine=wkhtmltopdf -o "deliverables/$FILE_NAME" --pdf-engine-opt=--enable-local-file-access
+          echo 'img { max-width: 100% !important; height: auto !important; } table { width: 100%; }' > pdf.css
+          pandoc full-report.md --from gfm --toc --toc-depth=3 --metadata title="CityFix - Project Documentation" --css pdf.css --pdf-engine=wkhtmltopdf -o "deliverables/$FILE_NAME" --pdf-engine-opt=--enable-local-file-access
       - uses: actions/upload-artifact@v4
         with:
           name: documentation-pdf
