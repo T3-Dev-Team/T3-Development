@@ -68,23 +68,14 @@ Keep the plan at a useful weekly level when a table is used; revise it when prio
 | Architecture decisions (Django modular monolith, HTMX, PostgreSQL, Render) | RY |  | Section 4.1 |
 | Building blocks and UML component diagram | MS | 4 | Section 4.2 |
 | ER and class diagrams | RY |  | Section 4.3 |
-KBarkovic1-patch-2
 | Sequence diagram (report submission) and state diagram (issue lifecycle) | KB | 3 | Section 4.4 |
-
-| Sequence diagram (report submission) and state diagram (issue lifecycle) | KB |  | Section 4.4 |
 | Risk assessment (architectural risks, domain risks and technical debt) | KT | 3 | Section 4.7 | 
-main
 | D1 – Google sign-in (OIDC/OAuth 2.0), user model with roles, permissions, account deletion | RY |  | Google sign-in works on the deployed app |
 | D2 – Data model (8 models), migrations and Django admin | MS | 7 | PR #50 |
 | D2 – Admin views (verify/reject, assign with deadline) and worker views (task list, status update) | MS | 6 | PR #52, #53, #64 |
 | D3 – Report form with photos, "My reports", notification pages | MP |  | Citizens submit reports with photos and follow them in "My reports" PR #63 |
-KBarkovic1-patch-2
 | A1 – Base template, navbar, CSS, report form and map JavaScript, public map view | KB | 6 | PR #51, #56, #65 |
-| Photo upload integration (Cloudinary) | KT, MP |  | Photos stored on Cloudinary |
-
-| A1 – Base template, navbar, CSS, report form and map JavaScript, public map view | KB |  | PR #51, #56, #65 |
 | Photo upload integration (Cloudinary) | KT, MP | 2 | Photos stored on Cloudinary |
-main
 | In-app notifications | MP, MS | 1 | Citizens notified on every status change; workers notified when an issue is assigned PR #63, #66 |
 | Automated tests | RY, MP, KB |  | 25 tests passing on `main` (`users/tests.py`, `issues/tests.py`, `issues/test_map_view.py`) |
 | Integration of modules and merge of branches | RY, KT, MP, KB, IJ, MS |  | Main branch with all apps working together |
